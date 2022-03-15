@@ -1,0 +1,31 @@
+<ng-template #filelistmodal let-modal>
+    <ng-container *ngIf="dialogName != null">
+        <div class="filter-header" *ngIf="dialogName!=''">
+            <div class="title" id="modal-basic-title">
+                <h4>
+                    {{ dialogName }}
+                </h4>
+            </div>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="statusData.error">
+        <div class="error-message">
+            <h3>Error !!</h3>
+            <p>{{statusData.message}}</p>
+        </div>
+    </ng-container>
+    <ng-container *ngIf="!statusData.error">
+        <comp-listtable
+            #listtable
+            [datas]="fileDatas"
+            [keys]="keys"
+            [isloading]="loadingTable"
+            (listAction)="actionButton($event)"
+        ></comp-listtable>
+    </ng-container>
+    <div class="close-button">
+        <button class="btn btn-skyporter" aria-label="Close" (click)="modal.dismiss('Cross click')">
+            Close
+        </button>
+    </div>
+</ng-template>

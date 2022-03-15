@@ -1,0 +1,30 @@
+<div class="wrapper-table">
+    <div class="navi">
+        <div class="navi-list" [ngClass]="{'active':levelList[currentTabIndex].value===tab.value}" (click)="setTabId(i, tab)"
+            *ngFor="let tab of levelList; let i = index">
+            {{tab.label}}
+        </div>
+    </div>
+    <div class="detail">
+        <comp-listtable
+            [datas]="datas"
+            [keys]="keys"
+            [navigations]="navigations"
+            [isloading]="isloading"
+            [filterOptions]="exportfilter"
+            (refreshData)="getData($event)"
+            (searchData)="searchData($event)"
+            (sortDataBy)="sortDataBy($event)"
+            (doAPI)="doAPI($event)"
+            (listExport)="generateExportData($event)"
+            (listFilter)="generateFilterData($event)"
+            (handleDropdownExport)="handleDropdownExport($event)"
+            #listtable>
+        </comp-listtable>
+    </div>
+</div>
+
+
+<comp-popup-modal
+    #mymodal
+></comp-popup-modal>

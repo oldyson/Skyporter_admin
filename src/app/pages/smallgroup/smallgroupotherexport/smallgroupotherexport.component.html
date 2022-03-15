@@ -1,0 +1,50 @@
+<div class="construct" *ngIf="dataLoading == true">
+	<i appLoadingSkyporter size="lg"></i>
+</div>
+<div *ngIf="dataLoading == false">
+	<div class="export-wrapper">
+		<div class="content-wrapper">
+			<div class="dropdown-selection">
+				<comp-inputform
+					type="dropdown"
+					title="Export Type"
+					[(value)]="requestedData.rolelevel"
+					[(options)]="smallgroupMemberRoles"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="dropdown"
+					title="File Type"
+					[(value)]="requestedData.fileformat"
+					[(options)]="fileformat"
+				>
+				</comp-inputform>
+			</div>
+				<comp-inputform
+				type="checkbox"
+				title="Core Team"
+				[(value)]="coreTeam"
+				(valueChange)="coreTeamToggle()"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="checkbox"
+					title="Member"
+					[(value)]="member"
+					(valueChange)="coreTeamToggle()"
+				>
+				</comp-inputform>
+		</div>
+		<div class="center" *ngIf="exportLoading">
+			<button class="btn btn-outline-skyporter" (click)="exportSmallgroupMember()">
+				<i appLoadingSkyporter size="sm">
+				</i>
+			</button>
+		</div>
+		<div class="center" *ngIf="!exportLoading">
+			<button class="btn btn-outline-skyporter" (click)="exportSmallgroupMember()">
+				Export
+			</button>
+		</div>
+	</div>
+</div>

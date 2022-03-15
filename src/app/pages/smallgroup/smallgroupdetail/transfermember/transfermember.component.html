@@ -1,0 +1,67 @@
+<ng-template #transfermembermodal let-modal>
+		<ng-container *ngIf="dialogName">
+				<div class="dialog-header" *ngIf="dialogName">
+						<div class="title" id="modal-basic-title">
+								{{ dialogName }}
+						</div>
+						<div class="action">
+								<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+										<span aria-hidden="true">
+												&times;
+										</span>
+								</button>
+						</div>
+				</div>
+		</ng-container>
+
+		<div class="dialog-body">
+				<div class="wrapper-form">
+						<comp-inputform
+								type="searchsingle"
+								title="Member Name"
+								[(value)]="selectedMemberId"
+								[options]="memberList"
+						>
+						</comp-inputform>
+				</div>
+				<div class="wrapper-form">
+						<comp-inputform
+								[dropdownLoading]="isLoadingSelectedSg"
+								[disabled]="isLoadingSelectedSg"
+								type="searchsingle"
+								title="Choose Campus"
+								(valueChange)="onChangeSelectedCampus($event)"
+								[(value)]="selectedCampusId"
+								[options]="campusList"
+						>
+						</comp-inputform>
+				</div>
+				<div class="wrapper-form">
+						<comp-inputform
+								[dropdownLoading]="isLoadingSelectedSg"
+								[disabled]="isLoadingSelectedSg"
+								type="searchsingle"
+								[title]="'Search ' + maskSgNameByChurch"
+								[(value)]="selectedSgId"
+								[options]="smallGroupList"
+						>
+						</comp-inputform>
+				</div>
+		</div>
+
+		<div class="dialog-footer">
+				<button
+						[disabled]="!(selectedCampusId && selectedMemberId && selectedSgId)"
+						(click)="transferMember()"
+						class="btn-positive"
+				>
+						<span *ngIf="!isLoadingTransfer">
+								Transfer
+						</span>
+						<div *ngIf="isLoadingTransfer">
+								<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+						</div>
+				</button>
+		</div>
+
+</ng-template>

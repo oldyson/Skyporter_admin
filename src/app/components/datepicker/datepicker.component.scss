@@ -1,0 +1,65 @@
+@import '../../../variable.scss';
+
+
+.datepicker-wrapper{
+	ngb-datepicker-navigation{
+		.ngb-dp-arrow{
+			.ngb-dp-arrow-btn{
+				color: darken($primary-color, 20%);
+				&:hover{
+					color: $primary-color;
+				}
+			}
+		}
+	}
+	ngb-datepicker-month{
+		.ngb-dp-weekday{
+			color: darken($primary-color, 20%);
+		}
+
+		span.custom-day{
+			&:hover,
+			&.range{
+				background-color: $primary-color;
+			}
+			&:not(:hover).faded{
+				background-color: lighten($primary-color, 20%);
+			}
+		}
+	}
+}
+
+.form-group {
+	&.hidden {
+		width: 0;
+		margin: 0;
+		border: none;
+		padding: 0;
+	}
+	&.max-width{
+		width: 100%;
+		.input-group{
+			width: 100%;
+		}
+	}
+}
+.datepicker-input {
+	height: 0px;
+}
+.custom-day {
+	text-align: center;
+	padding: 0.185rem 0.25rem;
+	display: inline-block;
+	height: 2rem;
+	width: 2rem;
+}
+.custom-day.focused {
+	background-color: #e6e6e6;
+}
+.custom-day.range, .custom-day:hover {
+	background-color: rgb(2, 117, 216);
+	color: white;
+}
+.custom-day.faded {
+	background-color: rgba(2, 117, 216, 0.5);
+}

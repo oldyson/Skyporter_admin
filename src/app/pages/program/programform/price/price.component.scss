@@ -1,0 +1,45 @@
+@import '../../../../../variable.scss';
+
+
+.price-wrapper{
+	display: inline-block;
+	width: 100%;
+	margin: 8px 0 4px;
+	padding: 0 2px;
+	.title{
+		text-transform: uppercase;
+		color: #777;
+		font-weight: bold;
+		padding: 0 4px;
+	}
+	.form-check{
+		padding-left: 1.7rem;
+	}
+	.detail{
+		padding: 10px 15px;
+		border-width: 1px 1px 1px 1px;
+		border-style: solid;
+		border-color: #d8d8d8;
+		border-radius: 6px 6px 6px 6px;
+		background-color: #fcfcfc;
+	}
+}
+
+.right{
+	margin-top:2%;
+	float: right;
+}
+
+.remove-price{
+	flex: 1;
+	display: flex;
+	justify-content: flex-end;
+	align-items: center;
+	float: right;
+}
+
+.remove-button{
+	position: absolute;
+	top: 0;
+	right: 0;
+}

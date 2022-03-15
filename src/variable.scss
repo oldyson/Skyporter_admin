@@ -1,0 +1,35 @@
+
+// SKYPORTER
+/*
+$primary-color: #4ea6dc;
+$primary-op-color: white;
+*/
+// JPCC
+
+$primary-color: #8dc446;
+$primary-op-color: white;
+
+
+
+@font-face {
+  font-family: "Karla";
+  src: url("/assets/font/Karla-Bold.ttf");
+  font-weight: 600;
+}
+@font-face {
+  font-family: "Karla";
+  src: url("/assets/font/Karla-Regular.ttf");
+  font-weight: 400;
+}
+@font-face {
+  font-family: "Karla";
+  src: url("/assets/font/Karla-Italic.ttf");
+  font-weight: 400;
+  font-style: italic;
+}
+@font-face {
+  font-family: "Karla";
+  src: url("/assets/font/Karla-BoldItalic.ttf");
+  font-weight: 600;
+  font-style: italic;
+}

@@ -1,0 +1,30 @@
+<div class="smallgroupdashboard-wrapper">	
+	<div class="report-tab">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':activeTab1===tab.value}" (click)="setActiveTab1(i)" *ngFor="let tab of tabs; let i = index">
+				{{tab.label}}
+			</div>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='anomalycount'}">
+			<smallgroupdashboard-sganomalycount
+			></smallgroupdashboard-sganomalycount>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='growthchart'}">
+			<smallgroupdashboard-sggrowthchart
+			></smallgroupdashboard-sggrowthchart>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='anomalyrequestlist'}">
+			<smallgroupdashboard-sgreqanomalylist
+			></smallgroupdashboard-sgreqanomalylist>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='demographicchart'}">
+			<smallgroupdashboard-sgdemographic
+			></smallgroupdashboard-sgdemographic>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='discipleshipjourney'}">
+			<smallgroupdashboard-sgdiscipleshipjourney
+			></smallgroupdashboard-sgdiscipleshipjourney>
+		</div>
+	</div>
+
+</div>

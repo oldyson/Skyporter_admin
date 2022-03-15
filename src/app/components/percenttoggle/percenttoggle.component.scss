@@ -1,0 +1,19 @@
+@import "../../../variable.scss";
+
+
+.toggle-wrapper{
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+ font-size: 120%;
+ cursor: pointer;
+ user-select: none;
+ color: #888;
+ font-weight: bold;
+ fa-icon{
+ 	font-size: 140%;
+ 	margin: 2px 5px;
+ 	padding: 2px 0 0;
+ 	color: $primary-color;
+ }
+}

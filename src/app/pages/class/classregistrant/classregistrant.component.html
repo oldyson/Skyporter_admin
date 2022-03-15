@@ -1,0 +1,95 @@
+<div class="d-flex justify-content-center" *ngIf="isloadingInfo">
+	<i appLoadingSkyporter size="md"></i>
+</div>
+<div class="container-fluid" *ngIf="!isloadingInfo">
+	<div class="row">
+		<div class="col-12 col-sm-12 col-md-12 col-xl-4 mb-3">
+			<div class="row h-100">
+				<div class="col-12 mb-3">
+					<div class="card rounded-xl border-0 shadow-sm h-100">
+						<div class="card-left bg-grey-dark"></div>
+						<div class="card-body ml-4">
+							<div class="mb-3">
+								<div class="text-bold small">
+									Code & Class Name:
+								</div>
+								<div>
+									{{registrantInfo.programcode.name}} {{registrantInfo.name}}
+								</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small">
+									Date & Time:
+								</div>
+								<div>
+									{{helper.formatDate(registrantInfo.programstart_at)}} - {{helper.formatDate(registrantInfo.programend_at)}}
+									<br>
+									{{registrantInfo.programstart_at.split(' ')[1]}} - {{registrantInfo.programend_at.split(' ')[1]}}
+								</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small">
+									Venue Location:
+								</div>
+								<div>
+									{{registrantInfo.programbreakouts[0].location}}
+								</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small">
+									Venue Address:
+								</div>
+								<div>
+									{{registrantInfo.programbreakouts[0].locationaddress}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+		<div class="col-12 col-sm-12 col-md-8 col-md-12 col-xl-8 mb-3">
+			<div class="row h-100">
+				<div *ngFor="let item of cardInfo" class="col-sm-6 col-xl-4 mb-3">
+					<div class="card rounded-xl border-0 shadow-sm h-100">
+						<div
+							[ngClass]="item.color"
+							class="card-left"
+						></div>
+						<div class="card-body ml-4">
+							<div class="d-flex justify-content-between align-items-center h-100">
+								<div>
+									<h3 class="mb-0">
+										{{item.value}}
+									</h3>
+									<div>
+										{{item.text}}
+									</div>
+								</div>
+								<div [innerHTML]="item.icon | safe"></div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<comp-listtable
+	*ngIf="!isloadingInfo"
+	[datas]="datas"
+	[keys]="keys" 
+	[navigations]="navigations"
+	[isloading]="isloading"
+	[tabs]="tabs"
+	[qrList]="qrList"
+	[currentTab]="currentTab"
+	(refreshData)="getData($event)" 
+	(searchData)="searchData($event)" 
+	(sortDataBy)="sortDataBy($event)"
+	(doAPI)="doAPI($event)"
+	(attendanceChecklist)="attendanceChecklist($event)"
+	(getTab)="getTab($event)"
+	#listtable
+></comp-listtable>

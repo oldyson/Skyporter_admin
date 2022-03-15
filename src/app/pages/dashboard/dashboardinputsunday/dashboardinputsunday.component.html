@@ -1,0 +1,43 @@
+
+<div class="dashboardinput-wrapper">
+	<div class="dashboardinput-calendar">
+		<div class="data-text">
+			year: {{selectedyear}}<br>
+			week: {{selectedweek}}
+		</div>
+		<comp-weekpicker
+			[(week)]="selectedweek"
+			[(year)]="selectedyear"
+			(weekSelect)="initDataSundayservice()"
+		></comp-weekpicker>
+	</div>
+	<ng-container *ngIf="isloading">
+		<div class="loading-container">
+			<div>
+				<fa-icon [icon]="farSpinner" [spin]="true"></fa-icon>
+			</div>
+			<b>PLEASE WAIT</b>
+			<div class="s80">
+				Loading for <b>{{helper.toOrdinal(selectedweek)}} week of {{selectedyear}}</b>.
+			</div>
+		</div>
+	</ng-container>
+	<ng-container *ngIf="!isloading">
+		<div class="dashboardinput-table" *ngFor="let campus of campuses">
+			<div class="title">
+				{{campus.name}}
+			</div>
+			<dashboardinputsunday-sundaytable
+				[campusservices]="campus.campusservices"
+				[ngClass]="{'hide':!campus.isshow}"
+				#sundaytable
+			>
+			</dashboardinputsunday-sundaytable>
+		</div>
+		<div class="dashboardinput-action-global">
+			<button class="btn btn-skyporter" (click)="saveAllTable()">
+				Save All
+			</button>
+		</div>
+	</ng-container>
+</div>

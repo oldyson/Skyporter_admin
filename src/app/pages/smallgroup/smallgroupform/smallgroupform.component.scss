@@ -1,0 +1,124 @@
+@import '../../../../variable.scss';
+
+.wrapper-loading {
+	width: 100%;
+	text-align: center;
+}
+.smallgroup-form {
+	margin: 20px 10px;
+	.smallgroup-type-wrapper{
+		padding: 20px 0px;
+		.header{
+			padding: 0;
+			.navi{
+				display: flex;
+				justify-content: flex-start;
+				border-bottom: 1px solid #d8d8d8;
+				.navi-list{
+					padding: 6px 12px;
+					border-width: 1px 1px 0 1px;
+					border-color: #d8d8d8;
+					border-style: solid;
+					background-color: #f4f4f4;
+					border-radius: 4px 4px 0 0;
+					margin-left: 3px;
+					font-size: 85%;
+					font-weight: bold;
+					&.active{
+						margin-bottom: -1px;
+						background-color: white;
+						background-color: #fcfcfc;
+					}
+					&:not(.active){
+						padding: 4px 12px 2px;
+						margin-top: 6px;
+						color: #888;
+						transition: 0.12s all;
+						cursor: pointer;
+						box-shadow: inset 0 -5px 5px -5px rgba(0,0,0,.15);
+						border-color: #e5e5e5;
+						&:hover{
+							padding: 6px 12px;
+							margin-top: 0;
+							border-color: #d8d8d8;
+						}
+					}
+				}
+			}
+		}
+		.detail{
+			padding: 10px 15px;
+			border-width: 0 1px 1px;
+			border-style: solid;
+			border-color: #d8d8d8;
+			border-radius: 0 0 6px 6px;
+			background-color: #fcfcfc;
+			.input-form {
+				display: inline-block;
+				&.w-full {
+					width: 100%;
+				}
+			}
+		}
+		.footer-container {
+			text-align: right;
+			padding: 20px 10px;
+			margin: 0 10px 40px;
+		}
+	}
+}
+
+// /* Extra small devices (phones, 451px and down) */
+// @media screen and (max-width: 451px) {
+// 	.smallgroup-form {
+// 		.detail {
+// 			.input-form {
+// 				width: 100%;
+// 			}
+// 		}
+// 	}
+// }
+
+// /* Small devices (portrait tablets and large phones, 451px and max 767px) */
+// @media screen and (min-width: 451px) and (max-width: 767px) {
+// 	.smallgroup-form {
+// 		.detail {
+// 			.input-form {
+// 				width: 50%;
+// 			}
+// 		}
+// 	}
+// }
+
+// /* Medium devices (landscape tablets, 768px and up) */
+// @media screen and (min-width: 768px) {
+// 	.smallgroup-form {
+// 		.detail {
+// 			.input-form {
+// 				width: 50%;
+// 			}
+// 		}
+// 	}
+// }
+
+// /* Large devices (laptops/desktops, 992px and up) */
+// @media screen and (min-width: 992px) {
+// 	.smallgroup-form {
+// 		.detail {
+// 			.input-form {
+// 				width: 50%;
+// 			}
+// 		}
+// 	}
+// }
+
+// /* Extra large devices (large laptops and desktops, 1200px and up) */
+// @media screen and (min-width: 1200px) {
+// 	.smallgroup-form {
+// 		.detail {
+// 			.input-form {
+// 				width: 50%;
+// 			}
+// 		}
+// 	}
+// }

@@ -1,0 +1,30 @@
+@import "../../../variable.scss";
+
+.navigation-wrapper{
+	padding: 8px 10px;
+	margin: 0 10px 8px;
+	border-bottom: 1px solid lighten($primary-color, 10%);
+	display: flex;
+	align-items: center;
+	justify-content: flex-start;
+	.navi-list{
+		color: inherit;
+		font-weight: bold;
+		color: #555;
+		&:hover{
+			text-decoration: none;
+			color: $primary-color;
+		}
+		&.disabled{
+			&:hover{
+				color: #555 !important;
+			}
+		}
+	}
+	.divider{
+		display: inline-block;
+		margin: 0 10px;
+		padding: 3px 0 0;
+		color: #ccc;
+	}
+}

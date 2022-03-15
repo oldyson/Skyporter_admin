@@ -1,0 +1,58 @@
+
+.loading-wrapper{
+	width: 100%;
+	min-height: 80vh;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.userrolesummary-wrapper{
+	margin: 40px 10px;
+	.chart-wrapper{
+		padding: 10px;
+		margin-top: 20px;
+		margin: auto;
+		max-width: 400px;
+		.chartjs-size-monitor{
+			display: inline-block;
+		}
+	}
+	.title{
+		padding: 4px 10px;
+		margin-top: 40px;
+		color: rgba(0,0,0,.5);
+		text-transform: uppercase;
+		font-weight: bold;
+		display: block;
+		.percenttoggle-wrapper{
+			float: right;
+			padding: 0 10px;
+		}
+	}
+	.detail{
+		padding: 0 10px;
+		margin-bottom: 20px;
+		.table{
+			background-color: white;
+			tr.list{
+				&:nth-child(odd){
+					background-color: rgba(0,0,0,.02);
+				}
+				td{
+					font-size: 90%;
+					font-weight: bold;
+					&.number{
+						width: 1%;
+						text-align: right;
+					}
+					&.role-value{
+						min-width: 92px;
+					}
+				}
+			}
+		}
+	}
+	.upper{
+		text-transform: uppercase;
+	}
+}

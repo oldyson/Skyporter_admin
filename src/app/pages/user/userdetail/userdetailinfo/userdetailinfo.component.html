@@ -1,0 +1,307 @@
+
+
+<div class="middle-block">
+	<div *ngIf="user != null">
+		<table class="table table-clear table-sm">
+			<tbody>
+				<tr>
+					<td>Status Pernikahan</td>
+					<td class="min-width">:</td>
+					<td>{{user.maritalstatus.name}}</td>
+				</tr>
+				<tr>
+					<td class="text-center" colspan="3" *ngIf="user.userfamily==null">
+						- No Family Recorded -
+					</td>
+				</tr>
+				<ng-container *ngIf="user.userfamily!=null">
+					<tr>
+						<td>Spouse</td>
+						<td class="min-width">:</td>
+						<td *ngIf="user.userfamily.user?.id===user.id">
+							<ng-container *ngIf="user.userfamily.user2 != null">
+								<a href="/admin/user/detail?id={{user.userfamily.user2.id}}">
+									{{user.userfamily.user2.fullname}}
+								</a>
+							</ng-container>
+							<ng-container *ngIf="user.userfamily.user2 == null">
+								- Not Recorded -
+							</ng-container>
+						</td>
+						<td *ngIf="user.userfamily.user2_id && user.userfamily.user2?.id===user.id">
+							<ng-container *ngIf="user.userfamily.user != null">
+								<a href="/admin/user/detail?id={{user.userfamily.user.id}}">
+									{{user.userfamily.user.fullname}}
+								</a>
+							</ng-container>
+							<ng-container *ngIf="user.userfamily.user == null">
+								- Not Recorded -
+							</ng-container>
+						</td>
+					</tr>
+					<tr>
+						<td>Marital Date</td>
+						<td class="min-width">:</td>
+						<td>{{user.userfamily.marriage_at|date:'dd MMMM yyyy'}}</td>
+					</tr>
+					<ng-container *ngFor="let child of user.userfamily?.userfamilychilds; let i = index">
+						<tr>
+							<td colspan="3" class="child-title">Child #{{i+1}}</td>
+						</tr>
+						<ng-container *ngIf="child.user != null">
+							<tr>
+								<td>Fullname</td>
+								<td class="min-width">:</td>
+								<td>
+									<a href="/admin/user/detail?id={{child.user.id}}">
+										{{child.user.fullname}}
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>Gender</td>
+								<td class="min-width">:</td>
+								<td>{{child.user.gender}}</td>
+							</tr>
+							<tr>
+								<td>Birthdate</td>
+								<td class="min-width">:</td>
+								<td>{{child.user.birthdate|date:'dd MMMM yyyy'}}</td>
+							</tr>
+							<tr>
+								<td>Age</td>
+								<td class="min-width">:</td>
+								<td>{{child.age}}</td>
+							</tr>
+						</ng-container>
+						<ng-container *ngIf="child.user == null">
+							<tr>
+								<td>Fullname</td>
+								<td class="min-width">:</td>
+								<td>{{child.name}}</td>
+							</tr>
+							<tr>
+								<td>Gender</td>
+								<td class="min-width">:</td>
+								<td>{{child.gender}}</td>
+							</tr>
+							<tr>
+								<td>Birthdate</td>
+								<td class="min-width">:</td>
+								<td>{{child.birthday|date:'dd MMMM yyyy'}}</td>
+							</tr>
+							<tr>
+								<td>Age</td>
+								<td class="min-width">:</td>
+								<td>{{child.age}}</td>
+							</tr>
+						</ng-container>
+					</ng-container>
+					<tr>
+						<td colspan="3" class="text-center">
+							<br>
+							<div class="alert alert-secondary">
+								Want to view detail in another page?<br>
+								<a class="btn btn-sm btn-outline-skyporter" href="/admin/user/family/detail?id={{user.userfamily.id}}">
+									View Family Detail
+								</a>
+							</div>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+		<hr>
+		<table class="table table-clear table-sm">
+			<tbody>
+				<tr>
+					<td>Regular Worship</td>
+					<td class="min-width">:</td>
+					<td>Not developed Yet!</td>
+				</tr>
+				<tr>
+					<td>Baptism Date</td>
+					<td class="min-width">:</td>
+					<td>{{user.baptismdate|date:'dd MMMM yyyy'}}</td>
+				</tr>
+				<tr>
+					<td>Baptism Church</td>
+					<td class="min-width">:</td>
+					<td>{{user.baptismchurch}}</td>
+				</tr>
+				<tr>
+					<td>Baptism City</td>
+					<td class="min-width">:</td>
+					<td>{{user.baptismcity}}</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div>
+		<table class="table table-clear table-sm">
+			<tbody>
+				<tr>
+					<td class="vertical-align-top">Home Address</td>
+					<td class="min-width vertical-align-top">:</td>
+					<td>
+						<span [innerHTML]="user.address"></span>
+						<ng-container *ngIf="user.regency!=null">
+							, <b>{{user.regency.name}}</b>
+						</ng-container>
+						<ng-container *ngIf="user.postalcode!=null">
+							<ng-container *ngIf="user.postalcode.length === 5">
+								<ng-container *ngIf="user.regency==null">,</ng-container> 
+								{{user.postalcode}}
+							</ng-container>
+						</ng-container>
+					</td>
+				</tr>
+				<tr>
+					<td>Home Phone Number</td>
+					<td class="min-width">:</td>
+					<td>{{user.homenumber}}</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<table class="table table-clear table-sm">
+			<tbody>
+				<tr>
+					<td>Last Education</td>
+					<td class="min-width">:</td>
+					<td>
+						<ng-container *ngIf="user.educationlevel!=null">
+							{{user.educationlevel.name}}
+						</ng-container>
+					</td>
+				</tr>
+				<tr>
+					<td>Field of Education</td>
+					<td class="min-width">:</td>
+					<td>
+						<ng-container *ngIf="user.education!=null">
+							{{user.education.name}}
+						</ng-container>
+					</td>
+				</tr>
+				<tr *ngFor="let occupation of user.useroccupations; let i = index">
+					<td>Occupation #{{i+1}}</td>
+					<td class="min-width">:</td>
+					<td>
+						<b>{{occupation.companyname}}</b>
+						<ng-container *ngIf="occupation.occupation != null">
+							<br>
+							{{occupation.occupation.name}}
+						</ng-container>
+						<ng-container *ngIf="occupation.occupationtype != null">
+							<br>
+							Type: {{occupation.occupationtype.name}}
+						</ng-container>
+					</td>
+				</tr>
+				<tr>
+					<td>Income Per-Tahun</td>
+					<td class="min-width">:</td>
+					<td>
+						{{user.income}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<hr>
+		<table class="table table-clear table-sm">
+			<tbody>
+				<tr *ngFor="let service of user.usercampusservices; let i = index">
+					<td>Prefered Service #{{i+1}}</td>
+					<td class="min-width">:</td>
+					<td>{{service?.campusservice?.campus?.name}} {{service?.campusservice?.servicetime}}</td>
+				</tr>
+				<tr>
+					<td>Ministry Role</td>
+					<td class="min-width">:</td>
+					<td *ngIf="user.ministrymembers.length === 0">
+						-
+					</td>
+					<td *ngIf="user.ministrymembers.length > 0">
+						<ng-container *ngFor="let member of user.ministrymembers; let i = index">
+							<ng-container *ngIf="i!==0">
+								<br>
+							</ng-container>
+							<b>{{member?.ministrymemberrole?.name}}</b>  
+							<ng-container *ngIf="member?.ministry">
+								of
+								<a href="/admin/ministry/detail?id={{member.ministry?.id}}">
+									{{member?.ministry?.name}}
+								</a>
+							</ng-container>
+						</ng-container>
+					</td>
+				</tr>
+				<ng-container *ngFor="let member of user?.smallgroupmembers; let i = index; let memberLength = count">
+					<tr>
+						<td>Small Group Role {{ memberLength > 1 ? '#' + (i + 1) : ''}}</td>
+						<td class="min-width">:</td>
+						<td *ngIf="user?.smallgroupmembers?.length === 0">
+							-
+						</td>
+						<td>
+							<b>{{member.smallgroupmemberrole.name}}</b>
+							<ng-container *ngIf="member?.smallgroup">
+								, {{member.iscoreteam ? 'Core Team of' : 'Member of'}}
+								<a href="/admin/smallgroup/detail?id={{member.smallgroup.id}}">
+									{{member.smallgroup.name}}
+								</a>
+							</ng-container>
+						</td>
+					</tr>
+				</ng-container>
+				<tr>
+					<td>Admin Role</td>
+					<td class="min-width">:</td>
+					<td *ngIf="user?.userroles.length === 0">
+						-
+					</td>
+					<td *ngIf="user?.userroles.length > 0">
+						<ng-container *ngFor="let member of user?.userroles; let i = index">
+							<ng-container *ngIf="i!==0">, </ng-container>{{member.role.name}}
+						</ng-container>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+		<ng-container *ngFor="let items of sgList; let i = index">
+			<hr>
+			<table class="table table-clear table-sm">
+				<tbody>
+					<tr *ngFor="let item of items; let idx = index">
+						<ng-container *ngIf="idx == 0 && item.level > 1">
+							<td colspan="3">
+								<b>
+									{{idx === 0 ? 'Lead of ' : ''}}
+									<a href="/admin/smallgroup/detail?id={{item.sgId}}">
+										{{item.sgName}}
+									</a>
+								</b>
+							</td>
+						</ng-container>
+						<ng-container *ngIf="idx > 0">
+							<td>{{item.role}}</td>
+							<td class="min-width">:</td>
+							<td>
+								<a href="/admin/user/detail?id={{item.sgLead1.id}}">
+									{{item.sgLead1.name}}
+								</a>
+								<ng-container *ngIf="item.sgLead2.name">
+									&
+									<a href="/admin/user/detail?id={{item.sgLead2.id}}">
+										{{item.sgLead2.name}}
+									</a>
+								</ng-container>
+							</td>
+						</ng-container>
+					</tr>
+				</tbody>
+			</table>
+		</ng-container>
+	</div>
+</div>

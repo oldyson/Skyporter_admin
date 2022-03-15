@@ -1,0 +1,88 @@
+@import '../../../../variable.scss';
+
+@media screen and (max-width:450px){
+	.userview{
+		.detail{
+			div.right{
+				display: none;
+			}
+		}
+	}
+}
+
+@media screen and (min-width:451px) and (max-width:767px){
+	.userview{
+		.detail{
+			div.right{
+				display: none;
+			}
+		}
+	}
+}
+
+@media screen and (min-width:768px) and (max-width:991px){
+	.userview{
+		.detail{
+			div.right{
+				display: none;
+			}
+		}
+	}
+}
+
+@media screen and (min-width:992px) and (max-width:1200px){
+	.userview{
+		.detail{
+			div.right{
+			}
+		}
+	}
+}
+
+@media screen and (min-width:1201px){
+	.userview{
+		.detail{
+			div.right{
+			}
+		}
+	}
+}
+
+$profpic-size: 80px;
+
+.userview{
+	padding: 0 10px;
+	margin: 30px 10px -20px;
+	display: flex;
+	justify-content: flex-start;
+	align-items: center;
+	.profpic{
+		width: $profpic-size;
+		height: $profpic-size;
+		background-position: center;
+		background-size: cover;
+		border-radius: 1000px;
+		z-index: 2;
+		background-color: white;
+		border: 1px solid #ddd;
+	}
+	.detail{
+		border-radius: 10px;
+		flex: 1;
+		margin-left: calc(#{$profpic-size} / 2 * -1);
+		padding-left: calc(#{$profpic-size} / 2 + 20px);
+		padding-top: 13px;
+		padding-bottom: 13px;
+		padding-right: 20px;
+		z-index: 1;
+		border: 1px solid #eee;
+		background-color: white;
+		line-height: 1.1;
+		display: flex;
+		justify-content: flex-start;
+		align-items: flex-start;
+		div{
+			flex: 1;
+		}
+	}
+}

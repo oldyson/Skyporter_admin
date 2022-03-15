@@ -1,0 +1,46 @@
+@import "../../../../variable.scss";
+
+
+.dashboardinput-wrapper{
+	.dashboardinput-calendar{
+		text-align: center;
+		margin-bottom: 20px;
+		.data-text{
+			text-align: center;
+			font-weight: bold;
+			font-size: 130%;
+		}
+	}
+	.dashboardinput-table{
+		padding: 8px 20px;
+		> .title{
+			font-size: 100%;
+			text-transform: uppercase;
+			font-weight: bold;
+			padding: 2px 6px;
+			color: rgba(0,0,0,.6);
+		}
+	}
+	.dashboardinput-action-global{
+		display: flex;
+		justify-content: flex-end;
+		padding: 10px 30px;
+	}
+	.loading-container{
+		min-height: 40vh;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		font-size: 140%;
+		flex-direction: column;
+		color: darken($primary-color, 10%);
+		text-align: center;
+		fa-icon{
+			font-size: 300%;
+			opacity: .5;
+		}
+		.s80{
+			font-size: 80%;
+		}
+	}
+}

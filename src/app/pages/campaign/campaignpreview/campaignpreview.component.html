@@ -1,0 +1,60 @@
+
+
+<div class="campaigndetail-wrapper" *ngIf="campaign != null">
+	<div class="campaigndetail-title">
+		<div class="title">
+			Subject Mail Campaign
+		</div>
+		{{campaign.title}}
+	</div>
+	<div class="campaigndetail-toggle">
+		<button class="btn" (click)="toggleDescription()">
+			<div class="title">
+				Detail Campaign
+			</div>
+			<div id="camp-description" class="icon" [ngClass]="{'hide':!campaign.showdescription}">
+				<fa-icon [icon]="fasCaretDown"></fa-icon>
+			</div>
+		</button>
+	</div>
+	<div class="campaigndetail-body" [ngClass]="{'hide':!campaign.showdescription}">
+		<div class="inner-body" [innerHTML]="campaign.description">
+		</div>
+	</div>
+	<div class="recipient-wrapper" *ngIf="campaign.type==='Email'">
+		<div class="title">Tester</div>
+		<div class="list" *ngFor="let tester of testers; let i = index">
+			<input class="form-control" placeholder="Input Mail Tester" [(ngModel)]="tester.email">
+			<button class="btn" (click)="removeRecipient(i)">
+				<fa-icon [icon]="fasTimes"></fa-icon>
+			</button>
+		</div>
+		<div class="action">
+			<button class="btn btn-outline-skyporter" (click)="addRecipient()">
+				Add Recipient
+			</button>
+			<button class="btn btn-skyporter" (click)="sendTesting()">
+				Send
+			</button>
+		</div>
+	</div>
+	<div class="campaign-info">
+		<div class="title">Detail</div>
+		<div class="data">
+			Total recipients: <b>{{campaign.campaignrecipients_count|number}}</b> emails<br>
+			Created on: <b>{{campaign.created_at|date:'dd MMM yy, HH:mm:ss'}}</b><br>
+			Status: <b>{{campaign.status}}</b><br>
+			<ng-container *ngIf="campaign.campaignattachments.length">
+				Attachment: <b>{{campaign.campaignattachments.length|number}}</b> file(s)<br>
+			</ng-container>
+		</div>
+	</div>
+	<div class="publish-wrapper">
+		<button class="btn btn-outline-skyporter" (click)="editCampaign()">
+			EDIT
+		</button>
+		<button class="btn btn-skyporter" (click)="publishCampaign()">
+			PUBLISH
+		</button>
+	</div>
+</div>

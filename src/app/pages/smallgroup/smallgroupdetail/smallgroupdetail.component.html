@@ -1,0 +1,203 @@
+<ng-container *ngIf="loading">
+	<div class="listtable-wrapper">
+		<!-- FIRST LOADING -->
+		<div class="construct text-center">
+			<i appLoadingSkyporter size="md"></i>
+		</div>
+	</div>
+</ng-container>
+
+<ng-container *ngIf="!loading">
+	<div class="wrapper-detail">
+		<div class="toolbar">
+			<div class="toolbar-left">
+				<button class="btn btn-outline-skyporter" (click)="router.navigateByUrl('admin/smallgroup/list-appointments')">Appointments</button>
+				<button class="btn btn-outline-skyporter btn-export" (click)="exportDetailSmallGroup()">
+					<ng-container *ngIf="isloadingExport">
+						<i appLoadingSkyporter size="sm"></i>
+					</ng-container>
+					<ng-container *ngIf="!isloadingExport">
+						Export
+					</ng-container>
+				</button>
+			</div><div class="toolbar-right">
+				<a href="/admin/smallgroup/form?id={{sgId}}" class="btn btn-outline-skyporter">
+					Edit {{maskSgNameByChurch}}
+				</a>&nbsp;
+				<button
+					class="btn btn-outline-skyporter"
+					(click)="showPopup()"
+				>
+					Transfer Member
+				</button>
+			</div>
+		</div>
+		<div class="info">
+			<div class="section-wrapper">
+				<div class="content-wrapper">
+					<ng-container *ngIf="!dataInfo.title">
+						<div class="no-data">No Data</div>
+					</ng-container>
+					<h5 class="text-bold">
+						{{dataInfo.title}}
+					</h5>
+				</div>
+				<div class="content-wrapper">
+					<div class="text-bold text-uppercase">
+						Leader Detail
+					</div>
+				</div>
+				<div class="content-wrapper">
+					<div class="text-bold small">
+						{{maskSgNameByChurch}} Leader
+					</div>
+					<ng-container *ngIf="!dataInfo.smallGroupLeader.length">
+						<div class="no-data">No Data</div>
+					</ng-container>
+					<ng-container *ngFor="let item of dataInfo.smallGroupLeader">
+						<div class="content-info small">
+							{{item}}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="section-wrapper">
+				<div class="content-wrapper">
+					<div class="text-bold text-uppercase">
+						{{maskSgNameByChurch}} Detail
+					</div>
+				</div>
+				<ng-container *ngFor="let item of dataInfo.smallGroupDetail">
+					<div class="content-wrapper">
+						<div class="text-bold small">
+							{{item.type}}
+						</div>
+						<ng-container *ngIf="!item.value">
+							<div class="no-data">No Data</div>
+						</ng-container>
+						<div class="content-info small" [innerHTML]="item.value">
+						</div>
+						<div class="content-info small" *ngIf="item.value2" [innerHTML]="item.value2">
+						</div>
+					</div>
+				</ng-container>
+			</div>
+			<div class="section-wrapper">
+				<div class="content-wrapper">
+					<div class="text-bold text-uppercase">
+						Multiplication Detail
+					</div>
+				</div>
+				<ng-container *ngFor="let item of dataInfo.multiplicationDetail">
+					<div class="content-wrapper">
+						<div class="text-bold small">
+							{{item.type}}
+						</div>
+						<ng-container *ngIf="!item.value.length">
+							<div class="no-data">No Data</div>
+						</ng-container>
+						<ul class="list">
+							<ng-container *ngFor="let item of item.value">
+								<li class="content-info small">
+									{{item}}
+								</li>
+							</ng-container>
+						</ul>
+					</div>
+				</ng-container>
+			</div>
+			<div class="section-wrapper">
+				<div class="content-wrapper">
+					<div class="text-bold text-uppercase">
+						{{maskSgNameByChurch}} Parent Detail
+					</div>
+				</div>
+				<ng-container *ngFor="let item of dataInfo.smallGroupParentDetail">
+					<div class="content-wrapper">
+						<div class="text-bold small">
+							{{item.type}}
+						</div>
+						<ng-container *ngFor="let item of item.value">
+							<div class="content-info small">
+								{{item}}
+							</div>
+						</ng-container>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+		<div class="content">
+			<ng-container *ngFor="let item of contentData;let i = index;">
+				<button class="btn btn-outline-skyporter accordion" [ngClass]="item.isActive ? 'active' : ''" (click)="toggleAccordion($event, i)">
+					{{item.title}} - total {{item.datas.length}} users
+				</button>
+				<div class="panel" [ngStyle]="item.isActive ? {'max-height' : maxHeightContent} : {'max-height' : 0}">
+					<ng-container *ngFor="let smallgroupmember of item.datas">
+						<div class="wrapper-card">
+							<div class="card">
+								<ng-container *ngIf="smallgroupmember?.iscoreteam || smallgroupmember?.isleader">
+									<div class="position-wrapper" [ngClass]="smallgroupmember?.iscoreteam ? 'tosca':''" [ngStyle]="{'border-top': smallgroupmember?.isleader ? ('40px solid '+smallgroupmember?.smallgroupmemberrole?.admincolor1) : ''}">
+										<span class="position">
+											{{ smallgroupmember.iscoreteam ? 'CT' : '' }}
+											{{ smallgroupmember.isleader ? smallgroupmember?.smallgroupmemberrole?.shortname : '' }}
+										</span>
+									</div>
+								</ng-container>
+								<div class="item-action">
+									<div class="wrapper">
+										<span class="txt">
+											<button class="btn btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+												aria-expanded="false">
+												<fa-icon [icon]="fasChevronDown"></fa-icon>
+											</button>
+											<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+												<ng-container *ngFor="let action of smallgroupmember.actions">
+													<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}"
+														*ngIf="action.apiurl==null" href="{{action.url}}">
+														{{action.label}}
+													</a>
+													<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}"
+														*ngIf="action.apiurl!=null"
+														(click)="doActionAPI(action.apiurl, action.apimethod, action.apiparams, action.type, action.message, action.confirmButtonText)">
+														{{action.label}}
+													</a>
+												</ng-container>
+											</div>
+										</span>
+									</div>
+								</div>
+								<div class="body">
+									<div class="wrapper-content">
+										<ng-container>
+											<div class="avatar" [ngStyle]="smallgroupmember?.user?.document?.url ? {'background-image': 'url(' + smallgroupmember?.user?.document?.url + ')'} : {}">
+												<span  *ngIf="!smallgroupmember?.user?.document">
+													<fa-icon [icon]="fasUser"></fa-icon>
+												</span>
+											</div>
+										</ng-container>
+									</div>
+									<div class="wrapper-content small">
+										{{smallgroupmember?.user?.fullname}}
+									</div>
+									<hr>
+									<div class="wrapper-content small">
+										{{smallgroupmember?.user?.email}}
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+</ng-container>
+
+<comp-transfermember
+	#transfermembermodal
+	dialogName="Transfer Member"
+	(refreshData)="getData()"
+	[smallgroupLevel]="dataInfo.smallgroupLevel"
+>
+</comp-transfermember>
+

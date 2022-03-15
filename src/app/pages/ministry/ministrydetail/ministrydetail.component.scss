@@ -1,0 +1,383 @@
+@import "../../../../variable.scss";
+
+@media screen and (max-width:450px){
+	.ministrydetail-wrapper{
+		.header{
+			.header-wrapper{
+				flex-direction: column;
+				.header-left{
+					flex-wrap: wrap;
+					width: 100%;
+					.btn{
+						margin-left: 0px!important;
+						margin-bottom: 10px;
+						width: 100%;
+					}
+				}
+				.header-right{
+					width: 100%;
+				}
+			}
+		}
+		.body{
+			flex-direction: column;
+			.body-right .item-container{
+				.item{
+					width: calc(100% - 20px);
+					.item-image {
+						.avatar {
+							width: 75px;
+							height: 75px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:451px) and (max-width:767px){
+	.ministrydetail-wrapper{
+		.header{
+			.header-wrapper{
+				flex-direction: column;
+				.header-left{
+					flex-wrap: wrap;
+					width: 100%;
+					.btn{
+						margin-left: 0px!important;
+						margin-bottom: 10px;
+						width: 100%;
+					}
+				}
+				.header-right{
+					width: 100%;
+				}
+			}
+		}
+		.body{
+			flex-direction: row;
+			.body-right .item-container{
+				.item{
+					width: calc(50% - 20px);
+					.item-image {
+						.avatar {
+							width: 75px;
+							height: 75px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:768px){
+	.ministrydetail-wrapper{
+		.header{
+			.header-wrapper{
+				flex-direction: column;
+				.header-right{
+					width: 100%;
+					.input-group {
+						margin-left: 10px;
+					}
+				}
+			}
+		}
+	}				
+}
+
+@media screen and (min-width:768px) and (max-width:991px){
+	.ministrydetail-wrapper{
+		.header{
+			.header-wrapper{
+				flex-direction: row;
+				.header-right .search{
+					max-width: 200px;
+				}
+			}
+		}
+		.body{
+			flex-direction: row;
+			.body-right .item-container{
+				.item{
+					width: calc(50% - 20px);
+					.item-image {
+						.avatar {
+							width: 75px;
+							height: 75px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:992px) and (max-width:1200px){
+	.ministrydetail-wrapper{
+		.header{
+			.header-wrapper{
+				flex-direction: row;
+				> div{
+					&:not(:first-child){
+						margin-left: 10px;
+					}
+				}
+				.header-right .search{
+					max-width: 200px;
+				}
+			}
+		}
+		.body{
+			flex-direction: row;
+			.body-right .item-container{
+				.item{
+					width: calc(33.3% - 20px);
+					.item-image {
+						.avatar {
+							width: 75px;
+							height: 75px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:1200px){
+	.ministrydetail-wrapper{
+		.header{
+			.header-wrapper{
+				flex-direction: row;
+				> div{
+					&:not(:first-child){
+						margin-left: 10px;
+					}
+				}
+				.header-right .search{
+					max-width: 200px;
+				}
+			}
+		}
+		.body{
+			flex-direction: row;
+			.body-right .item-container{
+				.item{
+					width: calc(33.3% - 20px);
+					.item-image {
+						.avatar {
+							width: 80px;
+							height: 80px;
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:1300px){
+	.ministrydetail-wrapper{
+		.body{
+			.body-left {
+				max-width: 300px;
+			}
+		}
+	}
+}
+
+.ministrydetail-wrapper{
+	.loading{
+		display: flex;
+		justify-content: center;
+	}
+	.header{
+		margin: 20px 20px 0 20px;
+		.header-wrapper{
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			.header-left{
+				display: flex;
+				flex: 1;
+				justify-content: flex-start;
+				.btn{
+					display: flex;
+					justify-content: center;
+					min-width: 120px;
+					&:not(:first-child){
+						margin-left: 10px;
+					}
+				}
+			}
+			.header-right{
+				display: flex;
+				flex: 1;
+				justify-content: flex-end;
+				.search{
+					display: flex;
+					flex-wrap: nowrap;
+					.form-control{
+						width: 100%;
+					}
+					.input-group-append{
+						.btn{
+							color: $primary-color;
+							border: 1px solid $primary-color;
+							background-color: white;
+							&:hover{
+								background-color: darken($primary-color, 10%);
+								color: white;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+
+	.body{
+		display: flex;
+		margin: 10px;
+		.body-left{
+			display: block;
+			flex: 1;
+			.item-container{
+				margin: 10px;
+				padding: 5px 10px;
+				background-color: white;
+				box-shadow: 0 0 5px 5px rgba(0,0,0,.04);
+				.item{
+					word-break: break-word;
+					margin: 10px;
+				}
+				.divider{
+					border: 1px solid gainsboro;
+					margin: 10px;
+				}
+			}
+		}
+		.body-right{
+			display: flex;
+			flex: 2;
+			flex-direction: column;
+			.item-container{
+				display: flex;
+				flex-wrap: wrap;
+				.item{
+					display: inline-flex;
+					flex-direction: column;
+					align-items: center;
+					margin: 10px;
+					background-color: white;
+					box-shadow: 0 0 5px 5px rgba(0, 0, 0, .04);
+					.item-badge{
+						width: 100%;
+						> .wrapper{
+							position: absolute;
+							padding: 0 !important;
+							width: 0;
+							height: 0;
+							border-bottom: 0;
+							border-right: 55px solid transparent;
+							border-top: 55px solid $primary-color;
+			    			.txt{
+								position: absolute;
+								top: -39px;
+								width: 0;
+								left: 11px;
+								color: #fff;
+								text-align: center;
+								font-size: 14px;
+								display: block;
+								transform: rotate(-45deg);
+								font-weight: 700;
+							}
+						}
+					}
+					.item-action{
+						width: 100%;
+						position: relative;
+						> .wrapper{
+							position: absolute;
+							right: 0;
+							color: #999;
+							.btn{
+								padding: 0 10px;
+								color: darken($primary-color, 10%);
+							}
+							.dropdown-menu{
+								.dropdown-item{
+									padding-top: 10px;
+									padding-bottom: 10px;
+									transition: 0.2s all;
+									cursor: pointer;
+									&.danger{
+										background-color: #c55;
+										color: white;
+										&:hover{
+											background-color: #a33;
+										}
+									}
+									&:not(.danger){
+										background-color: transparent;
+										&:hover{
+											background-color: rgba(0,0,0,.05);
+											color: darken($primary-color, 20%);
+										}
+									}
+								}
+							}
+						}
+					}
+					.item-image{
+						display: flex;
+						justify-content: center;
+						text-align: center;
+						margin: 1rem 0px;
+						word-break: break-all;
+						.avatar {
+							display: flex;
+							align-items: center;
+							justify-content: center;
+							background-position: center;
+							background-size: cover;
+							border-radius: 1000px;
+							background-color: #ddd;
+							border: 1px solid #ddd;
+							span {
+								color: #fff;
+								font-size: 40px;
+							}
+						}
+					}
+					.item-no-image{
+						margin-top: 15px;
+						width: 100px;
+						height: 100px;
+						background-color: whitesmoke;
+					}
+					.item-label{
+						margin: 10px;
+						word-break: break-word;
+						text-align: center;
+					}
+				}
+				.loading-wrapper {
+					width: 100%;
+					text-align: center;
+				}
+			}
+			.divider{
+				border: 1px solid gainsboro;
+				margin: 10px;
+			}
+			.item-label{
+				margin: 10px;
+			}
+		}
+	}
+}

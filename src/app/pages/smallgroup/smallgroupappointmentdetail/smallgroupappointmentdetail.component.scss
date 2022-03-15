@@ -1,0 +1,110 @@
+@import '../../../../variable.scss';
+
+$opacity: 1;
+
+.smallgroupappointmentdetail-wrapper{
+	margin: 20px 10px;
+}
+
+
+.wrapper-detail {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 8px 10px;
+    margin: 0 10px 8px;
+    .info {
+        width: 100%;
+        padding: 1rem;
+        background-color: #fff;
+        .content-info {
+            line-height: 1;
+        }
+        .content-wrapper {
+            margin-bottom: 0.5rem;
+        }
+        // .section-wrapper {
+        //     border-bottom: 2px solid #d9e4ed;
+        //     margin-bottom: 1rem;
+        //     padding-bottom: 0.5rem;
+        // }
+    }
+    .content {
+        width: 100%;
+        padding: 1rem;
+        // background-color: #0ff;
+        // .section-wrapper {
+        //     border-bottom: 2px solid #d9e4ed;
+        //     margin-bottom: 1rem;
+        //     padding-bottom: 0.5rem;
+        // }
+    }
+}
+
+/* Extra small devices (phones, 451px and down) */
+@media screen and (max-width: 451px) {
+    .wrapper-detail {
+        .toolbar {
+            display: block;
+            button {
+                display: block;
+                width: 100%;
+                margin: 0px 0px 0.5rem 0px!important;
+            }
+            .toolbar-left {
+                width: 100%;
+            }
+            .toolbar-right {
+                width: 100%;
+            }
+        }
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 451px and max 767px) */
+@media screen and (min-width: 451px) and (max-width: 767px) {
+    .wrapper-detail {
+        .info {
+            width: 50%;
+        }
+        .content {
+            width: 50%;
+        }
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media screen and (min-width: 768px) {
+    .wrapper-detail {
+        .info {
+            width: 40%;
+        }
+        .content {
+            width: 60%;
+        }
+    }
+}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media screen and (min-width: 992px) {
+    .wrapper-detail {
+        .info {
+            width: 30%;
+        }
+        .content {
+            width: 70%;
+        }
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media screen and (min-width: 1200px) {
+    .wrapper-detail {
+        .info {
+
+        }
+        .content {
+
+        }
+
+    }
+}

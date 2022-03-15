@@ -1,0 +1,39 @@
+
+<div class="ngcheckin-search">
+	<div class="description">
+		We can search families by <b>Parent's Name</b> & <b>Child's Name.</b>
+		<ol>
+			<li>Find with filled Parent's Name & empty Child's Name.</li>
+			<li>Find with empty Parent's Name & filled Child's Name.</li>
+			<li>Find with filled Parent's Name & filled Child's Name.</li>
+			<li>Reset button for clear filters.</li>
+		</ol>
+	</div>
+	<div class="input-wrapper">
+		<input class="form-control" [(ngModel)]="keywordParent" placeholder="Search by Parent's Name">
+		<input class="form-control" [(ngModel)]="keywordChild" placeholder="Search by Child's Name">
+		<button class="btn btn-skyporter" (click)="getData(page)">
+			<fa-icon [icon]="farSearch"></fa-icon>&nbsp;
+			Search
+		</button>
+		<button class="btn btn-outline-skyporter" (click)="clearSearch()">
+			<fa-icon [icon]="farUndo"></fa-icon>&nbsp;
+			Reset
+		</button>
+</div>
+
+<comp-listtable
+	[datas]="datas"
+	[keys]="keys"
+	[navigations]="navigations"
+	[isloading]="isloading"
+	(refreshData)="getData($event)"
+	(sortDataBy)="sortDataBy($event)"
+	(doAPI)="doAPI($event)"
+	#listtable
+></comp-listtable>
+
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

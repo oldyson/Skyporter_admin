@@ -1,0 +1,207 @@
+<div class="ministrydetail-wrapper">
+	<ng-container *ngIf="isLoadingData==true">
+		<div class="loading" appLoadingSkyporter size="md"></div>
+	</ng-container>
+
+	<ng-container *ngIf="isLoadingData==false">
+		<div class="header">
+			<div class="header-wrapper">
+				<div class="header-left">
+					<button class="btn btn-outline-skyporter" (click)="inviteVolunteer()">Invite Volunteer</button>
+					<button class="btn btn-outline-skyporter" (click)="exportData()">
+						<ng-container *ngIf="!isLoadingExport">
+							Export
+						</ng-container>
+						<ng-container *ngIf="isLoadingExport">
+							<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+						</ng-container>
+					</button>
+					<a class="btn btn-outline-skyporter" href="admin/ministry/edit?id={{ministry.id}}">
+						Edit Ministry Information
+					</a>
+				</div>
+				<div class="header-right">
+					<div class="input-group search">
+						<input type="text" id="list-search" [(ngModel)]="searchByName" (keydown.enter)="searchMinistryMemberByName()" class="form-control" placeholder="Search by name" aria-label="Search to table">
+						<div class="input-group-append">
+							<button class="btn">
+								<fa-icon [icon]="fasSearch" (click)="searchMinistryMemberByName()"></fa-icon>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="body">
+			<div class="body-left">
+				<div class="item-container">
+					<div class="item">
+						<h4 class="text-bold">
+							{{ministry.name}}
+						</h4>
+					</div>
+					<div class="item text-bold">
+						TEAM DETAIL
+					</div>
+					<div class="item">
+						<div class="text-bold">Ministry Head</div>
+						<ng-container *ngIf="ministry.ministryhead?.length === 0">
+							-
+						</ng-container>
+						<ng-container *ngFor="let ministryhead of ministry.ministryhead">
+							{{ministryhead.fullname}}<br />
+						</ng-container>
+					</div>
+					<div class="item">
+						<div class="text-bold">Key Volunteers</div>
+						<ng-container *ngIf="ministry.keyvolunteers?.length === 0">
+							-
+						</ng-container>
+						<ng-container *ngFor="let keyvolunteers of ministry.keyvolunteers">
+							{{keyvolunteers.fullname}}<br />
+						</ng-container>
+					</div>
+					<div class="divider"></div>
+					<div class="item text-bold">
+						{{!ministry.level ? '-' : ministry.level}} DETAIL
+					</div>
+					<div class="item text-bold">
+						MINISTRY DETAIL
+					</div>
+					<div class="item">
+						<div class="text-bold">Upper Level</div>
+						{{!ministry.level ? '-' : ministry.level}}
+					</div>
+					<div class="item">
+						<div class="text-bold">Description</div>
+						{{!ministry.description ? '-' : ministry.description}}
+					</div>
+					<div class="item">
+						<div class="text-bold">Established Date</div>
+						{{!ministry.createdat ? '-' : ministry.createdat|date:'dd MMM yy'}}
+					</div>
+					<div class="divider"></div>
+					<div class="item">
+						<div class="text-bold">Recruitment Status</div>
+						{{!ministry.status ? '-' : ministry.status}}
+					</div>
+					<ng-container *ngIf="ministry.status === 'Open' && prerequisite.length > 0">
+						<div class="divider"></div>
+						<div class="item">
+							<div class="text-bold">Prerequisite Code</div>
+							<ng-container *ngFor="let item of prerequisite; index as idx; count as totalItem">
+								<div>
+									<span class="text-bold">{{item.programcode.name}}</span> - {{item.programcode.codename}}
+								</div>
+								<div [ngStyle]="(idx + 1) !== totalItem ? {'margin-bottom': '10px'} : {}">
+									Age: {{item.programcode.agemin}} - {{item.programcode.agemax}}
+								</div>
+							</ng-container>
+						</div>
+					</ng-container>
+					<div class="divider"></div>
+					<div class="item text-bold">
+						MINISTRY SUMMARY
+					</div>
+					<ng-container *ngFor="let item of ministry.summary">
+						<div class="item">
+							<div class="text-bold">Total {{item?.name}}</div>
+							{{item?.value}}
+						</div>
+					</ng-container>
+				</div>
+			</div>
+			<div class="body-right">
+				<div class="item-container">
+					<ng-container *ngIf="isLoadingSearch">
+						<div class="loading-wrapper">
+							<div class="loading" appLoadingSkyporter size="md"></div>
+						</div>
+					</ng-container>
+					<ng-container *ngIf="!isLoadingSearch">
+						<div class="item" *ngFor="let ministrymember of ministry.ministrymembers; let i = index">
+							<div class="item-badge" *ngIf="ministrymember.ministrymemberrole.level != 2">
+								<div class="wrapper">
+									<span class="txt">
+										{{helper.toAcronym(ministrymember.ministrymemberrole.name).toUpperCase()}}
+									</span>
+								</div>
+							</div>
+							<div class="item-action">
+								<div class="wrapper">
+									<span class="txt">
+										<button class="btn btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown"
+											aria-haspopup="true" aria-expanded="false">
+											<fa-icon [icon]="fasChevronDown"></fa-icon>
+										</button>
+										<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+											<ng-container *ngFor="let action of ministrymember.actions">
+												<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}"
+													*ngIf="action.apiurl==null" href="{{action.url}}">
+													{{action.label}}
+												</a>
+												<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}"
+													*ngIf="action.apiurl!=null"
+													(click)="doActionAPI(action.apiurl, action.apimethod, action.apiparams, action.type, action.message, action.confirmButtonText)">
+													{{action.label}}
+												</a>
+											</ng-container>
+										</div>
+									</span>
+								</div>
+							</div>
+							<div class="item-image">
+								<ng-container *ngIf="ministrymember.user!=null">
+									<div class="avatar"
+										[ngStyle]="ministrymember?.user?.document?.url ? {'background-image': 'url(' + ministrymember?.user?.document?.url + ')'} : {}">
+										<span *ngIf="!ministrymember?.user?.document">
+											<fa-icon [icon]="fasUser"></fa-icon>
+										</span>
+									</div>
+								</ng-container>
+							</div>
+							<div class="item-label">
+								{{ministrymember.user.fullname}}
+							</div>
+						</div>
+					</ng-container>
+				</div>
+				<div class="divider"></div>
+				<h4 class="item-label text-bold">
+					REQUESTS
+				</h4>
+				<div class="item-container">
+					<div class="item" *ngFor="let ministryrequest of ministry.ministryrequests">
+						<ng-container *ngIf="ministryrequest.user!=null">
+							<div class="item-image">
+								<div class="avatar"
+									[ngStyle]="ministryrequest?.user?.document?.url ? {'background-image': 'url(' + ministryrequest?.user?.document?.url + ')'} : {}">
+									<span *ngIf="!ministryrequest?.user?.document">
+										<fa-icon [icon]="fasUser"></fa-icon>
+									</span>
+								</div>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="ministryrequest.user==null">
+							<img class="item-no-image">
+						</ng-container>
+						<div class="item-label">
+							{{ministryrequest.user.fullname}}
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</ng-container>
+</div>
+
+<comp-changerole
+	#changerole
+	(saveChangeRole)="getMinistryDetail($event)"
+></comp-changerole>
+
+
+<comp-invitevolunteer #invite [users]="users" [isLoadingUsers]="isLoadingUsers" [isLoadingInvite]="isLoadingInvite"
+	(inviteVolunteers)="inviteVolunteers($event)">
+</comp-invitevolunteer>

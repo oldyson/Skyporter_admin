@@ -1,0 +1,205 @@
+<div class="ministryform-wrapper">
+	<div class="header" *ngIf="!this.ministryId">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':i===selectedTabIndex}" (click)="changeSelectedTabIndex(i)"
+				*ngFor="let tab of tabs; let i = index">
+				{{tab.label}}
+			</div>
+		</div>
+	</div>
+
+	<ng-container *ngIf="isLoadingData==true">
+		<div class="loading" appLoadingSkyporter size="md"></div>
+	</ng-container>
+	<ng-container *ngIf="isLoadingData==false">
+		<div class="body">
+			<!-- View Tab Group -->
+			<ng-container *ngIf="tabs[selectedTabIndex].value === 'Group'">
+				<comp-inputform 
+					type="text" 
+					title="Group Name" 
+					[(value)]="group.mgName">
+				</comp-inputform>
+				<comp-inputform 
+					type="text" 
+					title="Group Shortname"
+					[(value)]="group.mgShortname">
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="Group Head"
+					[(value)]="group.mgUserId"
+					[options]="users"
+					[dropdownLoading]="isLoadingUsers">
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="Group Deputy"
+					[(value)]="group.mgUser2Id"
+					[options]="users"
+					[dropdownLoading]="isLoadingUsers">
+				</comp-inputform>
+			</ng-container>
+
+			<!-- View Tab Sub-Group -->
+			<ng-container *ngIf="tabs[selectedTabIndex].value === 'Subgroup'">
+				<comp-inputform
+					type="searchsingle"
+					title="Group Name"
+					[(value)]="subgroup.msgMinistrygroupId"
+					[options]="groups"
+					[dropdownLoading]="isLoadingGroups">
+				</comp-inputform>
+				<comp-inputform 
+					type="text" 
+					title="Sub-Group Name" 
+					[(value)]="subgroup.msgName">
+				</comp-inputform>
+				<comp-inputform 
+					type="text" 
+					title="Sub-Group Shortname"
+					[(value)]="subgroup.msgShortname">
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="Sub-Group Head"
+					[(value)]="subgroup.msgUserId"
+					[options]="users"
+					[dropdownLoading]="isLoadingUsers">
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="Sub-Group Deputy"
+					[(value)]="subgroup.msgUser2Id"
+					[options]="users"
+					[dropdownLoading]="isLoadingUsers">
+				</comp-inputform>
+			</ng-container>
+
+			<!-- View Tab Ministry -->
+			<ng-container *ngIf="tabs[selectedTabIndex].value === 'Ministry'">
+				<comp-inputform
+					type="searchsingle"
+					title="Group Name"
+					[(value)]="ministry.mGroupId"
+					(valueChange)="onChangeGroup($event)"
+					[options]="groups"
+					[dropdownLoading]="isLoadingGroups">
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="Sub-Group Name"
+					[(value)]="ministry.mSubgroupId"
+					[options]="subgroups"
+				>
+				</comp-inputform>
+				<comp-inputform 
+					type="text" 
+					title="{{tabs[selectedTabIndex].label}} Name" 
+					[(value)]="ministry.mName">
+				</comp-inputform>
+				<comp-inputform 
+					type="textarea" 
+					title="{{tabs[selectedTabIndex].label}} Description"
+					[(value)]="ministry.mDescription">
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="{{tabs[selectedTabIndex].label}} Status"
+					[(value)]="ministry.mStatus"
+					[options]="status">
+				</comp-inputform>
+				<!-- START PREREQUISITE KALO OPEN -->
+				<ng-container *ngIf="ministry.mStatus==='Open'">
+					<comp-inputform
+						type="searchsingle"
+						title="{{tabs[selectedTabIndex].label}} Min Level"
+						[(value)]="ministry.sgMinLevel"
+						[options]="levels"
+						[dropdownLoading]="isLoadingLevels"
+					>
+					</comp-inputform>
+					<comp-inputform 
+						type="number" 
+						title="{{tabs[selectedTabIndex].label}} Age Min"
+						perline="2"
+						[(value)]="ministry.mAgeMin">
+					</comp-inputform>
+					<comp-inputform 
+						type="number" 
+						title="{{tabs[selectedTabIndex].label}} Age Max"
+						perline="2"
+						[(value)]="ministry.mAgeMax">
+					</comp-inputform>
+					<comp-inputform
+						type="searchsingle"
+						title="{{tabs[selectedTabIndex].label}} Gender"
+						[(value)]="ministry.mGender"
+						[options]="genders">
+					</comp-inputform>
+					<div class="input-wrapper">
+						<div class="title">
+							{{tabs[selectedTabIndex].label}} Image
+						</div>
+						<div class="input">
+							<div class="uploadfilecontainer" (click)="imageInput.click()" appDragDrop>
+								<ng-container *ngIf="!banner">
+									Click here &nbsp;<small>-or-</small>&nbsp; Drag your file
+								</ng-container>
+								<ng-container *ngIf="banner">
+									{{filename}}
+								</ng-container>
+								<input hidden type="file" (change)="onFileChange($event)" accept="image/*" #imageInput>
+							</div>
+						</div>
+					</div>
+					<div class="input-wrapper" *ngIf="banner">
+						<div class="title">{{tabs[selectedTabIndex].label}} Image Preview</div>
+						<img src="{{imageSrc}}" class="uploadimage-result">
+					</div>
+					<div class="input-wrapper" *ngIf="!banner && ministry.mImageUrl != null">
+						<div class="title">{{tabs[selectedTabIndex].label}} Image Preview</div>
+						<img src="{{ministry.mImageUrl}}" class="uploadimage-result">
+					</div>
+					<comp-inputform
+						type="searchmultiple"
+						title="{{tabs[selectedTabIndex].label}} Prerequisite Class Code"
+						[(value)]="ministry.programcodeId"
+						[options]="programs"
+						[dropdownLoading]="isLoadingPrograms">
+					</comp-inputform>
+				</ng-container>
+				<!-- END OF PREREQUISITE -->
+				<ng-container *ngIf="checkNaN(ministryId)">
+					<comp-inputform
+						type="searchmultiple"
+						title="Ministry Head"
+						[(value)]="ministry.mhUserId"
+						[options]="users"
+						[dropdownLoading]="isLoadingUsers">
+					</comp-inputform>
+				</ng-container>
+				<ng-container *ngIf="checkNaN(ministryId)">
+					<comp-inputform
+						type="searchmultiple"
+						title="Key Volunteer"
+						[(value)]="ministry.kvUserId"
+						[options]="users"
+						[dropdownLoading]="isLoadingUsers">
+					</comp-inputform>
+				</ng-container>
+			</ng-container>
+		</div>
+
+		<div class="footer">
+			<button class="btn btn-outline-skyporter" (click)="saveData()">
+				<ng-container *ngIf="!isLoadingInput">
+					Save {{tabs[selectedTabIndex].label}} Data
+				</ng-container>
+				<ng-container *ngIf="isLoadingInput">
+					<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+				</ng-container>
+			</button>
+		</div>
+	</ng-container>
+</div>

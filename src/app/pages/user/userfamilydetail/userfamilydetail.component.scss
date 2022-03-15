@@ -1,0 +1,115 @@
+@import '../../../../variable.scss';
+
+.userfamilydetail-wrapper{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	margin: 10px;
+	.familyparent-wrapper{
+		display: flex;
+		width: 100%;
+		padding: 10px 0;
+		> div {
+			display: flex;
+			align-items: flex-start;
+			&.parent{
+				width: 100%;
+				padding: 0 10px;
+				flex-direction: row-reverse;
+				.detail{
+				}
+				.image{
+					background-size: cover;
+					background-position: center;
+					border-radius: 1000px;
+					width: 100px;
+					height: 100px;
+					z-index: 2;
+					display: table;
+					background-color: #eee;
+					// border: 1px solid darken($primary-color, 20%);
+					box-shadow: 0 0 5px 5px rgba(0,0,0,.04);
+					margin-top: 20px;
+					&.female{
+						border: 2px solid #f69;
+						box-shadow: 5px 5px 10px -5px lighten(#f69, 10%);
+					}
+					&.male{
+						border: 2px solid #4ea6dc;
+						box-shadow: 5px 5px 10px -5px lighten(#4ea6dc, 10%);
+					}
+				}
+				.detail{
+					margin-right: -80px;
+					text-align: left;
+					border-radius: 4px;
+					background-color: white;
+					width: 100%;
+					min-height: 200px;
+					box-shadow: 0 0 5px 5px rgba(0,0,0,.04);
+					padding: 8px 15px;
+					.title{
+						color: rgba(0,0,0,.5);
+						font-size: 90%;
+					}
+					table{
+						margin-top: 20px;
+						tbody{
+							tr{
+								td{
+									border-top: 0;
+								}
+							}
+						}
+					}
+				}
+			}
+			&.separator{
+				border-right: 4px dashed rgba(0,0,0,.1);
+				content: '\0020';
+				margin: 0 15px;
+			}
+		}
+	}
+	.familychild-wrapper{
+		width: 100%;
+		margin: 15px 10px;
+		padding: 0 10px;
+		.child{
+			margin-right: -20px;
+			text-align: left;
+			border-radius: 4px;
+			background-color: white;
+			width: 100%;
+			min-height: 200px;
+			box-shadow: 0 0 5px 5px rgba(0,0,0,.04);
+			padding: 8px 15px;
+			.title{
+				font-weight: bold;
+				color: rgba(0,0,0,.5);
+				font-size: 90%;
+			}
+			.detail{
+				.parent-info{
+					.table{
+						margin: 15px 10px 25px;
+						tbody{
+							tr{
+								td{
+									border: 0;
+									&:first-child{
+										width: 160px;
+									}
+									&.min-width{
+										width: 1%;
+									}
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

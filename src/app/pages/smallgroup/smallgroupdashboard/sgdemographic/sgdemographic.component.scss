@@ -1,0 +1,33 @@
+.demographic-charts-wrapper{
+	padding: 20px 0;
+	> div{
+		padding-left: 20px;
+		padding-right: 20px;
+	}
+	.construct{
+		width: 100%;
+		min-height: 500px;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		img{
+			width: 50px;
+		}
+	}
+	.divider{
+
+	}
+	.chart-wrapper{
+		margin-bottom: 20px;
+		box-shadow: none;
+	}
+	.description{
+		padding-top: 7px;
+		padding-bottom: 7px;
+		margin: 0 20px;
+		margin-bottom: 20px;
+		border: 1px solid #d8d8d8;
+		background-color: #f8f8f8;
+		border-radius: 4px;
+	}
+}

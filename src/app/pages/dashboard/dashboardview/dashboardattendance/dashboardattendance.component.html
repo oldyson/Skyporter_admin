@@ -1,0 +1,89 @@
+			<div class="title-divider">
+				Sunday Service Weekly Report (General, First Timer, Salvation) at {{selected.year}}
+			</div>
+
+			<div class="filter">
+				<comp-inputform
+					type="dropdown"
+					[(value)]="selected.campusserviceId"
+					[options]="campusservices"
+				></comp-inputform>
+				<button class="btn btn-outline-skyporter" (click)="refreshAttend()">
+					Refresh
+				</button>
+			</div>
+
+			<div class="chart-wrapper">
+				<!-- <div class="chart-title">
+					{{selected.typeLogText}}
+				</div> -->
+
+				<comp-linechart
+					#attendLine
+					[minX]="minAttend"
+					[maxX]="maxAttend"
+					[options]="optionsAttend"
+					(rangeChange)="refreshAttend($event)"
+					title="Total Sunday Service Attendance (per week) in a year"
+				></comp-linechart>
+			</div>
+
+			<div class="detail-attendance" *ngIf="thisweekAttendance != null && lastweekAttendance != null">
+				<div class="title">
+					Detail of Sunday Service Attendance in every campus.
+				</div>
+				<table class="table table-sm">
+					<thead>
+						<tr>
+							<th></th>
+							<th>General</th>
+							<th>General<br>FirstTimer</th>
+							<th>General<br>Salvation</th>
+							<th>Youth</th>
+							<th>Youth<br>FirstTimer</th>
+							<th>Youth<br>Salvation</th>
+							<th>Kids</th>
+							<th>Kids<br>FirstTimer</th>
+							<th>Kids<br>Salvation</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>This Week</td>
+							<td>{{thisweekAttendance.totalgeneral}}</td>
+							<td>{{thisweekAttendance.totalgeneralfirst}}</td>
+							<td>{{thisweekAttendance.totalgeneralsalvation}}</td>
+							<td>{{thisweekAttendance.totalyouth}}</td>
+							<td>{{thisweekAttendance.totalyouthfirst}}</td>
+							<td>{{thisweekAttendance.totalyouthsalvation}}</td>
+							<td>{{thisweekAttendance.totalkids}}</td>
+							<td>{{thisweekAttendance.totalkidsfirst}}</td>
+							<td>{{thisweekAttendance.totalkidssalvation}}</td>
+						</tr>
+						<tr>
+							<td>Diff</td>
+							<td>{{(thisweekAttendance.totalgeneral - lastweekAttendance.totalgeneral) | number}}</td>
+							<td>{{(thisweekAttendance.totalgeneralfirst - lastweekAttendance.totalgeneralfirst) | number}}</td>
+							<td>{{(thisweekAttendance.totalgeneralsalvation - lastweekAttendance.totalgeneralsalvation) | number}}</td>
+							<td>{{(thisweekAttendance.totalyouth - lastweekAttendance.totalyouth) | number}}</td>
+							<td>{{(thisweekAttendance.totalyouthfirst - lastweekAttendance.totalyouthfirst) | number}}</td>
+							<td>{{(thisweekAttendance.totalyouthsalvation - lastweekAttendance.totalyouthsalvation) | number}}</td>
+							<td>{{(thisweekAttendance.totalkids - lastweekAttendance.totalkids) | number}}</td>
+							<td>{{(thisweekAttendance.totalkidsfirst - lastweekAttendance.totalkidsfirst) | number}}</td>
+							<td>{{(thisweekAttendance.totalkidssalvation - lastweekAttendance.totalkidssalvation) | number}}</td>
+						</tr>
+						<tr>
+							<td>Last Week</td>
+							<td>{{lastweekAttendance.totalgeneral}}</td>
+							<td>{{lastweekAttendance.totalgeneralfirst}}</td>
+							<td>{{lastweekAttendance.totalgeneralsalvation}}</td>
+							<td>{{lastweekAttendance.totalyouth}}</td>
+							<td>{{lastweekAttendance.totalyouthfirst}}</td>
+							<td>{{lastweekAttendance.totalyouthsalvation}}</td>
+							<td>{{lastweekAttendance.totalkids}}</td>
+							<td>{{lastweekAttendance.totalkidsfirst}}</td>
+							<td>{{lastweekAttendance.totalkidssalvation}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>

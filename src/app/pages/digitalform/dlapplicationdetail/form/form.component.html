@@ -1,0 +1,302 @@
+<ngb-accordion #acc="ngbAccordion">
+	<ngb-panel class="title" [title]="formuser.form.name">
+		<ng-template ngbPanelContent>
+			<ng-container *ngFor="let question of formuser.form.formquestions">
+				<div class="question-wrapper"*ngIf="question.formquestiontype!=null && !question.question.includes('Other') && question.formquestiontype.name!='Visi misi' && !question.question.includes('Marriage Date') && !question.question.includes('Spouse') && question.formquestiontype.name!='statement of faith'">
+					<div class="question-title" [innerHTML]="question.question">
+					</div>
+					<div class="question-input">
+						<!-- DATEEEE -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='date'">
+							<div class="input-group">
+								<input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="question.value" ngbDatepicker #d="ngbDatepicker"  [disabled]='question.disabled'>
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">📅</button>
+								</div>
+							</div>
+						</div>
+						<!-- INPUT BIASA  -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='text'">
+							<div class="input-group">
+								<ng-container *ngIf="question.formquestiontype.name != null && question.formquestiontype.name == 'DATE name'">
+									<ng-container *ngIf="smallgroup">
+										<input class="form-control" [(ngModel)]="smallgroup.name"  [disabled]='true'>
+									</ng-container>
+									<ng-container *ngIf="!smallgroup">
+										<input class="form-control" [disabled]='question.disabled'>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="question.formquestiontype.name != null && question.formquestiontype.name == 'DATE Leader of'">
+									<ng-container *ngIf="smallgroups">
+										<input class="form-control" [(ngModel)]="smallgroups.name"  [disabled]='true'>
+									</ng-container>
+									<ng-container *ngIf="!smallgroups">
+										<input class="form-control" [disabled]='question.disabled'>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="question.formquestiontype.name != null && question.formquestiontype.name == 'DATE Leader name'">
+									<ng-container *ngIf="smallgroup">
+										<input class="form-control" [(ngModel)]="smallgroup.smallgroupleader.user.fullname"  [disabled]='true'>
+									</ng-container>
+									<ng-container *ngIf="!smallgroup">
+										<input class="form-control" [disabled]='question.disabled'>
+									</ng-container>
+								</ng-container>
+								<ng-container *ngIf="question.formquestiontype.name != 'DATE name' && question.formquestiontype.name != 'DATE Leader of' && question.formquestiontype.name != 'DATE Leader name'">
+									<input class="form-control" placeholder="" [(ngModel)]="question.value"  [required]='question.isrequired' [disabled]='question.disabled'>
+							</ng-container>
+							</div>
+						</div>
+						<!-- INPUT NUMBER BIASA  -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='number'">
+							<div class="input-group">
+								<input type="number" class="form-control" placeholder="0"  [(ngModel)]="question.value"  [disabled]='question.disabled'>
+							</div>
+						</div>
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='tel'">
+							<div class="input-group">
+								<input type="tel" class="form-control" placeholder="Phone number" [(ngModel)]="question.value" [required]='question.isrequired' [disabled]='question.disabled'>
+							</div>
+						</div>
+						<!-- INPUT DAYS OF WEEK  -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='dayofweek'">
+							<div class="input-group">
+								<select class="form-control" [(ngModel)]="question.value"  [disabled]='question.disabled'>
+									<option *ngFor="let day of dayofweeks" [ngValue]="day.value">
+										{{day.label}}
+									</option>
+								</select>
+							</div>
+						</div>
+						
+						<!-- INPUT RADIO  -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='radio'">
+							<ng-container *ngFor="let choice of question.formquestionchoices; let i = index">
+								<div class="form-check-inline">
+									<input 
+										class="form-check-input"
+										type="radio"
+										id="{{ question.question + choice.name }}"
+										name="{{question.question}}"
+										[value]="choice.id"
+										[(ngModel)]="question.value"
+										[disabled]="question.disabled"
+									/>
+									<label class="form-check-label" for="{{ question.question + choice.name }}" [innerHTML]="choice.name"></label>
+								</div>
+							</ng-container>
+						</div>
+
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='select'">
+							<div class="input-group">
+								<!-- INPUT SPIRITUAL GIFT  -->
+								<select class="form-control" *ngIf="question.formquestiontype.name=='Karunia rohani'" [(ngModel)]="question.value"  [disabled]='question.disabled'>
+									<option *ngFor="let gift of question.formquestiontype.query" [ngValue]="gift.id">
+										{{gift.value}}
+									</option>
+								</select>
+								<!-- INPUT SMALLGROUP CATEGORY  -->
+								<select class="form-control" *ngIf="question.formquestiontype.name=='smallgroup categories'" [(ngModel)]="question.value"  [disabled]='question.disabled'>
+									<option *ngFor="let smallgroupcategory of question.formquestiontype.query" [ngValue]="smallgroupcategory.id">
+										{{smallgroupcategory.value}}
+									</option>
+								</select>
+								<!-- INPUT EDUCATION LEVEL  -->
+								<select class="form-control" *ngIf="question.formquestiontype.name=='education level'" [(ngModel)]="question.value"  (ngModelChange)="setEducationLevel($event)" [disabled]='question.disabled'>
+									<option *ngFor="let educationlevel of question.formquestiontype.query" [ngValue]="educationlevel.id">
+										{{educationlevel.value}}
+									</option>
+								</select>
+								<!-- INPUT EDUCATION TYPE  -->
+								<select class="form-control" *ngIf="question.formquestiontype.name=='education type'" [(ngModel)]="question.value"  (ngModelChange)="setEducationField($event)" [disabled]='question.disabled'>
+									<option *ngFor="let educationtype of question.formquestiontype.query" [ngValue]="educationtype.id">
+										{{educationtype.value}}
+									</option>
+									<option value="Others">Others</option>
+								</select>
+								<!-- INPUT EDUCATION TYPE  -->
+								<select class="form-control" *ngIf="question.formquestiontype.name=='occupation field'" [(ngModel)]="question.value"  (ngModelChange)="setOccupationField($event)" [disabled]='question.disabled'>
+									<option *ngFor="let occupationfield of question.formquestiontype.query" [ngValue]="occupationfield.id">
+										{{occupationfield.value}}
+									</option>
+									<option value="Others">Others</option>
+								</select>
+								<!-- INPUT MARITAL STATUS  -->
+								<select class="form-control" *ngIf="question.formquestiontype.name=='marital status'" [(ngModel)]="question.value" [required]='question.isrequired' (ngModelChange)="setMaritalStatus($event)" [disabled]='question.disabled'>
+									<option *ngIf="!question.value" [ngValue]="undefined">Select...</option>
+									<option *ngFor="let maritalstatus of question.formquestiontype.query" [ngValue]="maritalstatus.id">
+										{{maritalstatus.value}}
+									</option>
+								</select>
+							</div>
+						</div>
+
+						<!-- INPUT TIME  -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='time'">
+							<div class="input-group" >
+								<ngb-timepicker [(ngModel)]="question.value" [spinners]="false"  [disabled]='question.disabled'></ngb-timepicker>
+							</div>
+						</div>
+						<!-- INPUT EMAIL -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='email'">
+							<div class="input-group">
+								<input type="email" class="form-control" placeholder=""  [(ngModel)]="question.value"   [disabled]='question.disabled'>
+							</div>
+						</div>
+						<!-- INPUT TYPE TEXTAREA -->
+						<ng-container *ngIf="question.formquestiontype.type==='textarea'">
+							<textarea
+								[(ngModel)]="question.value"		
+								[disabled]='question.disabled'
+								rows="4"
+							></textarea>
+						</ng-container>
+						<!-- PROFILE PICTURE -->
+						<ng-container *ngIf="question.formquestiontype.type==='file' && question.formquestiontype.name==='profile picture'">
+							<ng-container *ngIf="!user.document_id">
+								No Profile Picture
+							</ng-container>
+							<ng-container *ngIf="user.document_id">
+								<div class="input-wrapper">
+									<img src="{{user.document.url}}" class="uploadimage-result">
+								</div>
+							</ng-container>
+						</ng-container>
+						<!-- TABLE -->
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='table'">
+							<table class="table table-hover">
+								<ng-container *ngIf="question.formquestiontype.name=='completed classes'">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Class Name</th>
+											<th>Class Date</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ng-container *ngFor="let row of userprogramcodes; let i = index">
+											<tr>
+												<td>{{i+1}}.</td>
+												<td>{{row.programcode.name}}</td>
+												<td>{{row.updated_at.split(" ")[0]}}</td>
+											</tr>
+										</ng-container>
+									</tbody>
+								</ng-container>
+								<ng-container *ngIf="question.formquestiontype.name=='pelayanan'">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Ministry</th>
+											<th>Length of Service</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ng-container *ngFor="let row of ministrymembers; let i = index">
+											<tr>
+												<td>{{i+1}}.</td>
+												<td>{{row.ministry.name}}</td>
+												<td>{{row.year_difference+" year(s) "+row.month_difference+" month(s)"}} </td>
+											</tr>
+										</ng-container>
+									</tbody>
+								</ng-container>
+								<ng-container *ngIf="question.formquestiontype.name=='data anak'">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Nama Anak</th>
+											<th>Tanggal Lahir</th>
+										</tr>
+									</thead>
+									<tbody>
+										<ng-container *ngFor="let row of userfamilychilds; let i = index">
+											<tr>
+												<td>{{i+1}}.</td>
+												<td>{{row.name}}</td>
+												<td>{{row.birthday}} </td>
+											</tr>
+										</ng-container>
+									</tbody>
+								</ng-container>
+							</table>
+						</div>
+					</div>
+				</div>
+				<div class="question-wrapper"*ngIf="question.formquestiontype!=null && question.question.includes('Other Education Level') && educationlevel==8">
+					<div class="question-title" [innerHTML]="question.question">
+					</div>
+					<!-- {{question.formquestiontype.name}}
+					- {{question.formquestiontype.type}} -->
+					<div class="question-input">
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='text'">
+							<div class="input-group">
+								<input class="form-control" placeholder="" [(ngModel)]="question.value"  [disabled]='question.disabled'>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="question-wrapper"*ngIf="question.formquestiontype!=null && question.question.includes('Other Education Field') && educationfield=='Others'">
+					<div class="question-title" [innerHTML]="question.question">
+					</div>
+					<!-- {{question.formquestiontype.name}}
+					- {{question.formquestiontype.type}} -->
+					<div class="question-input">
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='text'">
+							<div class="input-group">
+								<input class="form-control" placeholder="" [(ngModel)]="question.value"  [disabled]='question.disabled'>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="question-wrapper"*ngIf="question.formquestiontype!=null && question.question.includes('Other Occupation Field') && occupationfield=='Others'">
+					<div class="question-title" [innerHTML]="question.question">
+					</div>
+					<!-- {{question.formquestiontype.name}}
+					- {{question.formquestiontype.type}} -->
+					<div class="question-input">
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='text'">
+							<div class="input-group">
+								<input class="form-control" placeholder="" [(ngModel)]="question.value"  [disabled]='question.disabled'>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="question-wrapper"*ngIf="question.formquestiontype!=null && question.question.includes('Marriage Date') && maritalstatus==2">
+					<div class="question-title" [innerHTML]="question.question">
+					</div>
+					<!-- {{question.formquestiontype.name}}
+					- {{question.formquestiontype.type}} -->
+					<div class="question-input">
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='date'">
+							<div class="input-group">
+								<input class="form-control" placeholder="yyyy-mm-dd" name="dp" [(ngModel)]="question.value" ngbDatepicker #d="ngbDatepicker" [required]='question.isrequired' [disabled]='question.disabled' [minDate]="startDate" [maxDate]="endDate" (ngModelChange)="checkDate(question)">
+								<div class="input-group-append">
+									<button class="btn btn-outline-secondary calendar" (click)="d.toggle()" type="button">📅</button>
+								</div>
+								<ng-container *ngIf="isLater">
+									<div class="error-message">
+										Date cannot be later than today. 								
+									</div>
+								</ng-container>
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="question-wrapper"*ngIf="question.formquestiontype!=null && question.question.includes('Spouse') && maritalstatus==2">
+					<div class="question-title" [innerHTML]="question.question">
+					</div>
+					<!-- {{question.formquestiontype.name}}
+					- {{question.formquestiontype.type}} -->
+					<div class="question-input">
+						<div class="input-wrapper" *ngIf="question.formquestiontype.type=='text'">
+							<div class="input-group">
+								<input class="form-control" placeholder="" [(ngModel)]="question.value" [required]='question.isrequired' [disabled]='question.disabled'>
+							</div>
+						</div>
+					</div>
+				</div>
+			</ng-container>
+		</ng-template>
+	</ngb-panel>
+</ngb-accordion>

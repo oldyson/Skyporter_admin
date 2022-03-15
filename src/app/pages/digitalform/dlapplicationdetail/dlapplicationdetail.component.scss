@@ -1,0 +1,47 @@
+@import "../../../../variable.scss";
+
+.dlapplicationdetail-wrapper{
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	margin: 20px 10px;
+	padding: 0 10px;
+	> div{
+		width: 100%;
+		background-color: white;
+		box-shadow: 0 0 5px 5px rgba(0,0,0,.04);
+		border-radius: 4px;
+		&.dlapplicationdetail{
+			padding: 10px 20px;
+		}
+	}
+}
+
+.footer-container{
+	display: flex;
+	justify-content: center;
+	align-items: flex-start;
+	padding: 20px 10px;
+	margin: 0 10px 40px;
+	.right{
+		flex: 1;
+		display: flex;
+		justify-content: flex-end;
+		align-items: center;
+		.btn{
+			margin-left: 10px;
+		}
+	}
+}
+
+
+.construct{
+	width: 100%;
+	min-height: 500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	img{
+		width: 50px;
+	}
+}

@@ -1,0 +1,39 @@
+.modal-body{
+	.naration{
+		line-height: 1.2;
+		font-size: 90%;
+	}
+	.txtarea{
+		padding: calc(3px + .3vw) 0;
+		margin: calc(5px + .5vw) 0 calc(2px + .2vw);
+		width: 100%;
+		background-color: #fafafa;
+    border: 1px solid #aaa;
+    text-align: center;
+    border-radius: 3px;
+    transition: .2s all;
+    resize: vertical;
+    line-height: 1.05;
+    font-size: 90%;
+    font-weight: 600;
+    &:focus,
+    &:hover {
+    	box-shadow: 2px 2px 4px rgb(0 0 0 / 20%);
+    }
+    &::placeholder{
+    	opacity: .5;
+    	user-select: none;
+    }
+	}
+	.message{
+		font-size: 90%;
+		font-weight: 600;
+		padding: 0 calc(2px + .2vw);
+		&.failed{
+			color: #a22;
+		}
+		&.success{
+			color: #272;
+		}
+	}
+}

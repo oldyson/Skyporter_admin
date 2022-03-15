@@ -1,0 +1,79 @@
+<div class="price-wrapper" *ngIf="program != null">
+	<div class="title">
+		Participants
+	</div>
+	<div class="detail">
+		<ng-container *ngIf="program.programprices.length == 0">
+			If there is no participant specified, {{type}} will be available to everyone for free.
+		</ng-container>
+		<ng-container *ngFor="let programprice of program.programprices; let i = index">
+			<div class="remove-price">
+				<button class="btn btn-danger btn-sm" (click)="removePrice(i)">
+					<fa-icon [icon]="farTimes">
+					</fa-icon>
+				</button>
+			</div>
+			<div *ngIf="program.programprices[i] != null">
+				<comp-inputform 
+					type="text"
+					title="Price Name"
+					[(value)]="program.programprices[i].name"
+					perline="5"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="allroledropdown"
+					title="Role"
+					[(value)]="program.programprices[i].role"
+					[options]="roles"
+					perline="5"
+				>
+				</comp-inputform>
+				<comp-inputform 
+					type="number"
+					title="Price"
+					[(value)]="program.programprices[i].price"
+					perline="5"
+					(change)="updateReqPayment()"
+				>
+				</comp-inputform>
+				<ng-container *ngIf="program.programprices[i].role && program.programprices[i].role.type==='smallgroupmemberrole'">
+					<comp-inputform 
+						type="checkbox"
+						title="Core Team"
+						[(value)]="program.programprices[i].iscoreteam"
+						perline="5"
+					>
+					</comp-inputform>
+				</ng-container>
+				<comp-inputform 
+					type="checkbox"
+					title="Interval"
+					[(value)]="program.programprices[i].interval"
+					perline="5"
+				>
+				</comp-inputform>
+				<ng-container *ngIf="program.programprices[i].interval">
+					<comp-inputform 
+						type="datetime"
+						title="Available Start"
+						perline="4"
+						[(value)]="program.programprices[i].availablestart_at"
+					>
+					</comp-inputform>
+					<comp-inputform 
+						type="datetime"
+						title="Available Until"
+						perline="4"
+						[(value)]="program.programprices[i].availableend_at"
+					>
+					</comp-inputform>
+			 	</ng-container>
+			</div>
+			<hr/>
+		</ng-container>
+	</div>
+	<div class="right">
+		<button class="btn btn-skyporter" (click)="addPrice()">Add Participant</button>
+	</div>
+</div>

@@ -1,0 +1,27 @@
+<div class="login-wrapper">
+	<div class="login-form">
+		<div class="logo">
+			<img src="./assets/logo/{{global.appName}}.svg">
+			<div class="auth-title">
+				Welcome Back
+			</div>
+		</div>
+		<div class="input-wrapper">
+			<input id="username" class="form-control" [(ngModel)]="user.username" placeholder="Email / Phone Number" (keydown)="onInputKeydown($event, 'username')">
+			<input type="password" id="password" class="form-control" [(ngModel)]="user.password" placeholder="Password" (keydown)="onInputKeydown($event, 'password')">
+		</div>
+		<div class="action-wrapper">
+			<button class="btn" (click)="login()" *ngIf="!isloading">
+				Login
+			</button>
+			<i appLoadingSkyporter size="md" *ngIf="isloading"></i>
+		</div>
+	</div>
+</div>
+<div class="login-footer">
+	&copy;{{global.appName.toUpperCase()}} {{year()}} - Skyporter v{{version}} - {{lastUpdate}}
+</div>
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

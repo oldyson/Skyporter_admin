@@ -1,0 +1,38 @@
+<ng-template #invitevolunteermodal let-modal>
+	<div class="invite-header">
+		<div class="title" id="modal-basic-title">
+			Invite Volunteer
+		</div>
+		<div class="action">
+			<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+				<span aria-hidden="true">
+					&times;
+				</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="invite-body">
+		<comp-inputform
+			type="searchmultiple"
+			title="Volunteer Name"
+			[(value)]="userIds"
+			[options]="users"
+			[dropdownLoading]="isLoadingUsers">
+		</comp-inputform>
+	</div>
+		
+	<div class="invite-footer">
+		<button class="btn-negative" (click)="modal.dismiss('Cross click')">
+			Cancel
+		</button>
+		<button class="btn-positive" (click)="invite()">
+			<ng-container *ngIf="!isLoadingInvite">
+				Invite
+			</ng-container>
+			<ng-container *ngIf="isLoadingInvite">
+				<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+			</ng-container>
+		</button>
+	</div>
+</ng-template>

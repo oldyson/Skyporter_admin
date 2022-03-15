@@ -1,0 +1,37 @@
+@import "../../../../variable.scss";
+
+.linechart-wrapper{
+	padding: 10px 20px;
+	.title{
+		font-weight: bold;
+		color: $primary-color;
+		font-size: 110%;
+	}
+	.ngx-slider {
+		.ngx-slider-pointer{
+			width: 16px;
+			height: 16px;
+			top: -6px;
+			&:after{
+				top: 4px;
+				left: 4px;
+			}
+		}
+		.ngx-slider-ticks{
+			margin: 0 0 0 -8px;
+		}
+	}
+
+	&.loading{
+		min-height: 220px;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		display: flex;
+		.text{
+			padding-top: 15px;
+			text-transform: uppercase;
+		}
+	}
+
+}

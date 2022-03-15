@@ -1,0 +1,200 @@
+
+	<div class="input-wrapper" [ngClass]="{'double':perline==2, 'triple': perline==3, 'quadruple': perline==4, 'quintuple': perline==5}">
+		<div class="title" *ngIf="type!=='checkbox'">
+			{{title}}
+		</div>
+		<div class="content">
+			<ng-container *ngIf="type==='text'">
+				<input class="form-control" type="text" [(ngModel)]="value" [placeholder]="placeholder || ''" (ngModelChange)="setValue()" [disabled]="disabled">
+			</ng-container>
+			<ng-container *ngIf="type==='number'">
+				<input class="form-control" type="number" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled" min="0">
+			</ng-container>
+			<ng-container *ngIf="type==='radio'">
+				<input type="radio" id="other" name="gender" value="1" [disabled]="disabled">Yes
+				<input type="radio" value="0" [disabled]="disabled">No
+			</ng-container>
+			<ng-container *ngIf="type==='simplemde'">
+				<simplemde 
+					#simplemde 
+					[(ngModel)]="value"
+					(ngModelChange)="setValue()"
+					[options]="optionsMde"
+				></simplemde>
+				<button
+					*ngIf="withEmoji"
+					class="btn btn-sm btn-skyporter"
+					(click)="toggled = !toggled"
+					[(emojiPickerIf)]="toggled"
+					[emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+					(emojiPickerSelect)="handleSelection($event)"
+				>
+					Select Emoji
+				</button>
+			</ng-container>
+			<ng-container *ngIf="type==='textarea'">
+				<textarea class="form-control" id="{{value}}" [(ngModel)]="value" (ngModelChange)="setValue()" rows="4" [disabled]="disabled"></textarea>
+			</ng-container>
+			<ng-container *ngIf="type==='date'">
+				<input class="form-control" type="date" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled">
+			</ng-container>
+			<ng-container *ngIf="type==='datetime'">
+				<input class="form-control" type="datetime-local" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled">
+			</ng-container>
+			<ng-container *ngIf="type==='dropdown'">
+				<select class="form-control" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled">
+					<option *ngFor="let option of options" value="{{option.id}}">
+						{{option.name}}
+					</option>
+				</select>
+			</ng-container>
+			<ng-container *ngIf="type==='checkbox'">
+				<div class="form-check">
+					<input class="form-check-input" type="checkbox" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled"> 
+					<label class="form-check-label">{{title}}</label>
+					<div class="icon-wrapper">
+						<fa-icon *ngIf="tooltipMessage" class="tooltip-icon" [icon]="fasInfo"></fa-icon>
+					</div>
+					<span *ngIf="tooltipMessage" class="tooltip-message">{{tooltipMessage}}</span>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="type==='searchsingle'">
+				<ng-select
+					[loading]="dropdownLoading"
+					[items]="options"
+					bindLabel="name"
+					bindValue="id"
+					placeholder="Select..."
+					appendTo="body"
+					[(ngModel)]="value"
+					[disabled]="disabled"
+					(ngModelChange)="setValue()"
+				>	
+					<ng-template ng-loadingspinner-tmp>
+						<div class="lds-ellipsis">
+							<div></div>
+							<div></div>
+							<div></div>
+							<div></div>
+						</div>
+					</ng-template>
+					virtualScroll="true"
+					[loading]="dropdownLoading"
+				>
+				</ng-select>
+			</ng-container>
+			<ng-container *ngIf="type==='searchmultiple'">
+				<ng-select
+					class="custom"
+					[items]="options"
+					bindLabel="name"
+					bindValue="id"
+					placeholder="Select..."
+					appendTo="body"
+					multiple="true"
+					[(ngModel)]="value"
+					[disabled]="disabled"
+					virtualScroll="true"
+					(ngModelChange)="setValue()"
+					[loading]="dropdownLoading"
+				>
+				</ng-select>
+			</ng-container>
+			<ng-container *ngIf="type==='searchmultipleforuser'">
+				<ng-select
+					class="custom"
+					[items]="options"
+					bindLabel="fullname"
+					bindValue="id"
+					placeholder="Select..."
+					appendTo="body"
+					multiple="true"
+					[(ngModel)]="value"
+					[disabled]="disabled"
+					virtualScroll="true"
+					(ngModelChange)="setValue()"
+					[loading]="dropdownLoading"
+				>
+				</ng-select>
+			</ng-container>
+			<ng-container *ngIf="type==='allroledropdown'">
+				<select class="form-control" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled" [compareWith]="equals">
+					<option *ngFor="let option of options" [ngValue]="option">
+						{{option.name}}
+					</option>
+					<option value="0">
+						All Roles
+					</option>
+				</select>
+			</ng-container>
+			<ng-container *ngIf="type==='time'">
+				<input class="form-control" type="time" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled">
+			</ng-container>
+			<ng-container *ngIf="type==='venuedropdown'">
+				<select class="form-control" [(ngModel)]="value" (ngModelChange)="setValue()" [disabled]="disabled">
+					<option *ngFor="let option of options" value="{{option.id}}">
+						{{option.name}}
+					</option>
+					<option value="0">
+						Other Location
+					</option>
+				</select>
+			</ng-container>
+			<ng-container *ngIf="type==='infinitedropdown'">
+				<ng-select
+					bindLabel="name"
+					bindValue="id"
+					placeholder="Select..."
+					appendTo="body"
+					[items]="options"
+					[typeahead]="searchInput"
+					[loading]="dropdownLoading"
+					[disabled]="disabled"
+					(ngModelChange)="setValue()"
+					(scrollToEnd)="fetchMore()"
+					[(ngModel)]="value">
+				</ng-select>
+			</ng-container>
+			<ng-container *ngIf="type==='infinitedropdownmultiple'">
+				<ng-select
+					bindLabel="name"
+					bindValue="id"
+					placeholder="Select..."
+					appendTo="body"
+					multiple="true"
+					[items]="options"
+					[typeahead]="searchInput"
+					[loading]="dropdownLoading"
+					[disabled]="disabled"
+					(ngModelChange)="setValue()"
+					(scrollToEnd)="fetchMore()"
+					[(ngModel)]="value">
+				</ng-select>
+			</ng-container>
+			<ng-container *ngIf="type==='file'">
+				<div class="uploadfilecontainer" (click)="fileInput.click()" appDragDrop>
+					Click here to upload your file
+					<input 
+						hidden 
+						type="file" 
+						#fileInput
+						observeFiles
+						[disabled]="disabled" 
+						[(ngModel)]="value"
+						(ngModelChange)="setValue()"
+						accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, image/*"
+					/>
+				</div>
+				<ng-container *ngIf="value.name != null">
+					<div class="uploadfile-result">
+						{{value.name}}
+					</div>
+				</ng-container>
+				<ng-container *ngIf="value != null && (value.size/1024)/1024 > 20">
+					<div class="error-message">
+						File cannot exceed 20 MB.
+					</div>
+				</ng-container>
+			</ng-container>
+		</div>
+	</div>

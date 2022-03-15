@@ -1,0 +1,497 @@
+
+<div class="detailtable-wrapper">
+	<div class="detailtable-preaction-wrapper">
+
+		<a href="admin/program/qr-detail?id={{programId}}" class="btn btn-outline-skyporter">
+			Open Full QR Code Page
+		</a>
+
+		<a href="admin/program/ticketapprovals?id={{programId}}" class="btn btn-outline-skyporter" *ngIf="program.leaderapproval || program.adminapproval">
+			Open Approvals Page
+		</a>
+
+		<button class="btn btn-outline-skyporter btn-add-registrant">
+			Add Registrant
+			<div class="dropdown-content">
+				<div *ngFor="let item of addRegistrantMenu" class="btn-add-registrant-item" (click)="showForm(item)">
+					<small>
+						{{ item }}
+					</small>
+				</div>
+			</div>
+		</button>
+	</div>
+	<div *ngIf="selectedAddRegistrantMenu" class="wrapper-form">
+		<div class="header-form">
+			<div class="title">
+				Add Registrant: {{selectedAddRegistrantMenu}}
+			</div>
+			<div class="btn-close">
+				<button type="button" class="close" aria-label="Close" (click)="closeForm()">
+					<span aria-hidden="true">
+						&times;
+					</span>
+				</button>
+			</div>
+		</div>
+		<div class="body-form">
+			<div class="form-left" [ngStyle]="selectedAddRegistrantMenu === 'Single' ? {'max-width': '100%'} : {}">
+				<div class="form-section-title" *ngIf="selectedAddRegistrantMenu != 'Single'">
+					{{selectedAddRegistrantMenu == 'Non Married Couple' ? 'Non ' : ''}}Married Couple: Registrant 1
+				</div>
+				<div>
+					<comp-inputform
+						type="dropdown"
+						title="Status"
+						[(value)]="formLeft.status"
+						[disabled]="true"
+						[options]="statusMember"
+					>
+					</comp-inputform>
+				</div>
+				<div class="input-text">
+					<label>Fullname / Email / Phone Number</label>
+					<div class="form-group">
+						<input
+							type="text"
+							id="list-search"
+							class="form-control"
+							aria-label="Search"
+							[disabled]="formLeft.isLoadingSearch"
+							[(ngModel)]="formLeft.keywordMember"
+							(keydown.enter)="handleInput('formLeft')">
+						<div class="input-group-append">
+							<button
+								class="btn"
+								type="button"
+								[disabled]="formLeft.isLoadingSearch || formLeft.keywordMember === null || formLeft.keywordMember === ''"
+								(click)="searchMemberForm('formLeft')"
+							>
+								<ng-container *ngIf="!formLeft.isLoadingSearch">
+									Search
+								</ng-container>
+								<ng-container *ngIf="formLeft.isLoadingSearch">
+									<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+								</ng-container>
+							</button>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper-detail">
+					<label>Search Result</label>
+					<div class="content">
+						<div class="section">
+							<div class="optionLabel">
+								Full Name
+							</div>
+							<div class="colon">
+								:
+							</div>
+							<div class="value">
+								{{formLeft?.searchResult?.fullname}}
+							</div>
+						</div>
+						<div class="section">
+							<div class="optionLabel">
+								Email Address
+							</div>
+							<div class="colon">
+								:
+							</div>
+							<div class="value">
+								{{formLeft?.searchResult?.email}}
+							</div>
+						</div>
+						<div class="section">
+							<div class="optionLabel">
+								Phone Number
+							</div>
+							<div class="colon">
+								:
+							</div>
+							<div class="value">
+								{{formLeft?.searchResult?.phone}}
+							</div>
+						</div>
+						<div class="section">
+							<div class="optionLabel">
+								Gender
+							</div>
+							<div class="colon">
+								:
+							</div>
+							<div class="value">
+								{{formLeft?.searchResult?.gender}}
+							</div>
+						</div>
+						<div class="section">
+							<div class="optionLabel">
+								Date of Birth
+							</div>
+							<div class="colon">
+								:
+							</div>
+							<div class="value">
+								{{helper.makeDate(formLeft?.searchResult?.birthdate)}}
+							</div>
+						</div>
+						<div class="section">
+							<div class="optionLabel">
+								DATE
+							</div>
+							<div class="colon">
+								:
+							</div>
+							<div class="value">
+								{{formLeft?.searchResult?.smallgroupmembers && formLeft?.searchResult?.smallgroupmembers[0]?.smallgroup.name}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="wrapper-dropdown" *ngIf="selectedAddRegistrantMenu != 'Single'">
+					<comp-inputform
+						type="checkbox"
+						[title]="'First time joining ' + programType"
+						[(value)]="formLeft.firstTimeJoiningClass"
+					>
+					</comp-inputform>
+				</div>
+			</div>
+			<div class="form-right" *ngIf="selectedAddRegistrantMenu != 'Single'">
+				<div class="form-section-title">
+					{{selectedAddRegistrantMenu == 'Non Married Couple' ? 'Non ' : ''}}Married Couple: Registrant 2
+				</div>
+				<div>
+					<comp-inputform
+						type="dropdown"
+						title="Status"
+						[disabled]="selectedAddRegistrantMenu === 'Married Couple' || selectedAddRegistrantMenu === 'Married with Child'"
+						[(value)]="formRight.status"
+						[options]="statusMember"
+					>
+					</comp-inputform>
+				</div>
+				<ng-container *ngIf="formRight.status === 'Non Member'">
+					<div>
+						<comp-inputform
+							type="text"
+							title="Fullname"
+							[(value)]="formRight.searchResult.fullname"
+							[options]="statusMember"
+						>
+						</comp-inputform>
+					</div>
+					<div>
+						<comp-inputform
+							type="text"
+							title="Email"
+							[(value)]="formRight.searchResult.email"
+							[options]="statusMember"
+						>
+						</comp-inputform>
+					</div>
+					<div>
+						<comp-inputform
+							type="number"
+							title="Phone Number"
+							[(value)]="formRight.searchResult.phone"
+							[options]="statusMember"
+						>
+						</comp-inputform>
+					</div>
+					<div class="wrapper-radio">
+						<div class="content">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="Male"
+								[(ngModel)]="formRight.searchResult.gender"
+								value="Male"
+							>
+							<label class="form-check-label">Male</label>
+						</div>
+						<div class="content">
+							<input
+								class="form-check-input"
+								type="radio"
+								name="Female"
+								[(ngModel)]="formRight.searchResult.gender"
+								value="Female"
+							>
+							<label class="form-check-label">Female</label>
+						</div>
+					</div>
+					<div>
+						<comp-inputform
+							type="date"
+							title="Date of Birth"
+							[(value)]="formRight.searchResult.birthdate"
+						>
+						</comp-inputform>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="formRight.status === 'Member'">
+					<div class="input-text">
+						<label>Fullname / Email / Phone Number</label>
+						<div class="form-group">
+							<input
+								type="text"
+								id="list-search"
+								class="form-control"
+								aria-label="Search"
+								[disabled]="formRight.isLoadingSearch || (selectedAddRegistrantMenu === 'Married Couple' || selectedAddRegistrantMenu === 'Married with Child')"
+								[(ngModel)]="formRight.keywordMember"
+								(keydown.enter)="handleInput('formRight')">
+							<div class="input-group-append">
+								<button
+									class="btn"
+									type="button"
+									[disabled]="formRight.isLoadingSearch || formRight.keywordMember === '' || formRight.keywordMember === null || (selectedAddRegistrantMenu === 'Married Couple' || selectedAddRegistrantMenu === 'Married with Child')"
+									(click)="searchMemberForm('formRight')"
+								>
+									<ng-container *ngIf="!formRight.isLoadingSearch">
+										Search
+									</ng-container>
+									<ng-container *ngIf="formRight.isLoadingSearch">
+										<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+									</ng-container>
+								</button>
+							</div>
+						</div>
+					</div>
+					<div class="wrapper-detail">
+						<label>Search Result</label>
+						<div class="content">
+							<div class="section">
+								<div class="optionLabel">
+									Full Name
+								</div>
+								<div class="colon">
+									:
+								</div>
+								<div class="value">
+									{{formRight?.searchResult?.fullname}}
+								</div>
+							</div>
+							<div class="section">
+								<div class="optionLabel">
+									Email Address
+								</div>
+								<div class="colon">
+									:
+								</div>
+								<div class="value">
+									{{formRight?.searchResult?.email}}
+								</div>
+							</div>
+							<div class="section">
+								<div class="optionLabel">
+									Phone Number
+								</div>
+								<div class="colon">
+									:
+								</div>
+								<div class="value">
+									{{formRight?.searchResult?.phone}}
+								</div>
+							</div>
+							<div class="section">
+								<div class="optionLabel">
+									Gender
+								</div>
+								<div class="colon">
+									:
+								</div>
+								<div class="value">
+									{{formRight?.searchResult?.gender}}
+								</div>
+							</div>
+							<div class="section">
+								<div class="optionLabel">
+									Date of Birth
+								</div>
+								<div class="colon">
+									:
+								</div>
+								<div class="value">
+									{{helper.makeDate(formRight?.searchResult?.birthdate)}}
+								</div>
+							</div>
+							<div class="section">
+								<div class="optionLabel">
+									DATE
+								</div>
+								<div class="colon">
+									:
+								</div>
+								<div class="value">
+									{{formRight?.searchResult?.smallgroupmembers && formRight?.searchResult?.smallgroupmembers[0]?.smallgroup.name}}
+								</div>
+							</div>
+						</div>
+					</div>
+				</ng-container>
+				<div class="wrapper-dropdown">
+					<comp-inputform type="checkbox" [title]="'First time joining ' + programType" [(value)]="formRight.firstTimeJoiningClass">
+					</comp-inputform>
+				</div>
+			</div>
+			<ng-container *ngIf="listChildren && listChildren.length > 0">
+				<div class="form-add-child" *ngIf="selectedAddRegistrantMenu === 'Married with Child'">
+					<label>Children</label>
+					<ng-container *ngFor="let item of listChildren;let i = index;let totalChildren = count">
+						<div class="wrapper-content-add-children">
+							<div class="item">
+								<div class="section">
+									<div class="content">
+										<div class="optionLabel">
+											Children 1
+										</div>
+										<div class="colon">
+											:
+										</div>
+										<div class="value">
+											{{item.name}}
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="content">
+										<div class="optionLabel">
+											Gender
+										</div>
+										<div class="colon">
+											:
+										</div>
+										<div class="value">
+											{{item.gender}}
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="content">
+										<div class="optionLabel">
+											Date of Birth
+										</div>
+										<div class="colon">
+											:
+										</div>
+										<div class="value">
+											{{helper.makeDate(item.birthday)}}
+										</div>
+									</div>
+								</div>
+								<div class="section">
+									<div class="content">
+										<div class="wrapper-dropdown">
+											<comp-inputform type="checkbox" title="is Biological Child" [(value)]="listChildren[i].isBiologicalChild">
+											</comp-inputform>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+				</div>
+			</ng-container>
+
+		</div>
+		<div class="footer-form">
+			<button class="btn btn-skyporter" (click)="addRegistrant()" [disabled]="isLoadingAdd">
+				<ng-container *ngIf="!isLoadingAdd">
+					Add Registrant
+				</ng-container>
+				<ng-container *ngIf="isLoadingAdd">
+					<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+				</ng-container>
+			</button>
+		</div>
+	</div>
+	<div *ngIf="!selectedAddRegistrantMenu" class="wrapper-table">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':tabs[currentTabIndex].value===tab.value}" (click)="setTabId(i)" *ngFor="let tab of tabs; let i = index">
+				{{tab.label}}
+			</div>
+		</div>
+		<!-- TICKET -->
+		<!-- TICKET -->
+		<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'ticket'}">
+			<comp-listtable
+				#listtableticket
+				[datas]="datatickets"
+				[keys]="keys.ticket"
+				[navigations]="navigationtickets"
+				[isloading]="isloading"
+				[filterOptions]="exportfilter.registrant"
+				[defaultStartDate]="exportfilter.registrant.startDateExportFilter"
+				[defaultEndDate]="exportfilter.registrant.endDateExportFilter"
+				(refreshData)="getData($event)"
+				(searchData)="searchData($event)"
+				(sortDataBy)="sortDataBy('ticket', $event)"
+				(doAPI)="doAPI($event)"
+				(doFunction)="doFunction($event)"
+				(listExport)="generateExportDataRegistrant($event)"
+				(listFilter)="generateFilterDataRegistrant($event)"
+				(handleDropdownExport)="handleDropdownExportRegistrant($event)"
+			></comp-listtable>
+		</div>
+		<!-- ATTENDANCE -->
+		<!-- ATTENDANCE -->
+		<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'attendance'}">
+			<comp-listattendancetable
+				#listtableattendance
+				[programId]="programId"
+				[datas]="dataattendances"
+				[keys]="keys.attendance"
+				[navigations]="navigationattendances"
+				[isloading]="isloading"
+				[filterOptions]="exportfilter.attendance"
+				(refreshData)="getData($event)"
+				(searchData)="searchData($event)"
+				(sortDataBy)="sortDataBy('attendance', $event)"
+				(attendanceChecklist)="attendanceChecklist($event)"
+				(listExport)="generateExportDataAttendance()"
+			></comp-listattendancetable>
+		</div>
+		<!-- QRCODE -->
+		<!-- QRCODE -->
+		<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'qrcode'}">
+			<comp-listqrcodecheckin
+				#listqrcodecheck
+				[qrList]="qrList"
+			></comp-listqrcodecheckin>
+		</div>
+		<!-- VOLUNTEER LIST -->
+		<!-- VOLUNTEER LIST -->
+		<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'volunteer'}">
+			<comp-listtable
+				#listtablevolunteer
+				[datas]="datavolunteers"
+				[keys]="keys.volunteer"
+				[navigations]="navigationvolunteers"
+				[isloading]="isloading"
+				[filterOptions]="exportfilter.volunteer"
+				[defaultStartDate]="exportfilter.volunteer.startDateExportFilter"
+				[defaultEndDate]="exportfilter.volunteer.endDateExportFilter"
+				(refreshData)="getData($event)"
+				(doAPI)="doAPI($event)"
+				(searchData)="searchData($event)"
+				(sortDataBy)="sortDataBy('volunteer', $event)"
+				(doFunction)="doFunction($event)"
+				(handleDropdownExport)="handleDropdownExportRegistrant($event)"
+			></comp-listtable>
+		</div>
+	</div>
+</div>
+<programdetail-tablefilelist
+	#filelistmodal
+	dialogName="List of File"
+></programdetail-tablefilelist>
+
+
+
+
+<comp-listattendanceaddbyemail
+	#listattendanceaddbyemail
+	[programId]="programId"
+></comp-listattendanceaddbyemail>

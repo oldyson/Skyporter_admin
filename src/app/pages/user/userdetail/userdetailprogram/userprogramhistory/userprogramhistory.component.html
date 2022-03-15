@@ -1,0 +1,121 @@
+<ng-container>
+	<div class="title">
+		{{historyType}} History&nbsp;
+		<button class="btn btn-sm" (click)="subtitleToggle()" *ngIf="!showSubtitle">
+			<fa-icon [icon]="falChevronDown"></fa-icon>
+		</button>
+	</div>
+	<div class="subtitle" *ngIf="showSubtitle">
+		<fa-icon [icon]="falInfoCircle"></fa-icon>
+		All {{historyType}} History will be shown below, filtered by user. Both complete class and those who have not completed.
+	</div>
+	<div class="loading-wrapper" *ngIf="isloading">
+		<i appLoadingSkyporter size="md"></i>
+	</div>
+	<div class="table-wrapper" *ngIf="!isloading">
+		<table class="table table-sm table-clear" *ngIf="programs != null">
+			<tbody>
+				<ng-container *ngFor="let program of programs; let i = index">
+					<tr>
+						<td class="min-width text-right">{{i+1}}.</td>
+						<td>
+							<div class="program-name" placement="right" [ngbPopover]="popProgram" popoverTitle="{{historyType}} Information Detail" (click)="popProgramSelected=program">
+								{{program.name}}
+							</div>
+						</td>
+						<td *ngIf="historyType==='Class'">
+							<ng-container *ngIf="program.ispassed">
+								Completed at
+								<b class="text-muted">{{program.programend_at|date:'dd MMMM yyyy'}}</b>
+							</ng-container>
+							<ng-container *ngIf="!program.ispassed">
+								Not Passed
+							</ng-container>
+						</td>
+						<td *ngIf="historyType==='Event'">
+							<ng-container *ngIf="program.ispassed">
+								<span class="clr-primary">
+									<fa-icon [icon]="farCheck"></fa-icon>
+								</span> &nbsp;
+								<b class="text-muted">{{program.programend_at|date:'dd MMMM yyyy'}}</b>
+							</ng-container>
+							<ng-container *ngIf="!program.ispassed">
+								Not Present
+							</ng-container>
+						</td>
+						<td class="min-width">
+							<div class="present" *ngFor="let ticket of program.programtickets; let j = index">
+								<span placement="left" ngbTooltip="{{attend.ispresent ? 'Present' + (attend.updated_at ? ' at ' + attend.updated_at : ' at ' + attend.created_at) : 'Absence'}}" *ngFor="let attend of ticket.programticketattendances">
+									<ng-container *ngIf="attend.ispresent">
+										<fa-icon class="attend" [icon]="fasUser"></fa-icon>
+									</ng-container>
+									<ng-container *ngIf="!attend.ispresent">
+										<fa-icon class="not-attend" [icon]="farUser"></fa-icon>
+									</ng-container>
+								</span>
+							</div>
+						</td>
+						<td class="min-width action">
+							<button class="btn btn-sm" (click)="showProgramDetail(i)" [ngClass]="{'rotate180':program.isshowed}">
+								<span class="">
+									<fa-icon [icon]="fasChevronDown"></fa-icon>
+								</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="programdetail-container" *ngIf="program.isshowed">
+						<td colspan="5">
+							<div class="programdetail">
+								<div class="title">
+									{{program.name}} Edit Section
+								</div>
+								<ng-container *ngFor="let ticket of program.programtickets; let j = index">
+									<div class="programticket">
+										Ticket #{{j+1}} resgitered at {{ticket.created_at}}<br>
+										Ticket registered by {{ticket.user.fullname}}
+									</div>
+									<ng-container *ngFor="let attend of ticket.programticketattendances; let k = index">
+										<div class="attend-status" (click)="toggleAttendance(attend)">
+											Session #{{k+1}} :
+											<div class="attendance-checkbox">
+												<button class="btn btn-sm checked" *ngIf="attend.ispresent">
+													<fa-icon [icon]="fadCheckSquare" *ngIf="!attend.loading" [fixedWidth]="true"></fa-icon>
+													<fa-icon [icon]="fadSpinner" *ngIf="attend.loading" [spin]="true" [fixedWidth]="true"></fa-icon>
+												</button>
+												<button class="btn btn-sm unchecked" *ngIf="!attend.ispresent">
+													<fa-icon [icon]="farSquare" *ngIf="!attend.loading" [fixedWidth]="true"></fa-icon>
+													<fa-icon [icon]="fadSpinner" *ngIf="attend.loading" [spin]="true" [fixedWidth]="true"></fa-icon>
+												</button>
+											</div>
+										</div>
+									</ng-container>
+								</ng-container>
+							</div>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+	</div>
+	<ng-template #popProgram>
+		<ng-container *ngIf="popProgramSelected == null">
+			Alter: Error Get Program
+		</ng-container>
+		<ng-container *ngIf="popProgramSelected != null">
+			<b class="text-muted" *ngIf="popProgramSelected.isopenregist">Open for Register</b>
+			<b class="text-muted" *ngIf="!popProgramSelected.isopenregist">Not Open for Register</b><br>
+
+			Min. Attend Days: <b class="text-muted">{{popProgramSelected.minattenddays}}</b><br>
+
+			{{popProgramSelected.programtype.type}} Start: <b class="text-muted">{{popProgramSelected.programstart_at|date:'dd MMM yyyy, HH:mm'}}</b><br>
+
+			{{popProgramSelected.programtype.type}} End: <b class="text-muted">{{popProgramSelected.programend_at|date:'dd MMM yyyy, HH:mm'}}</b><br>
+
+			{{popProgramSelected.programtype.type}} Type: <b class="text-muted">{{popProgramSelected.programtype.name}}</b><br>
+
+			{{popProgramSelected.programtype.type}} Code: <b class="text-muted">{{popProgramSelected.programcode.name}}</b><br>
+
+			Created at: <b class="text-muted">{{popProgramSelected.created_at|date:'dd MMM yyyy, HH:mm'}}</b><br>
+		</ng-container>
+	</ng-template>
+</ng-container>

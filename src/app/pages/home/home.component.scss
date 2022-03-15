@@ -1,0 +1,30 @@
+@import '../../../variable.scss';
+
+.welcome-banner{
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: center;
+	min-height: 70vh;
+	.banner-header{
+		font-size: 140%;
+		color: rgba(0,0,0,.5);
+		padding: 0 calc(40px + 4vw);
+		text-align: center;
+		.gender{
+			font-weight: 600;
+		}
+		.name{
+			font-weight: 800;
+			color: rgba(0,0,0,.65);
+		}
+	}
+	.welcome-text{
+		font-size: 220%;
+		color: $primary-color;
+		text-transform: uppercase;
+		font-weight: 800;
+		padding: calc(20px + 2vw) calc(40px + 4vw);
+		text-align: center;
+	}
+}

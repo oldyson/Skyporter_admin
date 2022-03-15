@@ -1,0 +1,167 @@
+<div class="ticket-wrapper">
+	<div class="loading-wrapper" *ngIf="isLoading">
+		<i appLoadingSkyporter size="md"></i>
+	</div>
+	<ng-container *ngIf="!isLoading">
+		<ng-container *ngIf="programticket!=null">
+			<div class="return-link">
+				<a href="admin/program/{{programType}}/detail?id={{program.id}}">< Return to {{programType}} preview</a>
+			</div>
+			<div class="ticket-header" *ngIf="!isLoading">
+				<div class="panel">
+					<div class="full-flex column">
+						<div class="panel-content-wrapper">
+							<div class="title">
+								{{program.programcode.type}} Ticket Payer Name:
+							</div>
+							<div class="content">
+								{{programticket?.user?.fullname}}
+								<ng-container *ngIf="programticket.user2 != null">
+									& {{programticket?.user2?.fullname}}
+								</ng-container>
+							</div>
+						</div>
+						<div class="panel-content-wrapper">
+							<div class="title">
+								Status:
+							</div>
+							<div class="content" *ngIf="programticket.canceled_at == null">
+								{{programticket.status}}
+							</div>
+							<div class="content" *ngIf="programticket.canceled_at != null">
+								Cancelled
+							</div>
+						</div>
+						<div class="panel-content-wrapper">
+							<div class="title">
+								Code:
+							</div>
+							<div class="content">
+								{{programticket.bookingcode}}
+							</div>
+						</div>
+						<div class="panel-content-wrapper">
+							<div class="title">
+								Price:
+							</div>
+							<div class="content">
+								{{programticket.quantity}} x <b>{{programticket.currency.isoname}} {{programticket.price}}</b> ({{programticket.pricename}})
+							</div>
+						</div>
+						<div class="panel-content-wrapper">
+							<div class="title">
+								Registered on:
+							</div>
+							<div class="content">
+								{{programticket.updated_at? (programticket.updated_at|date:'dd MMM yy') : (programticket.created_at|date:'dd MMM yy')}}<br>
+								<fa-icon class="clock" [icon]="fasClock"></fa-icon>
+								{{programticket.updated_at? (programticket.updated_at|date:'HH:mm:ss') : (programticket.created_at|date:'HH:mm:ss')}}
+							</div>
+						</div>
+						<div class="panel-content-wrapper" *ngIf="programticket.canceled_at != null">
+							<div class="title">
+								Cancelled on:
+							</div>
+							<div class="content">
+								{{programticket.canceled_at|date:'dd MMM yy'}}<br>
+								<fa-icon class="clock" [icon]="fasClock"></fa-icon>
+								{{programticket.canceled_at|date:'HH:mm:ss'}}
+							</div>
+						</div>
+						<div class="panel-content-wrapper" *ngIf="programticket.statuspayment != null">
+							<div class="title">
+								Payment status:
+							</div>
+							<div class="content">
+								{{programticket.statuspayment}}
+							</div>
+						</div>
+					</div>
+					<div class="divider">
+					</div>
+					<div class="full-flex column">
+						<div class="panel-content-wrapper">
+							<div class="title">
+								{{program.programcode.type}} Code:
+							</div>
+							<div class="content">
+								#{{program.programcode.id}}. {{program.programcode.name}}
+							</div>
+						</div>
+						<div class="panel-content-wrapper">
+							<div class="title">
+								{{program.programtype.name}} Name:
+							</div>
+							<div class="content">
+								#{{program.id}}. {{program.name}}
+							</div>
+						</div>
+						<div class="panel-content-wrapper">
+							<div class="title">
+								{{program.programtype.name}} Time:
+							</div>
+							<div class="content">
+								<fa-icon [icon]="fasPlay" [fixedWidth]="true"></fa-icon>
+								{{helper.getDatetime(program.programstart_at) | date: 'dd MMM yyyy HH:mm:ss'}} 
+								({{helper.dateDiffInString(helper.getDatetime(program.programstart_at))}})<br>
+
+								<fa-icon [icon]="fasStop" [fixedWidth]="true"></fa-icon>
+								{{helper.getDatetime(program.programend_at) | date: 'dd MMM yyyy HH:mm:ss'}} 
+								({{helper.dateDiffInString(helper.getDatetime(program.programend_at))}})
+							</div>
+						</div>
+						<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+							<div class="title">
+								Status:
+							</div>
+							<div class="content">
+								{{programticket.status}}
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="wrapper-table">
+				<div class="navi">
+					<div class="navi-list" [ngClass]="{'active':tabs[currentTabIndex].value===tab.value}" (click)="setTabId(i)" *ngFor="let tab of tabs; let i = index">
+						{{tab.label}}
+					</div>
+				</div>
+				<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'approvaldocuments'}">
+					<comp-listfiletable
+						#listtableapprovaldocuments
+						[multipleSelectEnabled]="false"
+						[datas]="programticketapprovaldocuments"
+						[keys]="keys.approvaldocuments"
+						[navigations]="navigationapprovaldocuments"
+						[isloading]="isTableLoading"
+						(refreshData)="getApprovalDocumentData($event)"
+						(doAPI)="doAPI($event)"
+					></comp-listfiletable>
+				</div>
+				<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'adminapprovals'}">
+					<comp-listtable
+						#listtableadminapprovals
+						[datas]="adminapprovals"
+						[keys]="keys.adminapprovals"
+						[navigations]="navigationadminapprovals"
+						[isloading]="isTableLoading"
+						(refreshData)="getAdminApprovalData($event)"
+						(doAPI)="doAPI($event)"
+					></comp-listtable>
+				</div>
+				<div class="detail" [ngClass]="{'hidden':tabs[currentTabIndex].value !== 'leaderapprovals'}">
+					<comp-listtable
+						#listtableadminapprovals
+						[datas]="leaderapprovals"
+						[keys]="keys.leaderapprovals"
+						[navigations]="navigationleaderapprovals"
+						[isloading]="isTableLoading"
+						(refreshData)="getLeaderApprovalData($event)"
+						(doAPI)="doAPI($event)"
+					></comp-listtable>
+				</div>
+			</div>
+		</ng-container>
+	</ng-container>
+</div>

@@ -1,0 +1,64 @@
+@import "../../../../../variable.scss";
+
+.dialog-header {
+	display: flex;
+    background-color: white;
+    padding: 0px;
+	.title {
+		margin: 10px 20px;
+		display: flex;
+		flex: 1;
+		align-items: center;
+		color: $primary-color;
+		cursor: default;
+		font-size: 120%;
+	}
+	.action {
+		margin: 10px 20px;
+		display: flex;
+		flex: 1;
+		justify-content: flex-end;
+		align-items: center;
+		color: $primary-color;
+		font-size: 80%;
+		.btn {
+			background-color: white;
+			color: $primary-color;
+			border: none;
+			&:hover {
+				color: #a00;
+			}
+		}
+	}
+}
+
+.dialog-body {
+	background-color: whitesmoke;
+    min-height: 300px;
+    padding: 1rem;
+    .wrapper-form {
+        width: 100%;
+    }
+}
+
+.dialog-footer{
+	display: flex;
+	.btn-positive {
+		padding: 10px;
+		display: flex;
+		flex: 1;
+		color: white;
+		background-color: $primary-color;
+		justify-content: center;
+		border: none;
+		&:hover {
+			background-color: darken($primary-color, 10%);
+		}
+		&:disabled {
+			background-color: #ccc;
+		}
+		&:disabled + &:hover {
+			background-color: darken(#ccc, 10%);
+		}
+	}
+}

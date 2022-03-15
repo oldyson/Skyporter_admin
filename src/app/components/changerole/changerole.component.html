@@ -1,0 +1,39 @@
+<ng-template #changerolemodal let-modal>
+    <div class="wrapper-header">
+        <div class="title" id="modal-basic-title">
+            Change Role
+        </div>
+        <div class="action">
+            <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+                <span aria-hidden="true">
+                    &times;
+                </span>
+            </button>
+        </div>
+    </div>
+
+    <div class="wrapper-body">
+        <comp-inputform
+            type="searchsingle"
+            title="Choose Role"
+            [(value)]="selectedRole"
+            [options]="roleList"
+            [dropdownLoading]="isLoadingRoles"
+        >
+        </comp-inputform>
+    </div>
+
+    <div class="wrapper-footer">
+        <button class="btn-negative" (click)="modal.dismiss('Cross click')">
+            Cancel
+        </button>
+        <button class="btn-positive" (click)="saveRole()">
+            <ng-container *ngIf="!isLoadingChangeRole">
+                Save
+            </ng-container>
+            <ng-container *ngIf="isLoadingChangeRole">
+                <fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+            </ng-container>
+        </button>
+    </div>
+</ng-template>

@@ -1,0 +1,62 @@
+@import "../../../../variable.scss";
+
+.piechart-wrapper{
+	padding: 10px 20px;
+	.title{
+		font-weight: bold;
+		color: $primary-color;
+		font-size: 110%;
+		margin-bottom: 20px;
+	}
+	.chart-contents{
+		width: 100%;
+		height: 220px;
+		display: flex;
+		flex-wrap: wrap;
+
+		.canvas-wrapper{
+			width: 50%;
+			min-height: 220px;
+			max-height: 100%;
+			padding: 5px 10px;
+		}
+		.legend-wrapper{
+			padding: 5px 10px;
+			width: 50%;
+			min-height: 220px;
+			max-height: 100%;
+			list-style: none;
+			display: flex;
+			flex-direction: column;
+			flex-wrap: wrap;
+			overflow: auto;
+			.legend-item{
+				padding: 5px 10px;
+				cursor: pointer;
+				-webkit-user-select: none;  /* Chrome all / Safari all */
+				-moz-user-select: none;     /* Firefox all */
+				-ms-user-select: none;      /* IE 10+ */
+				user-select: none; 
+				.legend-color{
+					width: 16px;
+					height: 16px;
+					float: left;
+					margin-top: 4px;
+					margin-right: 7px;
+				}
+			}
+		}
+	}
+	
+	&.loading{
+		min-height: 220px;
+		justify-content: center;
+		align-items: center;
+		flex-direction: column;
+		display: flex;
+		.text{
+			padding-top: 15px;
+			text-transform: uppercase;
+		}
+	}
+}

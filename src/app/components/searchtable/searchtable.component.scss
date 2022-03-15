@@ -1,0 +1,21 @@
+@import '../../../variable.scss';
+
+.search{
+	display: flex;
+	flex-wrap: nowrap;
+	max-width: 200px;
+	.form-control{
+		width: 100%;
+	}
+	.input-group-append{
+		.btn{
+			color: $primary-color;
+			border: 1px solid $primary-color;
+			background-color: white;
+			&:hover{
+				background-color: darken($primary-color, 10%);
+				color: white;
+			}
+		}
+	}
+}

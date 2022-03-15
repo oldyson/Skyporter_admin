@@ -1,0 +1,22 @@
+
+
+
+<comp-listtable
+	[datas]="datas"
+	[keys]="keys"
+	[navigations]="navigations"
+	[isloading]="isloading"
+	[filterOptions]="exportfilter"
+	(refreshData)="getData($event)"
+	(searchData)="searchData($event)"
+	(sortDataBy)="sortDataBy($event)"
+	(doAPI)="doAPI($event)"
+	(listFilter)="generateFilterData($event)"
+	(listExport)="generateExportData($event)"
+	#listtable
+></comp-listtable>
+
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

@@ -1,0 +1,227 @@
+<div class="dashboard-wrapper">
+
+	<comp-inputform
+		type="dropdown"
+		[(value)]="selected.year"
+		[options]="dataYears"
+	></comp-inputform>
+
+	<div class="title-divider">
+		SUMMARIES
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Total Accounts <span class="upper">{{global.appName}}</span> users / accounts / emails.
+		</div>
+		<div class="number">
+			{{totalActiveUser|number}}
+		</div>
+		<div class="info-wrapper">
+			<div class="diff" hidden>
+					<fa-icon [icon]="fasArrowUp"></fa-icon>
+			</div>
+			<div class="info">
+				LIVE data record
+			</div>
+		</div>
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Total Attendance This Week (Online + Onsite)
+		</div>
+		<div class="number">
+			{{totalAttendance|number}}
+		</div>
+		<div class="info-wrapper" [ngClass]="{'up':selisihAttendance>=0, 'down':selisihAttendance<0}">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown" *ngIf="selisihAttendance<0"></fa-icon>
+				<fa-icon [icon]="fasArrowUp" *ngIf="selisihAttendance>=0"></fa-icon>
+				{{selisihAttendance|number}}
+			</div>
+			<div class="info">
+				from {{lastweek|date:'dd MMM yyyy'}}
+			</div>
+		</div>
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Total Active Users (This Month)
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper" [ngClass]="{'up':selisihActive>=0, 'down':selisihActive<0}">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown" *ngIf="selisihActive<0"></fa-icon>
+				<fa-icon [icon]="fasArrowUp" *ngIf="selisihActive>=0"></fa-icon>
+				{{selisihActive|number}}
+			</div>
+			<div class="info">
+				from {{lastmonth|date:'MMM yyyy'}}
+			</div>
+		</div>
+	</div>
+
+	<div class="report-tab">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':activeTab1==='usage'}" (click)="setActiveTab1('usage')">
+				Usage Data
+			</div>
+			<div class="navi-list" [ngClass]="{'active':activeTab1==='attendance'}" (click)="setActiveTab1('attendance')">
+				Sunday Service Attendance
+			</div>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='usage'}">
+			
+			<dashboardview-dashboardusage
+				[year]="selected.year"
+			></dashboardview-dashboardusage>
+		</div>
+		<div class="tab-container" [ngClass]="{'hide':activeTab1!=='attendance'}">
+			<dashboardview-dashboardattendance
+				[year]="selected.year"
+				[thisweekAttendance]="thisweekAttendance"
+				[lastweekAttendance]="lastweekAttendance"
+			></dashboardview-dashboardattendance>
+		</div>
+	</div>
+
+	<div class="title-divider">
+		SMALL GROUP REPORT
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Avg. Total Request
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper down">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<hr>
+	<!-- <div class="report-single">
+		<div class="title">
+			Avg. Request Approved
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper down">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Avg. Request Rejected
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper down">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Avg. Request Pending
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper down">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<hr>
+	<div class="report-single">
+		<div class="title">
+			Avg. Small Group Approved
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper down">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Avg. Small Group Rejected
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper down">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<div class="report-single">
+		<div class="title">
+			Avg. Small Group Pending
+		</div>
+		<div class="number">
+			{{totalmonthActive|number}}
+		</div>
+		<div class="info-wrapper">
+			<div class="diff">
+				<fa-icon [icon]="fasArrowDown"></fa-icon>
+				193
+			</div>
+			<div class="info">
+				from 19 Jan 2020
+			</div>
+		</div>
+	</div>
+	<div class="title-divider">
+		ATTENDANCE EACH SUNDAY
+	</div>
+	<div class="title-divider">
+		DISCIPLESHIP JOURNEY
+	</div>
+	<div class="title-divider">
+		SMALLGROUP MEMBER DEMOGRAPHY
+	</div> -->
+
+</div>
+
+<comp-popup-modal
+	#comppopupmodal
+></comp-popup-modal>

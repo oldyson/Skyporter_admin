@@ -1,0 +1,16 @@
+<comp-listfiletable
+	[datas]="datas"
+	[keys]="keys"
+	[navigations]="navigations"
+	[isloading]="isloading"
+	[multipleSelectEnabled]="false"
+	(refreshData)="getData($event)"
+	(searchData)="searchData($event)"
+	(sortDataBy)="sortDataBy($event)"
+	(doAPI)="doAPI($event)"
+	#listtable
+></comp-listfiletable>
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

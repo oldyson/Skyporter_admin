@@ -1,0 +1,68 @@
+<div class="construct" *ngIf="isLoading">
+	<i appLoadingSkyporter size="lg"></i>
+</div>
+<div *ngIf='!isLoading'>
+	<div class="container-fluid">
+		<ng-container *ngTemplateOutlet="listTree; context:{ list: smallgroupmembers }"></ng-container>
+
+		<ng-template #listTree let-list="list" let-path="path">
+			<ng-container *ngFor="let item of list; let idx = index">
+				<div class="item-wrapper" [ngStyle]="{'margin-left': item.smallgroupmemberrole.adminpadding}" (click)="toggleTree(item, idx)">
+					<div class="content" [ngStyle]="item.smallgroupmemberrole_id === 1 ? {'cursor': 'auto'} : {}">
+						<div class="shortname" [ngStyle]="{'background-color': item.smallgroupmemberrole.admincolor1, 'border-color': item.smallgroupmemberrole.admincolor1}">
+							{{item.smallgroupmemberrole.shortname}}
+						</div>
+						<div class="item-container">
+							<div class="name">
+								<div>
+									<ng-container *ngIf="item.user2_id != null">
+										<a href="./admin/user/detail?id={{item.user_id}}">{{item.user.fullname}}</a>&nbsp;&&nbsp;<a
+											href="./admin/user/detail?id={{item.user2_id}}">
+											{{item.user2.fullname}}</a>
+									</ng-container>
+									<ng-container *ngIf="item.user2_id == null">
+										<a href="./admin/user/detail?id={{item.user_id}}">{{item.user.fullname}}</a>
+									</ng-container>
+								</div>
+								<div class="sg-name" *ngIf="item.smallgroupmemberrole.level > 1">
+									<ng-container *ngIf="item.smallgroups != null">
+										{{item.smallgroups.name}} | {{helper.makeDate(item.smallgroups.created_at)}}
+									</ng-container>
+									<ng-container *ngIf="item.smallgroups == null">
+										No SmallGroup
+									</ng-container>
+								</div>
+								<div class="sg-name" *ngIf="item.smallgroupmemberrole.level === 1">
+									<ng-container *ngIf="item.iscoreteam != 1">
+										Member
+									</ng-container>
+									<ng-container *ngIf="item.iscoreteam == 1">
+										Core Team
+									</ng-container>
+								</div>
+							</div>
+						</div>
+						<ng-container *ngIf="smallgroupHighestLevel > item.smallgroupmemberrole.level">
+							<div class="item-action">
+								<button type="button" class="btn btn-sm btn-skyporter" (click)="promoteMember(item)">Promote</button>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="smallgroupHighestLevel <= item.smallgroupmemberrole.level">
+							<div class="item-action">
+								<button type="button" class="btn btn-sm btn-secondary" (click)="promoteMember(item)" disabled>Promote</button>
+							</div>
+						</ng-container>
+					</div>
+				</div>
+				<ng-container *ngIf="isLoadingLevel && idx == selectedIdx && item.id == selectedItem.id && item.smallgroupmemberrole_id == selectedItem.smallgroupmemberrole_id">
+					<div class="wrapperLoadingItem">
+						<i appLoadingSkyporter size="md"></i>
+					</div>
+				</ng-container>
+				<ng-container *ngIf="item.smallgroupmembers != null && item.isOpen">
+					<ng-container *ngTemplateOutlet="listTree; context:{ list: item.smallgroupmembers, path: list[idx] }"></ng-container>
+				</ng-container>
+			</ng-container>
+		</ng-template>
+	</div>
+</div>

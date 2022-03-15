@@ -1,0 +1,53 @@
+			<div class="title-divider">
+				All Usage Data (On mobile app activity) at {{selected.year}}
+			</div>
+			<div class="filter monthreport">
+				<!-- GA BISA GABUNG SAMA INPUT FORM -->
+				<select class="form-control type-choose" [(ngModel)]="selected.typeLogId" (ngModelChange)="setTypeLog()">
+					<option *ngFor="let option of typeLogs; let i = index" value="{{option.id}}">
+						{{option.name}}
+					</option>
+				</select>
+				<button class="btn btn-outline-skyporter" (click)="getData()">
+					Refresh Usage Data
+				</button>
+			</div>
+			<div class="chart-wrapper">
+				<!-- <div class="chart-title">
+					{{selected.typeLogText}}
+				</div> -->
+
+				<comp-linechart
+					#monthLine
+					[minX]="minMonth"
+					[maxX]="maxMonth"
+					[options]="optionsMonth"
+					(rangeChange)="refreshMonth($event)"
+					title="{{selected.typeLogText + ' (EACH MONTH) in '+ selected.year}}"
+				></comp-linechart>
+			</div>
+
+			<div class="filter dayreport">
+				<comp-inputform
+					type="dropdown"
+					[(value)]="selected.month"
+					[options]="dataMonths"
+				></comp-inputform>
+				<button class="btn btn-outline-skyporter" (click)="refreshDay()">
+					Refresh Daily Report
+				</button>
+			</div>
+
+			<div class="chart-wrapper">
+				<comp-linechart
+					#dayLine
+					[minX]="minDay"
+					[maxX]="maxDay"
+					[options]="optionsDay"
+					(rangeChange)="refreshDay($event)"
+					title="{{selected.typeLogText + ' (PER DAY) in ' + monthLong[selected.month-1] + ' ' + selected.year}}"
+				></comp-linechart>
+			</div>
+			<div class="information">
+				All data above is the latest data, and will be refreshed when we refresh this page.
+			</div>

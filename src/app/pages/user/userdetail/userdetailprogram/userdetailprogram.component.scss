@@ -1,0 +1,58 @@
+@import "../../../../../variable.scss";
+
+.completed-class-block{
+	display: inline-block;
+	width: 100%;
+	> div{
+		margin: 10px 0;
+		&.alert-skyporter{
+			margin: 0;
+			padding: 15px 30px;
+			background-color: lighten($primary-color, 44%);
+			border: 2px dashed darken($primary-color, 20%);
+			line-height: 2;
+			text-align: center;
+		}
+		&.completed-class,
+		&.completed-event{
+			.loading-wrapper{
+				min-height: 130px;
+				width: 100%;
+				display: flex;
+				justify-content: center;
+				align-items: center;
+			}
+			.title{
+				font-weight: bold;
+				text-transform: uppercase;
+				color: rgba(0,0,0,.5);
+				font-size: 100%;
+				padding: 15px 10px 5px;
+				display: inline-block;
+				fa-icon{
+					color: darken($primary-color, 10%);
+				}
+			}
+			.subtitle{
+				font-size: 95%;
+				padding: 5px 10px;
+				margin: 0 5px;
+				color: rgba(0,0,0,.5);
+				font-weight: bold;
+				border-radius: 6px;
+				border: 1px solid #d8d8d8;
+				background-color: #f6f6f6;
+				fa-icon{
+					margin: 0 5px;
+					color: $primary-color;
+				}
+			}
+			.table-wrapper{
+				padding: 5px 10px;
+				.table{
+
+				}
+			}
+		}
+	}
+}

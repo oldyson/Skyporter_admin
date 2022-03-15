@@ -1,0 +1,26 @@
+
+<div class="detail-preview">
+	<div class="title">
+		Preview
+	</div>
+	<div class="box" [innerHTML]="campaign.description">
+	</div>
+	<div class="recipients-count">
+		<div class="title">
+			Total Recipients
+		</div>
+		<div class="counter">
+			<div class="count" *ngIf="!recipients.countloading">
+				{{recipients.count|number}}
+			</div>
+			<div class="count" *ngIf="recipients.countloading">
+				<i appLoadingSkyporter size="sm"></i>
+			</div>
+			<div class="action">
+				<button class="btn btn-sm btn-outline-skyporter" (click)="doCheckTotal()">
+					Check total recipients
+				</button>
+			</div>
+		</div>
+	</div>
+</div>

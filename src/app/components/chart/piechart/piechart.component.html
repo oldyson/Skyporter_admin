@@ -1,0 +1,34 @@
+<div class="piechart-wrapper" *ngIf="datasets != null">
+	<div class="title">
+		{{title}}
+	</div>
+	<ng-container *ngIf="datasets != null">
+		<div class="chart-contents">
+			<div class="canvas-wrapper">
+				<canvas baseChart 
+					#piechart
+					[data]="datasets" 
+					[labels]="labels" 
+					[options]="pieChartOptions"
+					[legend]="pieChartLegend" 
+					[chartType]="pieChartType" 
+					[plugins]="pieChartPlugins"
+				></canvas>
+			</div>
+			<ul class="legend-wrapper" *ngIf="piechart != null">
+				<li class="legend-item" *ngFor="let legendItem of legendData" (click)="toggleDataVisibility(legendItem.index, legendItem)" unselectable="on">
+					<span class="legend-color" [ngStyle]="{'background-color':legendItem.fillStyle}"></span>
+					<span [ngStyle]="legendData[legendItem.index].hidden ? {'text-decoration':'line-through'}:{}">{{legendItem.text}}</span>
+				</li>
+			</ul>
+		</div>
+		
+	</ng-container>
+</div>
+
+<div class="piechart-wrapper loading" *ngIf="datasets == null">
+	<i appLoadingSkyporter size="sm"></i>
+	<span class="text">
+		Please wait
+	</span>
+</div>

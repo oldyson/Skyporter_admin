@@ -1,0 +1,19 @@
+.vertical-align-top {
+	vertical-align: top;
+}
+
+.middle-block{
+	display: flex;
+	width: 100%;
+	padding: 10px;
+	justify-content: center;
+	align-items: stretch;
+	flex-wrap: wrap;
+	> div{
+		flex: 1;
+		padding: 10px;
+		&:not(:first-child){
+			border-left: 1px solid rgba(0, 0, 0, 0.1);
+		}
+	}
+}

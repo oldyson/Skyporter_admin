@@ -1,0 +1,129 @@
+@import "../../../../variable.scss";
+
+@media screen and (max-width:450px){
+	.login-wrapper{
+		.login-form{
+			width: 96vw;
+			.input-wrapper{
+				input{
+					margin-bottom: 4px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:451px) and (max-width:767px){
+	.login-wrapper{
+		.login-form{
+			width: 80vw;
+			.input-wrapper{
+				input{
+					margin-bottom: 8px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:768px) and (max-width:991px){
+	.login-wrapper{
+		.login-form{
+			width: 50vw;
+			.input-wrapper{
+				input{
+					margin-bottom: 12px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:992px) and (max-width:1200px){
+	.login-wrapper{
+		.login-form{
+			width: 50vw;
+			.input-wrapper{
+				input{
+					margin-bottom: 15px;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width:1201px){
+	.login-wrapper{
+		.login-form{
+			width: 50vw;
+			.input-wrapper{
+				input{
+					margin-bottom: 20px;
+				}
+			}
+		}
+	}
+}
+
+$footer-height: 24px;
+
+.login-wrapper{
+	display: flex;
+	height: calc(100vh - #{$footer-height});
+	justify-content: center;
+	align-items: center;
+	background-color: white;
+	background-image: repeating-linear-gradient(-45deg, lighten($primary-color, 42%), rgba(0,0,0,.05) 1.5px, lighten($primary-color, 44%) 2px, rgba(0,0,0,.05) 4px);
+	.login-form{
+		.logo{
+			text-align: center;
+			img{
+				max-width: 12rem !important;
+				width: 50vw;
+			}
+			.auth-title{
+				font-weight: bold;
+				font-size: 200%;
+    margin-top: 2vh;
+    margin-bottom: 2vh;
+			}
+		}
+		.input-wrapper{
+			input{
+				text-align: center;
+				padding: 10px 20px;
+				height: auto;
+				font-size: 120%;
+				&::placeholder{
+					color: lighten($primary-color, 10%);
+				}
+			}
+		}
+		.action-wrapper{
+			text-align: center;
+			.btn{
+				background-color: $primary-color;
+				color: $primary-op-color;
+				padding: 10px 20px;
+				font-size: 120%;
+				width: 100%;
+				&:hover{
+					background-color: lighten($primary-color, 5%);
+				}
+			}
+		}
+	}
+}
+
+.login-footer{
+	font-size: 78%;
+	font-weight: bold;
+	line-height: 1.1;
+	height: $footer-height;
+	padding: 10px 20px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background-color: darken($primary-color, 35%);
+	color: white;
+}

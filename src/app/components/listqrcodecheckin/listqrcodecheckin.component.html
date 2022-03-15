@@ -1,0 +1,54 @@
+
+<div class="listqrcodecheckin-wrapper empty" *ngIf="qrList == null">
+	There is No QR-Code Created!
+</div>
+<div class="listqrcodecheckin-wrapper empty" *ngIf="qrList != null && qrList.length === 0">
+	There is no QR-Code created!
+</div>
+<div class="listqrcodecheckin-wrapper" *ngIf="qrList != null">
+	<div class="card-wrapper" *ngFor="let item of qrList; let i = index">
+		<div class="card-list" data-toggle="modal" data-target="#modalQR" (click)="showQrcode(i)">
+			<div class="card-left">
+				<div class="image">
+					<img [src]="(item.programbreakoutdate_qrcode | safebase64)">
+				</div>
+			</div>
+			<div class="card-right">
+				<div class="text">
+					<div class="list">
+						<small>From:</small> <br>
+						{{helper.getDatetime(qrList[i].timestart_at)|date:'MMM dd, HH:mm yyyy'}}
+					</div>
+					<div class="list">
+						<small>Until:</small> <br>
+						{{helper.getDatetime(qrList[i].timeend_at)|date:'MMM dd, HH:mm yyyy'}}
+					</div>
+				</div>
+				<div class="action">
+					<button class="btn btn-sm btn-skyporter">
+						Click to View QR
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="modal fade" id="modalQR" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+		<div class="modal-dialog modal-dialog-centered" role="document">
+			<div class="modal-content">
+				<div class="modal-body text-center">
+					<div class="image">
+						<img [src]="(qrList[selectedIndex].programbreakoutdate_qrcode | safebase64)">
+					</div>
+					From: {{helper.getDatetime(qrList[selectedIndex].timestart_at)|date:'MMM dd, HH:mm yyyy'}}
+					<br>
+					Until: {{helper.getDatetime(qrList[selectedIndex].timeend_at)|date:'MMM dd, HH:mm yyyy'}}
+				</div>
+				<div class="modal-footer">
+					<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+

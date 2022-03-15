@@ -1,0 +1,234 @@
+<div class="construct" *ngIf="detailLoading == true">
+	<i appLoadingSkyporter size="md"></i>
+</div>
+<div class="programcodeform-wrapper" *ngIf="detailLoading == false">
+	<div class="programcodeform">
+		<comp-inputform
+			type="text"
+			title="{{programCodeType}} Title"
+			[(value)]="programcode.name"
+		>
+		</comp-inputform>
+		<comp-inputform
+			type="text"
+			title="{{programCodeType}} Code"
+			[(value)]="programcode.codename"
+		>
+		</comp-inputform>
+		<div class="template-wrapper">
+			<div class="notes-wrapper">
+				<div class="icon">
+					<fa-icon [icon]="fasExclamationTriangle"></fa-icon>
+				</div>
+				<div class="content">
+					Bagian ini merupakan template yang settingnya akan dicopy pada saat pembuatan class/event baru dan tidak akan
+					berpengaruh pada class/event yang sudah dibuat.
+				</div>
+			</div>
+			<comp-inputform
+				type="number"
+				title="{{programCodeType}} Total Session"
+				[(value)]="programcode.numbersession"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				title="{{programCodeType}} Minimum Attend Days"
+				[(value)]="programcode.minattenddays"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				title="{{programCodeType}} Minimum Age"
+				perline="2"
+				[(value)]="programcode.agemin"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				title="{{programCodeType}} Maximum Age"
+				perline="2"
+				[(value)]="programcode.agemax"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="dropdown"
+				title="{{programCodeType}} Gender"
+				[(value)]="programcode.reqgender"
+				[(options)]="gender"
+			>
+			</comp-inputform>
+			<ng-container
+				class="right"
+				*ngIf="ministryRoleAll.isloading"
+			>
+				<i appLoadingSkyporter size="md"></i>
+			</ng-container>
+			<ng-container
+				class="list"
+				*ngIf="!ministryRoleAll.isloading"
+			>
+				<comp-inputform
+					type="searchmultiple"
+					title="{{programCodeType}} Required Ministry Role"
+					[(value)]="ministryRoleList"
+					[options]="ministryRoleAll.ministrymemberroles"
+				>
+				</comp-inputform>
+				<br>
+			</ng-container>
+			<ng-container
+				class="right"
+				*ngIf="maritalStatusAll.isloading"
+			>
+				<i appLoadingSkyporter size="md"></i>
+			</ng-container>
+			<ng-container
+				class="list"
+				*ngIf="!maritalStatusAll.isloading"
+			>
+				<comp-inputform
+					type="searchmultiple"
+					title="{{programCodeType}} Required Marital Status"
+					[(value)]="maritalStatusList"
+					[options]="maritalStatusAll.maritalstatuses"
+				>
+				</comp-inputform>
+				<br>
+			</ng-container>
+			<ng-container
+				class="right"
+				*ngIf="programCodeAll.isloading"
+			>
+				<i appLoadingSkyporter size="md"></i>
+			</ng-container>
+			<ng-container
+				class="list"
+				*ngIf="!programCodeAll.isloading"
+			>
+				<comp-inputform
+					type="searchmultiple"
+					title="Required {{programCodeType}} Code"
+					[(value)]="programCodeList"
+					[options]="programCodeAll.programcodes"
+				>
+				</comp-inputform>
+				<br>
+			</ng-container>
+			<ng-container
+				class="right"
+				*ngIf="smallgroupRoleAll.isloading"
+			>
+				<i appLoadingSkyporter size="md"></i>
+			</ng-container>
+			<!-- <ng-container *ngIf="!smallgroupRoleAll.isloading">
+				<programcodeform-sgroles
+					[(smallgroupRoleList)]="smallgroupRoleList"
+					[smallgroupRoleAll]="smallgroupRoleAll"
+					(addProgramCodeReqSGRoleList)="addProgramCodeReqSGRoleList()"
+					(removeProgramCodeReqSGRoleList)="removeProgramCodeReqSGRoleList($event)"
+				>
+				</programcodeform-sgroles>
+			</ng-container> -->
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Family"
+				[(value)]="programcode.reqfamily"
+				[tooltipMessage]="tooltipMessage.requiredFamily"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Children"
+				[(value)]="programcode.reqchildren"
+				[tooltipMessage]="tooltipMessage.requiredChild"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Leader Approval"
+				[(value)]="programcode.leaderapproval"
+				[tooltipMessage]="tooltipMessage.requiredLeader"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Admin Approval"
+				[(value)]="programcode.adminapproval"
+				[tooltipMessage]="tooltipMessage.requiredAdmin"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required User"
+				[(value)]="programcode.isuser"
+				[tooltipMessage]="tooltipMessage.requiredUser"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Register with Spouse"
+				[(value)]="programcode.withspouse"
+				[tooltipMessage]="tooltipMessage.withSpouse"
+			>
+			</comp-inputform>
+
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Pre Wedding Couple"
+				[(value)]="programcode.iscouple"
+				[tooltipMessage]="tooltipMessage.requiredCouple"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required New Couple"
+				[(value)]="programcode.isnewcouple"
+				[tooltipMessage]="tooltipMessage.requiredNewCouple"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Select Child"
+				[(value)]="programcode.isselectchild"
+				[tooltipMessage]="tooltipMessage.requiredSelectChild"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="{{programCodeType}} Required Upload File"
+				[(value)]="programcode.isreqfiles"
+				[tooltipMessage]="tooltipMessage.requiredFiles"
+			>
+			</comp-inputform>
+			<ng-container *ngIf="programcode.iscouple == true">
+				<comp-inputform
+				type="number"
+				title="{{programCodeType}} Marital Date Minimum (optional)"
+				[(value)]="programcode.maritaldatemin"
+				[perline]=2
+				>
+				</comp-inputform>
+				<comp-inputform
+				type="number"
+				title="{{programCodeType}} Marital Date Maximum (optional)"
+				[(value)]="programcode.maritaldatemax"
+				[perline]=2
+				>
+				</comp-inputform>
+			</ng-container>
+		</div>
+		<ng-container class="right" *ngIf="saveLoading">
+			<i appLoadingSkyporter size="md"></i>
+		</ng-container>
+		<ng-container *ngIf="!saveLoading">
+			<button class="btn btn-outline-skyporter right" (click)="saveProgramCode()">
+				Save
+			</button>
+		</ng-container>
+	</div>
+</div>
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

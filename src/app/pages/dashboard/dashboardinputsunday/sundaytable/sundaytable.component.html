@@ -1,0 +1,50 @@
+<div class="sundaytable-wrapper">	
+	<table class="table table-sm">
+		<thead>
+			<tr>
+				<th>Day</th>
+				<th>Time</th>
+				<th>General</th>
+				<th>General<br>FirstTimer</th>
+				<th>General<br>Salvation</th>
+				<th>Youth</th>
+				<th>Youth<br>FirstTimer</th>
+				<th>Youth<br>Salvation</th>
+				<th>Kids</th>
+				<th>Kids<br>FirstTimer</th>
+				<th>Kids<br>Salvation</th>
+				<th></th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr *ngFor="let campusservice of campusservices">
+				<td>{{dayofweek[campusservice.serviceday]}}</td>
+				<td class="right">{{campusservice.servicetime.substring(0,5)}}</td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalgeneral" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalgeneralfirst" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalgeneralsalvation" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalyouth" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalyouthfirst" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalyouthsalvation" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalkids" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalkidsfirst" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td><input type="number" [(ngModel)]="campusservice.campusserviceattendance.totalkidssalvation" (ngModelChange)="change(campusservice)" min="0"></td>
+				<td class="min-width">
+					<button class="btn" [ngClass]="{'success':campusservice.loading||!campusservice.changed, 'red':!campusservice.loading&&campusservice.changed}" (click)="saveOneRow(campusservice)">
+						<ng-container *ngIf="!campusservice.loading">
+							<ng-container *ngIf="!campusservice.changed">
+								<fa-icon [icon]="fasCheck"></fa-icon>
+							</ng-container>
+							<ng-container *ngIf="campusservice.changed">
+								<fa-icon [icon]="fasSave"></fa-icon>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngIf="campusservice.loading">
+								<fa-icon [icon]="fasSpinner" [spin]="true"></fa-icon>
+						</ng-container>
+					</button>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>

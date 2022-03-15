@@ -1,0 +1,66 @@
+<div class="ministrylist-wrapper">
+	<div class="detailtable">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':i===selectedTabIndex}" (click)="isloading ? '' : changeSelectedTabIndex(i)"
+				*ngFor="let tab of tabs; let i = index">
+				{{isloading && i !==selectedTabIndex ? 'Please Wait...' : tab.label}}
+			</div>
+		</div>
+		<!-- GROUP HEAD -->
+		<!-- GROUP HEAD -->
+		<ng-container *ngIf="tabs[selectedTabIndex].value === 'Group'">
+			<div class="detail">
+				<comp-listtable
+					#listtablegrouphead
+					[datas]="data.groupHead" 
+					[keys]="keys.groupHead" 
+					[navigations]="navigations.groupHead" 
+					[isloading]="isloading"
+					(refreshData)="getData($event)" 
+					(searchData)="searchData($event)" 
+					(sortDataBy)="sortDataBy($event)"
+					(doAPI)="doAPI($event)" 
+				></comp-listtable>
+			</div>
+		</ng-container>
+		<!-- SUB GROUP -->
+		<!-- SUB GROUP -->
+		<ng-container *ngIf="tabs[selectedTabIndex].value === 'Subgroup'">
+			<div class="detail">
+				<comp-listtable
+					#listtablesubgroup
+					[datas]="data.subGroup" 
+					[keys]="keys.subGroup" 
+					[navigations]="navigations.subGroup" 
+					[isloading]="isloading"
+					(refreshData)="getData($event)" 
+					(searchData)="searchData($event)" 
+					(sortDataBy)="sortDataBy($event)"
+					(doAPI)="doAPI($event)"
+				></comp-listtable>
+			</div>
+		</ng-container>
+		<!-- MINISTRY -->
+		<!-- MINISTRY -->
+		<ng-container *ngIf="tabs[selectedTabIndex].value === 'Ministry'">
+			<div class="detail">
+				<comp-listtable
+					#listtableministry
+					[datas]="data.ministry" 
+					[keys]="keys.ministry" 
+					[navigations]="navigations.ministry" 
+					[isloading]="isloading"
+					[filterOptions]="filtersData.ministry"
+					(refreshData)="getData($event)" 
+					(searchData)="searchData($event)" 
+					(sortDataBy)="sortDataBy($event)"
+					(doAPI)="doAPI($event)" 
+					(listFilter)="generateFilterData($event)"
+				></comp-listtable>
+			</div>
+		</ng-container>
+	</div>
+	<comp-popup-modal 
+		#mymodal>
+	</comp-popup-modal>
+</div>

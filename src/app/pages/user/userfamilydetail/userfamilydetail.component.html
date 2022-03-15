@@ -1,0 +1,151 @@
+
+
+
+<div class="userfamilydetail-wrapper" *ngIf="userfamily != null">
+	<div class="familyparent-wrapper">
+		<div class="parent" *ngIf="userfamily.user != null">
+			<ng-container>
+				<div class="image" [ngClass]="{'female':userfamily.user.gender==='Female', 'male':userfamily.user.gender==='Male'}" [ngStyle]="{'background-image': 'url(' + (userfamily.user.document != null ? userfamily.user.document.url : '') + ')'}">
+				</div>
+			</ng-container>
+			<div class="detail">
+				<b class="title" *ngIf="userfamily.user != null">{{ userfamily.user.gender === 'Male' ? 'FATHER' : 'MOTHER' }}</b><br>
+				<div class="inner-detail">
+					<table class="table table-sm" *ngIf="userfamily.user != null">
+						<tbody>
+							<tr>
+								<td>Name</td>
+								<td>:</td>
+								<td>
+									<a href="/admin/user/detail?id={{userfamily.user.id}}">
+										{{userfamily.user.fullname}}
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>Email</td>
+								<td>:</td>
+								<td>{{userfamily.user.email}}</td>
+							</tr>
+							<tr>
+								<td>Phone</td>
+								<td>:</td>
+								<td>{{userfamily.user.phone}}</td>
+							</tr>
+							<tr>
+								<td>Role</td>
+								<td>:</td>
+								<td>
+									<div [innerHTML]='userfamily.user.roleSummary'>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Gender</td>
+								<td>:</td>
+								<td>{{userfamily.user.gender}}</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>:</td>
+								<td>{{userfamily.user.deleted_at == null ? 'Active' : 'Inactive'}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+		<div class="separator" hidden>
+		</div>
+		<div class="parent" *ngIf="userfamily.user2 != null">
+			<div class="image" [ngClass]="{'female':userfamily.user2.gender==='Female', 'male':userfamily.user2.gender==='Male'}" [ngStyle]="{'background-image': 'url(' + (userfamily.user2.document != null ? userfamily.user2.document.url : '') + ')'}">
+			</div>
+			<div class="detail">
+				<b class="title" *ngIf="userfamily.user2 != null">{{ userfamily.user2.gender === 'Male' ? 'FATHER' : 'MOTHER' }}</b><br>
+				<div class="inner-detail">
+					<table class="table table-sm" *ngIf="userfamily.user2 != null">
+						<tbody>
+							<tr>
+								<td>Name</td>
+								<td>:</td>
+								<td >
+									<a href="/admin/user/detail?id={{userfamily.user2.id}}">
+										{{userfamily.user2.fullname}}
+									</a>
+								</td>
+							</tr>
+							<tr>
+								<td>Email</td>
+								<td>:</td>
+								<td>{{userfamily.user2.email}}</td>
+							</tr>
+							<tr>
+								<td>Phone</td>
+								<td>:</td>
+								<td>{{userfamily.user2.phone}}</td>
+							</tr>
+							<tr>
+								<td>Role</td>
+								<td>:</td>
+								<td>
+									<div [innerHTML]='userfamily.user2.roleSummary'>
+									</div>
+								</td>
+							</tr>
+							<tr>
+								<td>Gender</td>
+								<td>:</td>
+								<td>{{userfamily.user2.gender}}</td>
+							</tr>
+							<tr>
+								<td>Status</td>
+								<td>:</td>
+								<td>{{userfamily.user2.deleted_at == null ? 'Active' : 'Inactive'}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="familychild-wrapper">
+		<div class="child">
+			<div class="title">
+				PARENT INFORMATION
+			</div>
+			<div class="detail">
+				<div class="parent-info">
+					<table class="table table-sm">
+						<tbody>
+							<tr>
+								<td>Married At</td>
+								<td class="min-width">:</td>
+								<td>
+									{{userfamily.marriage_at}}
+								</td>
+							</tr>
+							<tr>
+								<td>Created At</td>
+								<td class="min-width">:</td>
+								<td>{{userfamily.created_at}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+			<div class="title">
+				CHILDREN INFORMATION
+			</div>
+			<div class="detail">
+				<comp-listtable
+					[datas]="datas"
+					[keys]="keys"
+					[navigations]="navigations"
+					[isloading]="isloading"
+					(refreshData)="getUserfamilyById()"
+					#listtable
+				></comp-listtable>
+			</div>
+		</div>
+	</div>
+</div>

@@ -1,0 +1,31 @@
+<ng-template #mymodal let-modal>
+	<!-- <div class="modal-header" *ngIf="title!=''">
+		<h4 class="modal-title" id="modal-basic-title">
+			Bootstrap Modal
+		</h4>
+		<button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+			<span aria-hidden="true">&times;</span>
+		</button>
+	</div> -->
+	<div class="modal-body">
+		<div class="pre-icon">
+			<fa-stack size="3x" class="danger" *ngIf="status==='danger'">
+				<fa-icon [icon]="fasCircle" stackItemSize="2x"></fa-icon>
+				<fa-icon [icon]="fasTimes" [inverse]="true" stackItemSize="1x"></fa-icon>
+			</fa-stack>
+			<fa-stack size="3x" class="success" *ngIf="status==='success'">
+				<fa-icon [icon]="fasCircle" stackItemSize="2x"></fa-icon>
+				<fa-icon [icon]="fasTimes" [inverse]="true" stackItemSize="1x"></fa-icon>
+			</fa-stack>
+		</div>
+		<div class="title" [innerHTML]="title" *ngIf="title">
+		</div>
+		<div class="message" [innerHTML]="message" *ngIf="message">
+		</div>
+	</div>
+	<div class="modal-footer">
+		<button type="button" id="btn-ok" class="btn btn-skyporter" (click)="modal.close('Save click')">
+			Okay
+		</button>
+	</div>
+</ng-template>

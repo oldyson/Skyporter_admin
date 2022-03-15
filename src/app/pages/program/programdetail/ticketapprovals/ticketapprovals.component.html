@@ -1,0 +1,440 @@
+<div class="ticketapprovals-wrapper">
+	<div class="loading-wrapper" *ngIf="isLoading">
+		<i appLoadingSkyporter size="md"></i>
+	</div>
+	<ng-container *ngIf="!isLoading">
+		<ng-container *ngIf="program!=null">
+			<div class="return-link">
+				<a href="admin/program/{{programType}}/detail?id={{program.id}}">< Return to {{programType}} preview</a>
+			</div>
+			<div class="detail-wrapper">
+				<div class="tickets-wrapper">
+					<div class="title-wrapper">
+						<div class="text">
+							{{program.programcode.name}}: {{program.name}}
+						</div>
+					</div>
+					<!-- <div class="modal-button-wrapper">
+						<button class="btn btn-outline-skyporter" (click)="showStatuses()">
+							Show List of Statuses
+						</button>
+					</div> -->
+					<div class="pretable-wrapper">
+						<div class="pretable-left">
+							<comp-inputform
+								type="checkbox"
+								title="Ready to Approve Only"
+								[(value)]="isReadyToApproveOnly"
+								(valueChange)="getTicketData(1)"
+							>
+							</comp-inputform>
+						</div>
+						<div class="pretable-right">
+							<div class="input-group search">
+								<input type="text" id="list-search" class="form-control" placeholder="{{navigations?.search_by}}" aria-label="Search to table" [(ngModel)]="keyword" (keydown)="onSearchKeydown($event)">
+								<div class="input-group-append">
+									<button class="btn" type="button" (click)="getTicketData(1)">
+										<fa-icon [icon]="fasSearch"></fa-icon>
+									</button>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="loading-wrapper" *ngIf="isTicketsLoading">
+						<i appLoadingSkyporter size="md"></i>
+					</div>
+					<div class="tickets-list" *ngIf="!isTicketsLoading">
+						<div class="message" *ngIf="programtickets != null && programtickets.length == 0">
+							No ticket data found.
+						</div>
+						<ng-container *ngFor="let programticket of programtickets; let i = index">
+							<div class="panel" [ngClass]="{'selected':programticket.isSelected}" (click)="!isFileLoading ? onSelectTicket(programticket) : null">
+								<div class="full-flex column-left">
+									<div class="panel-content-wrapper">
+										<div class="title">
+											{{program.programcode.type}} Ticket Owner Name:
+										</div>
+										<div class="content">
+											{{programticket?.user?.fullname}}
+											<ng-container *ngIf="programticket.user2 != null">
+												& {{programticket?.user2?.fullname}}
+											</ng-container>
+											<ng-container *ngIf="programticket.user2 == null && programticket.user2name != null">
+												& {{programticket?.user2name}} (non-user)
+											</ng-container>
+										</div>
+									</div>
+									<div class="panel-content-wrapper">
+										<div class="title">
+											Booking Code:
+										</div>
+										<div class="content">
+											{{programticket.bookingcode}}
+										</div>
+									</div>
+									<div class="panel-content-wrapper">
+										<div class="title">
+											Registered on:
+										</div>
+										<div class="content">
+											{{programticket.created_at|date:'dd MMM yy'}}<br>
+											<fa-icon class="clock" [icon]="fasClock"></fa-icon>
+											{{programticket.created_at|date:'HH:mm:ss'}}
+										</div>
+									</div>
+									<div class="panel-content-wrapper" *ngIf="programticket.canceled_at != null">
+										<div class="title">
+											Cancelled on:
+										</div>
+										<div class="content">
+											{{programticket.canceled_at|date:'dd MMM yy'}}<br>
+											<fa-icon class="clock" [icon]="fasClock"></fa-icon>
+											{{programticket.canceled_at|date:'HH:mm:ss'}}
+										</div>
+									</div>
+								</div>
+								<div class="divider">
+								</div>
+								<div class="full-flex column-right">
+									<div class="panel-content-wrapper">
+										<ng-container *ngIf="programticket.approvalStatus == 'unknown'">
+											<div class="icon">
+												<fa-icon [icon]="fasQuestionCircle" class="warning"></fa-icon>
+											</div>
+											<div class="status-text">
+												Unknown status
+											</div>
+										</ng-container>
+										<ng-container *ngIf="programticket.approvalStatus == 'approved'">
+											<div class="icon">
+												<fa-icon [icon]="fasCheckCircle" class="success"></fa-icon>
+											</div>
+											<div class="status-text">
+												Approved
+											</div>
+										</ng-container>
+										<ng-container *ngIf="programticket.approvalStatus == 'pending admin'">
+											<div class="icon">
+												<fa-icon [icon]="fasExclamationCircle" class="warning"></fa-icon>
+											</div>
+											<div class="status-text">
+												Needs Approval
+											</div>
+										</ng-container>
+										<ng-container *ngIf="programticket.approvalStatus == 'pending leader'">
+											<div class="icon">
+												<fa-icon [icon]="fasClock" class="warning"></fa-icon>
+											</div>
+											<div class="status-text">
+												Waiting for Leader's Approval
+											</div>
+										</ng-container>
+										<ng-container *ngIf="programticket.approvalStatus == 'pending payment'">
+											<div class="icon">
+												<fa-icon [icon]="fasMoney" class="success"></fa-icon>
+											</div>
+											<div class="status-text">
+												Pending Payment
+											</div>
+										</ng-container>
+										<ng-container *ngIf="programticket.approvalStatus == 'rejected'">
+											<div class="icon">
+												<fa-icon [icon]="fasTimesCircle" class="danger"></fa-icon>
+											</div>
+											<div class="status-text">
+												Rejected
+											</div>
+										</ng-container>
+										<ng-container *ngIf="programticket.approvalStatus == 'reupload'">
+											<div class="icon">
+												<fa-icon [icon]="fasRedo" class="warning"></fa-icon>
+											</div>
+											<div class="status-text">
+												Waiting for re-upload
+											</div>
+										</ng-container>
+									</div>
+								</div>
+							</div>
+						</ng-container>
+					</div>
+					<ng-container *ngIf="navigations!=null">
+						<div *ngIf="navigations.total" class="navi-info">
+							Showing [&nbsp;<span class="text-bold clr-primary">{{navigations.from|number}}..{{navigations.to|number}}</span>&nbsp;] {{navigations.per_page|number}} of&nbsp;<span class="text-bold clr-primary">{{navigations.total|number}}</span>&nbsp;rows.
+						</div>
+						<div class="navi-wrapper" *ngIf="navigationLists.length > 0">
+							<div class="navi-left">
+								<ul>
+									<ng-container *ngIf="!ispageone">
+										<li>
+											<button (click)="gotoPage(1)">
+												1
+											</button>
+										</li>
+										<ng-container *ngIf="!ispageoneafter">
+											<li class="nobutton">
+												<button disabled>
+													...
+												</button>
+											</li>
+										</ng-container>
+									</ng-container>
+									<ng-container *ngFor="let list of navigationLists">
+										<ng-container *ngIf="list != null">
+											<li *ngIf="list.isshow">
+												<ng-container *ngIf="list.iscurrent">
+													<button class="current">
+														{{list.label}}
+													</button>
+												</ng-container>
+												<ng-container *ngIf="!list.iscurrent">
+													<button (click)="gotoPage(list.label)">
+														{{list.label}}
+													</button>
+												</ng-container>
+											</li>
+										</ng-container>
+									</ng-container>
+									<ng-container *ngIf="!islastpage">
+										<ng-container *ngIf="!islastpagebefore">
+											<li class="nobutton">
+												<button disabled>
+													...
+												</button>
+											</li>
+										</ng-container>
+										<li>
+											<button (click)="gotoPage(navigations.last_page)">
+												{{navigations.last_page}}
+											</button>
+										</li>
+									</ng-container>
+								</ul>
+							</div>
+							<div class="navi-right">
+								<ng-container *ngIf="navigations.current_page > 1">
+									<button class="btn" (click)="prevPage()">
+										Prev.
+									</button>
+								</ng-container>
+								<ng-container *ngIf="navigations.current_page < navigations.last_page">
+									<button class="btn" (click)="nextPage()" >
+										Next
+									</button>
+								</ng-container>
+							</div>
+						</div>
+					</ng-container>
+					<div class="modal-button-wrapper">
+						<button class="btn btn-outline-skyporter" (click)="showLeaderApprovalDocuments()">
+							View Required Files
+						</button>
+					</div>
+				</div>
+				<div class="files-loading-wrapper" *ngIf="isFileLoading">
+					<i appLoadingSkyporter size="md"></i>
+					<ng-container *ngFor="let user of users;let i = index">
+						<div class="processing-text" *ngIf="user.isProcessing">
+							Processing {{user.label}}'s approval...
+						</div>
+					</ng-container>
+				</div>
+
+				<div class="placeholder" *ngIf="!isFileLoading && (users.length == 0 || users == null) && selectedProgramticket == null">
+					Please select a ticket.
+				</div>
+				<div class="placeholder" *ngIf="!isFileLoading && (users.length == 0 || users == null) && selectedProgramticket != null">
+					No approval data.
+				</div>
+				<div class="files-wrapper" *ngIf="!isFileLoading && users?.length > 0">
+					<div class="navi">
+						<div class="navi-list" [ngClass]="{'active':users[i].isSelected}" (click)="changeTabIndex(i)" *ngFor="let user of users; let i = index">
+							{{user.label}}
+							<ng-container *ngIf="((user.leaderapproval == null && user.adminapproval?.status == 'Pending') || (user.leaderapproval?.status == 'Approved' && user.adminapproval?.status == 'Pending')) && selectedProgramticket.status == 'Pending'">
+								<div class="icon">
+									<fa-icon [icon]="fasExclamationCircle" class="warning"></fa-icon>
+								</div>
+								<span class="tooltip-message">
+									Needs Approval
+								</span>
+							</ng-container>
+							<ng-container *ngIf="user.leaderapproval?.status == 'Reupload'">
+								<div class="icon">
+									<fa-icon [icon]="fasRedo" class="warning"></fa-icon>
+								</div>
+								<span class="tooltip-message">
+									Waiting for re-upload
+								</span>
+							</ng-container>
+							<ng-container *ngIf="user.leaderapproval?.status == 'Pending' && selectedProgramticket.status == 'Pending'">
+								<div class="icon">
+									<fa-icon [icon]="fasClock" class="warning"></fa-icon>
+								</div>
+								<span class="tooltip-message">
+									Waiting for Leader's Approval
+								</span>
+							</ng-container>
+							<ng-container *ngIf="user.adminapproval?.status == 'Approved'">
+								<div class="icon">
+									<fa-icon [icon]="fasCheckCircle" class="success"></fa-icon>
+								</div>
+								<span class="tooltip-message">
+									Approved
+								</span>
+							</ng-container>
+							<ng-container *ngIf="user.adminapproval?.status == 'Rejected'">
+								<div class="icon">
+									<fa-icon [icon]="fasTimesCircle" class="danger"></fa-icon>
+								</div>
+								<span class="tooltip-message">
+									Rejected
+								</span>
+							</ng-container>
+						</div>
+					</div>
+					<div class="wrapper-table">
+						<ng-container *ngFor="let user of users;let i = index">
+							<ng-container *ngIf="user.isSelected">
+								<div class="title">
+									Leader
+								</div>
+								<div class="leader-name" *ngIf="user.leaderapproval != null">
+									{{user.leaderapproval?.smallgroupmember?.user?.fullname}}
+									<ng-container *ngIf="user.leaderapproval?.smallgroupmember?.user2?.fullname">
+										& {{user.leaderapproval?.smallgroupmember?.user2?.fullname}}
+									</ng-container>
+								</div>
+								<div class="title">
+									Files
+								</div>
+								<div class="files-list">
+									<div *ngIf="selectedProgramticket != null && user.programticketapprovaldocuments.length == 0" class="message">
+										No file uploaded.
+									</div>
+									<div *ngIf="selectedProgramticket == null" class="message">
+										Please select a ticket.
+									</div>
+									<button class="file" [ngClass]="{'selected':selectedFile == doc}" *ngFor="let doc of user.programticketapprovaldocuments" (click)="selectFile(doc)" [ngStyle]="{'background-image': 'url(' + doc.document.url + ')'}">
+										<div class="file-name">
+											{{doc.document.name}}
+										</div>
+									</button>
+								</div>
+								<div class="title">
+									File Preview
+								</div>
+								<div class="file-preview-container">
+									<div class="file-preview" *ngIf="selectedFile == null">
+										Please select a file.
+									</div>
+									<object class="file-preview" *ngIf="selectedFile != null && getFileExtension(selectedFile.document?.url) == 'pdf'" [data]="selectedFile?.document?.url | safe:'resourceUrl'" frameBorder="0" scrolling="auto">
+									</object>
+									<iframe class="file-preview" *ngIf="selectedFile != null && (getFileExtension(selectedFile.document?.url) == 'docx' || getFileExtension(selectedFile.document?.url) == 'doc')" [src]="'https://view.officeapps.live.com/op/embed.aspx?src='+selectedFile?.document?.url | safe:'resourceUrl'" frameBorder="0" scrolling="auto">
+									</iframe>
+									<img class="file-preview" *ngIf="selectedFile != null && getFileExtension(selectedFile.document?.url) != 'docx' && getFileExtension(selectedFile.document?.url) != 'doc' && getFileExtension(selectedFile.document?.url) != 'pdf'" [src]="selectedFile?.document?.url | safe:'resourceUrl'"/>
+								</div>
+								<div class="files-footer" *ngIf="selectedFile != null || user.adminapproval?.status == 'Pending' || (user.leaderapproval?.status == 'Approved' && selectedProgramticket.status =='Pending')">
+									<ng-container *ngIf="selectedFile?.isDownloading">
+										<i appLoadingSkyporter size="sm"></i>
+									</ng-container>
+									<a class="btn btn-outline-skyporter" *ngIf="selectedFile != null && selectedFile.isDownloading == false" (click)="downloadResource(selectedFile, selectedFile.document.name)">
+										Download File
+									</a>
+									<div class="btn btn-outline-skyporter" *ngIf="selectedProgramticket.approvalStatus == 'pending admin' && selectedProgramticket.status == 'Pending'" (click)="approvalAction('Accept')">
+										Approve
+									</div>
+									<div class="btn btn-outline-skyporter" *ngIf="selectedProgramticket.approvalStatus == 'pending admin' && selectedProgramticket.status == 'Pending'" (click)="approvalAction('Decline')">
+										Reject
+									</div>
+									<div class="btn btn-outline-skyporter" *ngIf="user.leaderapproval?.status == 'Approved' && selectedProgramticket.status == 'Pending' && user.adminapproval.status == 'Pending'" (click)="approvalReupload()">
+										Ask Leader to Reupload
+									</div>
+								</div>
+							</ng-container>
+						</ng-container>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+	</ng-container>
+</div>
+<ng-template #leaderapprovalsmodal let-modal>
+	<div class="modal-header">
+		<div class="title" id="modal-basic-title">
+			Leader Approval Files
+		</div>
+		<div class="action">
+			<button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+				<span aria-hidden="true">
+					&times;
+				</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="modal-body empty" *ngIf="program?.programleaderapprovaldocuments?.length == 0">
+		No files.
+	</div>
+
+	<ng-container *ngIf="program?.programleaderapprovaldocuments?.length > 0">
+		<div class="modal-body">
+			<div class="modal-content">
+				<ng-container *ngFor="let doc of program?.programleaderapprovaldocuments; let i = index">
+					<div class="modal-files">
+						<div class="file-name">
+							{{doc.document.name}}
+						</div>
+						<ng-container *ngIf="doc.isDownloading">
+							<i appLoadingSkyporter size="sm"></i>
+						</ng-container>
+						<a class="btn btn-skyporter" (click)="downloadResource(doc, doc.document.name)" *ngIf="!doc.isDownloading">
+							<fa-icon [icon]="fasCloudDownload"></fa-icon>
+						</a>
+					</div>
+				</ng-container>
+			</div>
+		</div>
+	</ng-container>
+	
+</ng-template>
+
+<ng-template #helpmodal let-modal>
+	<div class="modal-header">
+		<div class="title" id="modal-basic-title">
+			List of Statuses
+		</div>
+		<div class="action">
+			<button type="button" class="btn close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+				<span aria-hidden="true">
+					&times;
+				</span>
+			</button>
+		</div>
+	</div>
+
+	<div class="modal-body">
+		<div class="modal-content">
+			<div class="icon-row">
+				<fa-icon [icon]="fasCheckCircle" class="success"></fa-icon>
+				Ticket is approved.
+			</div>
+			<div class="icon-row">
+				<fa-icon [icon]="fasExclamationCircle" class="warning"></fa-icon>
+				Ticket requires approval.
+			</div>
+			<div class="icon-row">
+				<fa-icon [icon]="fasClock" class="warning"></fa-icon>
+				Waiting for Leader's approval.
+			</div>
+			<div class="icon-row">
+				<fa-icon [icon]="fasRedo" class="warning"></fa-icon>
+				Waiting for Leader to reupload the required files.
+			</div>
+			<div class="icon-row">
+				<fa-icon [icon]="fasTimesCircle" class="danger"></fa-icon>
+				Ticket is rejected.
+			</div>
+		</div>
+	</div>
+	
+</ng-template>

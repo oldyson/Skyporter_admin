@@ -1,0 +1,384 @@
+
+<div class="programdetail-wrapper" *ngIf="programId != null && program != null">
+	<div class="loading-wrapper" *ngIf="isloadingInfo">
+		<i appLoadingSkyporter size="md"></i>
+	</div>
+	<div class="title-wrapper">
+		<div class="text">
+			{{program.programcode.name}}: {{program.name}}
+		</div>
+		<a href="admin/program/{{program.programcode.type}}/form?id={{program.id}}" class="btn btn-outline-skyporter">
+			Edit {{program.programcode.type}}
+		</a>
+	</div>
+	<div class="programdetail-header" *ngIf="!isloadingInfo">
+		<div class="panel left">
+			<div class="full-flex">
+				<div class="panel-content-wrapper">
+					<div class="title">
+						{{program.programcode.type}} Code:
+					</div>
+					<div class="content">
+						#{{program.programcode.id}}. {{program.programcode.name}}
+					</div>
+				</div>
+				<div class="panel-content-wrapper">
+					<div class="title">
+						{{program.programtype.name}} Name:
+					</div>
+					<div class="content">
+						#{{program.id}}. {{program.name}}
+					</div>
+				</div>
+				<div class="panel-content-wrapper">
+					<div class="title">
+						{{program.programtype.name}} Time:
+					</div>
+					<div class="content">
+						<fa-icon [icon]="fasPlay" [fixedWidth]="true"></fa-icon>
+						<ng-container *ngIf="program.publishstart_at">
+							{{helper.getDatetime(program.programstart_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+							({{helper.dateDiffInString(helper.getDatetime(program.programstart_at))}})
+						</ng-container>
+						<br>
+
+						<fa-icon [icon]="fasStop" [fixedWidth]="true"></fa-icon>
+						<ng-container *ngIf="program.publishstart_at">
+							{{helper.getDatetime(program.programend_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+							({{helper.dateDiffInString(helper.getDatetime(program.programend_at))}})
+						</ng-container>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Publication Time:
+					</div>
+					<div class="content">
+						<fa-icon [icon]="fasPlay" [fixedWidth]="true"></fa-icon>
+						<ng-container *ngIf="program.publishstart_at">
+							{{helper.getDatetime(program.publishstart_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+							({{helper.dateDiffInString(helper.getDatetime(program.publishstart_at))}})
+						</ng-container>
+						<br>
+
+						<fa-icon [icon]="fasStop" [fixedWidth]="true"></fa-icon>
+						<ng-container *ngIf="program.publishend_at">
+							{{helper.getDatetime(program.publishend_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+							({{helper.dateDiffInString(helper.getDatetime(program.publishend_at))}})
+						</ng-container>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Registration Time:
+					</div>
+					<div class="content">
+						<fa-icon [icon]="fasPlay" [fixedWidth]="true"></fa-icon>
+						<ng-container *ngIf="program.registerstart_at">
+							{{helper.getDatetime(program.registerstart_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+						</ng-container>
+						<ng-container *ngIf="program.registerstart_at">
+							({{helper.dateDiffInString(helper.getDatetime(program.registerstart_at))}})
+						</ng-container>
+						<br />
+
+						<fa-icon [icon]="fasStop" [fixedWidth]="true"></fa-icon>
+						<ng-container *ngIf="program.registerend_at">
+							{{helper.getDatetime(program.registerend_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+						</ng-container>
+						<ng-container *ngIf="program.registerend_at">
+							({{helper.dateDiffInString(helper.getDatetime(program.registerend_at))}})
+						</ng-container>
+					</div>
+				</div>
+				<hr>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Minimum attend days:
+					</div>
+					<div class="content">
+						{{program.minattenddays}} sessions
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Age Interval:
+					</div>
+					<div class="content">
+						{{program.agemin}} - {{program.agemax}} years old
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Status:
+					</div>
+					<div class="content">
+						{{program.status}}
+					</div>
+				</div>
+				<div class="panel-content-wrapper">
+					<div class="title">
+						Total Tickets:
+					</div>
+					<div class="content">
+						<fa-icon [icon]="fasHourglassHalf" [fixedWidth]="true"></fa-icon>
+						Pending: {{(this.program.programtickets_count_pending) | number}} tickets<br>
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true"></fa-icon>
+						Approved: {{(this.program.programtickets_count_approved) | number}} tickets<br>
+						<fa-icon class="danger" [icon]="fasTimesSquare" [fixedWidth]="true"></fa-icon>
+						Rejected: {{(this.program.programtickets_count_rejected) | number}} tickets<br>
+						Total: <b>{{(program.programtickets_count_pending
+							+ program.programtickets_count_approved
+							+ program.programtickets_count_rejected) | number}} tickets</b>
+					</div>
+				</div>
+				<div class="panel-content-wrapper">
+					<div class="title">
+						( Pending + Approved ) / Quota:
+					</div>
+					<div class="content">
+						( {{(program.programtickets_count_pending) | number}} + {{(program.programtickets_count_approved) | number}} )  / {{(program.programtickets_count_quota) | number}} tickets
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Allowed Gender:
+					</div>
+					<div class="content">
+						<ng-container *ngIf="program.reqgender==null">
+							All Gender
+						</ng-container>
+						<ng-container *ngIf="program.reqgender!=null">
+							<ng-container *ngIf="program.reqgender==='Female'">
+								Female Only !
+							</ng-container>
+							<ng-container *ngIf="program.reqgender==='Male'">
+								Male Only !
+							</ng-container>
+						</ng-container>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Creator:
+					</div>
+					<div class="content">
+						{{program.creator?.fullname}}
+					</div>
+				</div>
+			</div>
+			<div class="viewmore" hidden>
+				<button class="btn btn-sm btn-outline-skyporter" (click)="toggleExpandHeader()">
+					<ng-container *ngIf="!isheaderexpand">
+						View More
+					</ng-container>
+					<ng-container *ngIf="isheaderexpand">
+						Hide Detail
+					</ng-container>
+				</button>
+			</div>
+		</div>
+		<div class="panel right">
+			<div class="full-flex">
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title" hidden>
+						Description (SHOWN ON APP):
+					</div>
+					<div class="content" [innerHTML]="program.description" hidden></div>
+				</div>
+				<div class="panel-content-wrapper">
+					<div class="title">
+						Settings:
+					</div>
+					<div class="content">
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.isreqpayment"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.isreqpayment"></fa-icon>
+						Required Payment
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.isopenregist"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.isopenregist"></fa-icon>
+						Open for Registration
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.ishighlight"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.ishighlight"></fa-icon>
+						Marked as Highlight
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.reqfamily"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.reqfamily"></fa-icon>
+						Registrant must have family
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.reqchildren"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.reqchildren"></fa-icon>
+						Registrant must have children
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.isuser"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.isuser"></fa-icon>
+						All Participant must be {{global.appName}} user.
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.withspouse"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.withspouse"></fa-icon>
+						Participant is registered along with his/her spouse.
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.iscouple"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.iscouple"></fa-icon>
+						Participant must register with his/her couple (non-married) with marriage planned.
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.isnewcouple"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.isnewcouple"></fa-icon>
+						Participant must register with his/her couple (non-married) and has no marriage planned.
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.isselectchild"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.isselectchild"></fa-icon>
+						Participant must select children to be registered.
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.isreqfiles"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.isreqfiles"></fa-icon>
+						Participant must upload the required files.
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.leaderapproval"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.leaderapproval"></fa-icon>
+						To join this {{program.programtype.name}}, need Leader Approval
+						<br>
+
+						<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="program.adminapproval"></fa-icon>
+						<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!program.adminapproval"></fa-icon>
+						To join this {{program.programtype.name}}, need Admin Approval
+						<br>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						Breakouts & Sessions:
+					</div>
+					<div class="content">
+						<div class="breakout" *ngFor="let breakout of program.programbreakouts">
+							<ng-container *ngIf="breakout.campusroom != null">
+								#{{breakout.id}}. <b>{{breakout.campusroom.campus.name}}</b> {{breakout.campusroom.name}}<br>
+							</ng-container>
+							<ng-container *ngIf="breakout.campusroom == null">
+								#{{breakout.id}}. <b>{{breakout.location}}</b><br>
+								<ng-container *ngIf="breakout.locationaddress != null">
+									Location:
+									<ng-container *ngIf="breakout.locationaddress?.length > 0">
+										{{breakout.locationaddress}}
+									</ng-container>
+								</ng-container>
+							</ng-container>
+							<br>
+
+							<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="breakout.ischeckforall"></fa-icon>
+							<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!breakout.ischeckforall"></fa-icon>
+							Check-in / scan QR code is required
+							<br>
+
+							<fa-icon class="success" [icon]="fasCheckSquare" [fixedWidth]="true" *ngIf="breakout.ischeckforall"></fa-icon>
+							<fa-icon class="danger" [icon]="farSquare" [fixedWidth]="true" *ngIf="!breakout.ischeckforall"></fa-icon>
+							One times scan for all attendance (in One ticket)
+							<br>
+
+							<div class="session" *ngFor="let date of breakout.programbreakoutdates; let i = index">
+								#{{date.id}}. Sesi ke-{{i+1}}: <br>
+								<fa-icon [icon]="fasPlay" [fixedWidth]="true"></fa-icon> {{helper.getDatetime(date.timestart_at) | date: 'dd MMM yyyy HH:mm:ss'}}<br>
+								<fa-icon [icon]="fasStop" [fixedWidth]="true"></fa-icon> {{helper.getDatetime(date.timeend_at) | date: 'dd MMM yyyy HH:mm:ss'}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						PRICE & AVAILABLE ROLES:
+					</div>
+					<div class="content">
+						<div class="price">
+							<div class="" *ngFor="let price of program.programprices">
+								#{{price.id}}.
+								<ng-container *ngIf="price.smallgroupmemberrole_id == null && price.ministrymemberrole_id == null && price.role_id == null">
+									<b>All Roles</b> are
+								</ng-container>
+								<ng-container *ngIf="price.smallgroupmemberrole_id != null && price.ministrymemberrole_id == null && price.role_id == null">
+									SG Role: <b>{{price.smallgroupmemberrole.name}}
+									<ng-container *ngIf="price.iscoreteam == 1">
+										- CoreTeam
+									</ng-container></b> is
+								</ng-container>
+								<ng-container *ngIf="price.smallgroupmemberrole_id == null && price.ministrymemberrole_id != null && price.role_id == null">
+									Ministry Role: <b>{{price.ministrymemberrole.name}}</b> is
+								</ng-container>
+								<ng-container *ngIf="price.smallgroupmemberrole_id == null && price.ministrymemberrole_id == null && price.role_id != null">
+									Admin Role: <b>{{price.role.name}}</b> is
+								</ng-container>
+								allowed for {{price.currency? price.currency.isoname : 'XXX'}}
+								{{price.price|number}}
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						MARITAL STATUSES that are allowed:
+					</div>
+					<div class="content">
+						<div class="maritalstatus" *ngIf="program.programreqmarstatuses?.length>0">
+							<span class="" *ngFor="let maritalstatus of program.programreqmarstatuses; let i = index">
+								{{maritalstatus.maritalstatus.name}}<ng-container *ngIf="program.programreqmarstatuses?.length-1!=i">,</ng-container>
+							</span>
+						</div>
+						<div class="maritalstatus" *ngIf="program.programreqmarstatuses?.length==0">
+							All Marital Statuses
+						</div>
+					</div>
+				</div>
+				<div class="panel-content-wrapper" [ngClass]="{'hide':!isheaderexpand}">
+					<div class="title">
+						To join this {{program.programcode.type}}, all participants must complete:
+					</div>
+					<div class="content">
+						<div class="prerequisiteclasscode" *ngIf="program.programreqprcodes?.length>0">
+							<span class="" *ngFor="let prcode of program.programreqprcodes; let i = index">
+								{{prcode.programcodereq.name}}<ng-container *ngIf="program.programreqprcodes?.length-1!=i">,</ng-container>
+							</span>
+						</div>
+						<div class="maritalstatus" *ngIf="program.programreqprcodes?.length==0">
+							No Prerequisite {{program.programcode.type}} Code
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="viewmore">
+				<button class="btn btn-sm btn-outline-skyporter" (click)="toggleExpandHeader()">
+					<ng-container *ngIf="!isheaderexpand">
+						View More
+					</ng-container>
+					<ng-container *ngIf="isheaderexpand">
+						Hide Detail
+					</ng-container>
+				</button>
+			</div>
+		</div>
+	</div>
+
+	<ng-container>
+		<programdetail-detailtable
+			#detailtable
+			[program]="program"
+			[programId]="programId"
+			[programType]="programType"
+			[programStart]="programStart"
+			[programEnd]="programEnd"
+			[dataAttendanceCount]="attendanceCount"
+			[dataQrList]="qrList"
+			(refreshDetail)="getInfo()"
+		></programdetail-detailtable>
+	</ng-container>
+</div>

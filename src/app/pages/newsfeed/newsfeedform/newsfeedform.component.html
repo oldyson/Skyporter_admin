@@ -1,0 +1,184 @@
+<div class="wrapper-loading" *ngIf="isLoading">
+	<i appLoadingSkyporter size="lg"></i>
+</div>
+<div class="newsfeed-wrapper">
+	<div class="newsfeed-form" *ngIf='!isLoading'>
+		<div class="newsfeed-type-wrapper">
+			<ng-container>
+				<div class="detail">
+					<div class="input-form">
+						<comp-inputform
+							type="dropdown"
+							[title]="formData.type.title"
+							[(value)]="formData.type.value"
+							(valueChange)="onChangeType($event)"
+							[disabled]="isLoadingSelectedType"
+							[options]="typeList"
+						>
+						</comp-inputform>
+					</div>
+					<div class="input-form">
+						<comp-inputform
+							type="searchsingle"
+							[title]="formData.category.title"
+							[(value)]="formData.category.value"
+							[dropdownLoading]="isLoadingCategoryList"
+							[options]="categoryList"
+						>
+						</comp-inputform>
+					</div>
+					<div class="input-form w-full">
+						<comp-inputform type="text" [title]="formData.title.title" [(value)]="formData.title.value">
+						</comp-inputform>
+					</div>
+					<div
+						*ngIf="formData.type.value == 1"
+						class="input-form w-full"
+					>
+						<comp-inputform
+							type="text"
+							[title]="formData.media.title"
+							[(value)]="formData.media.value"
+							(valueChange)="onChangeVideo($event)"
+							placeholder="Ex: https://www.youtube.com"
+						>
+						</comp-inputform>
+					</div>
+					<div
+						*ngIf="formData.type.value == 2"
+						class="input-form w-full"
+					>
+						<div class="input-wrapper">
+							<div class="title">
+								{{formData.media.title}}
+							</div>
+							<div class="content">
+								<div class="uploadfilecontainer" (click)="imageInput.click()" appDragDrop>
+									<ng-container *ngIf="!formData.media.value">
+										Choose Image
+									</ng-container>
+									<ng-container *ngIf="formData.media.value">
+										{{formData.media.filename}}
+									</ng-container>
+									<input hidden type="file" (change)="onFileChange($event)" accept="image/*" #imageInput>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div class="input-form w-full">
+						<comp-inputform type="simplemde" [title]="formData.description.title" (valueChange)="onChangeDescription($event)"
+							[optionsMde]="formData.description.config" [(value)]="formData.description.value">
+						</comp-inputform>
+					</div>
+					<div class="input-form">
+						<comp-inputform
+							type="datetime"
+							[title]="formData.startAt.title"
+							[(value)]="formData.startAt.value"
+						>
+						</comp-inputform>
+					</div>
+					<div class="input-form">
+						<comp-inputform
+							type="datetime"
+							[title]="formData.endAt.title"
+							[(value)]="formData.endAt.value"
+							>
+						</comp-inputform>
+					</div>
+				</div>
+			</ng-container>
+			<div class="footer-container">
+				<div class="right" *ngIf="loadingSave">
+					<i appLoadingSkyporter size="md"></i>
+				</div>
+				<div class="right" *ngIf="!loadingSave">
+					<button class="btn btn-skyporter" (click)="saveForm('Draft')">
+					   Save as Draft
+					</button>
+					<button class="btn btn-skyporter" (click)="saveForm('Published')">
+						Save
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="newsfeed-preview" *ngIf='!isLoading'>
+		<div class="preview-title">
+			Preview at HOME View
+		</div>
+		<div class="detail">
+			<div
+				*ngIf="formData.type.value == 1 || formData.type.value == 2"
+				[ngStyle]="formData.media.src || formData.media.value !== null ? {} : {'background-color': '#ddd', 'height': '150px'}"
+			>
+				<div 
+					*ngIf="formData.type.value == 1"
+				>
+					<a [href]="'http://www.youtube.com/watch?v=' + formData.media.id" title="">
+						<img class="result-preview"
+							[src]="formData.media.src" alt="">
+					</a>
+				</div>
+				<img
+					*ngIf="formData.type.value == '2'"
+					[src]="formData.media.src"
+					[alt]="formData.media.src?.substring(formData.media.src.lastIndexOf('/') + 1) || ''"
+				/>
+			</div>
+			<div class="category txt">
+				{{findCategoryById(formData.category.value)?.name || 'Category'}}
+			</div>
+			<div class="title txt">
+				{{formData.title.value || 'Title'}}
+			</div>
+			<div class="txt datetime">
+				{{helper.makeDate(formData.startAt.value) || 'Start Date'}} - {{helper.makeDate(formData.endAt.value) || 'End Date'}}
+			</div>
+		</div>
+		<div class="preview-title">
+			Preview at Detail View
+		</div>
+		<div class="detail dua">
+			<div class="header">
+				<div class="back button">
+					<fa-icon [icon]="falChevronLeft"></fa-icon>
+				</div>
+				<div class="text">
+					News
+				</div>
+				<div class="next button">
+				</div>
+			</div>
+			<div
+				*ngIf="formData.type.value == 1 || formData.type.value == 2"
+				[ngStyle]="formData.media.src || formData.media.value !== null ? {} : {'background-color': '#ddd', 'height': '150px'}"
+			>
+				<div 
+					*ngIf="formData.type.value == 1"
+				>
+					<a [href]="'http://www.youtube.com/watch?v=' + formData.media.id" title="">
+						<img class="result-preview"
+							[src]="formData.media.src" alt="">
+					</a>
+				</div>
+				<img
+					*ngIf="formData.type.value == '2'"
+					[src]="formData.media.src"
+					[alt]="formData.media.src?.substring(formData.media.src.lastIndexOf('/') + 1) || ''"
+				/>
+			</div>
+			<div class="category txt">
+				{{findCategoryById(formData.category.value)?.name || 'Category'}}
+			</div>
+			<div class="title txt">
+				{{formData.title.value || 'Title'}}
+			</div>
+			<div class="txt datetime">
+				{{helper.makeDate(formData.startAt.value) || 'Start Date'}} - {{helper.makeDate(formData.endAt.value) || 'End Date'}}
+			</div>
+			<div class="txt description" [innerHTML]="previewDescription"></div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,64 @@
+<ng-template #mymodal let-modal>
+	<div class="modal-body">
+		<div class="input" *ngIf="!next">
+			<div class="naration">
+				Let's add attendance by administrator.<br/><br/>
+				Note: <br>All attendances (each email) will automatically approved.<br>Each email will get a free ticket (IDR 0).<br>All attendances that will be added, are allow to check-in via QR Code Scan.
+			</div>
+			<textarea 
+				rows="42" 
+				class="txtarea" 
+				[(ngModel)]="emails"
+				placeholder="You can copy from Google Sheet with these template
+email1@gmail.com
+email2@gmail.com
+email3@gmail.com
+email4@gmail.com
+email5@gmail.com
+email6@gmail.com
+email7@gmail.com
+etc....
+
+Happy Ctrl/Command+C and Ctrl/Command+V"></textarea>
+		</div>
+		<ng-container *ngIf="errorMessage && !next">
+			<div class="message" [ngClass]="{'success':successSave, 'failed':!successSave}" [innerHTML]="errorMessage">
+			</div>
+			<div class="text-center">
+				<button class="btn btn-sm btn-skyporter" (click)="next=true" *ngIf="registeredItems.length > 0 || failedItems.length > 0">
+					Check Result
+				</button>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="next">
+			<div class="list-wrapper" *ngIf="registeredItems.length > 0">
+				<div class="title">
+					Cannot register, cause already registered earlier.
+				</div>
+				<ol>
+					<li *ngFor="let registered of registeredItems">
+						{{registered}}
+					</li>
+				</ol>
+			</div>
+			<div class="list-wrapper" *ngIf="failedItems.length > 0">
+				<div class="title">
+					Email is not registered at users. Ask them to register first.
+				</div>
+				<ol>
+					<li *ngFor="let failed of failedItems">
+						{{failed}}
+					</li>
+				</ol>
+			</div>
+		</ng-container>
+	</div>
+	<div class="modal-footer">
+		<button type="button" class="btn btn-outline-skyporter" (click)="modal.close('Save click')">
+			Close
+		</button>
+		<button type="button" class="btn btn-skyporter" (click)="generateMailsToAttendances()" *ngIf="successSave==false">
+			Save
+		</button>
+	</div>
+</ng-template>

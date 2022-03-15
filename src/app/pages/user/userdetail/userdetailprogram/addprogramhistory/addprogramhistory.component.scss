@@ -1,0 +1,127 @@
+@import "../../../../../../variable.scss";
+@media screen and (max-width:450px){
+	.modal-wrapper{
+		.attendance-wrapper{
+			display: block;
+		}
+	}
+}
+@media screen and (min-width: 451px) and (max-width:767px){
+	.modal-wrapper{
+		.attendance-wrapper{
+			display: block;
+		}
+	}
+}
+@media screen and (min-width: 768px) {
+	.modal-wrapper{
+		.content-wrapper{
+			display: flex;
+		}
+	}
+}
+.modal-wrapper{
+	min-height: 40vh;
+	justify-content: center;
+	display: flex;
+	flex-direction: column;
+	.content-wrapper{
+		padding: 5px 15px 20px 15px;
+		flex:1;
+		flex-direction: column;
+		.row-wrapper{
+			display: flex;
+			.program{
+				flex:1;
+				.second-title{
+					color: rgb(54, 53, 53);
+					font-size: 105%;
+					padding-top: 10px;
+					text-transform: uppercase;
+					font-weight: bold;
+				}
+				&.program-information{
+					width:50%;
+					.title{
+						font-size: 75%;
+						color: #bbb;
+						text-transform: uppercase;
+						font-weight: 700;
+						line-height: 1.0;
+					}
+					.content{
+						line-height: 1.1;
+						padding-bottom: 12px;
+					}
+				}
+
+				&.program-requirement{
+					width:50%;
+					> div{
+						padding-top: 6px;
+					}
+				}
+				&.program-attendance{
+					width:100%;
+					comp-listattendancetable{
+						.listtable-wrapper{
+							padding:0px !important;
+						}
+					}
+				}
+			}
+		}
+	}
+	.notif-wrapper{
+		flex: 1;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		display: flex;
+		.notif-title{
+			padding: 25px 0px 20px 0px;
+			font-size: 200%;
+			display:block;
+			text-transform: uppercase;
+			text-align: center;
+			line-height: 1.1;
+			font-weight: bold;
+		}
+		.notif-content{
+			line-height: 1;
+			text-align: left;
+		}
+	}
+	.error-message {
+		padding: 10px;
+	}
+	.main-title{
+		padding: 25px 0px 0px 0px;
+		font-size: 200%;
+		display:block;
+		text-transform: uppercase;
+		text-align: center;
+		line-height: 1.1;
+		font-weight: bold;
+	}
+	.close-button {
+		button {
+			width: 100%;
+			border-radius: 0px;
+			// flex: 1;
+		}
+	}
+
+	.double-button {
+		button {
+			// flex: 1;
+			width: 50%;
+			border-radius: 0px;
+		}
+	}
+	.loading{
+		justify-content: center;
+		text-align: center;
+		align-items: center;
+	}
+}

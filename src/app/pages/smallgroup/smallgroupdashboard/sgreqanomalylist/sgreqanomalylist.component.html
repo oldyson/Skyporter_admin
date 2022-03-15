@@ -1,0 +1,104 @@
+<div class="anomaly-count-wrapper">
+	<div class="description" [innerHTML]="description">
+	</div>
+
+	<ng-container *ngIf="smallgrouprequests?.length > 0">
+		<div class="pending-summary">
+			Requests: <b>{{totalrequest|number}}</b> <br>
+			Transfers: <b>{{totaltransfer|number}}</b> <br>
+			Total Request + Transfer: <b>{{smallgrouprequests.length|number}}</b>.
+		</div>
+		<div class="pending-lists">
+			<div class="list" *ngFor="let smallgrouprequest of smallgrouprequests; let i = index">
+				<div class="title">
+					#{{i+1}}. A {{smallgrouprequest.smallgroupmember_id ? 'transfer from '+smallgrouprequest.smallgroupmember?.smallgroup.name : 'request'}} to <b>{{smallgrouprequest.smallgroup.name}}</b> <br>
+					[ {{smallgrouprequest.delay}} ago ] from {{helper.getDatetime(smallgrouprequest.created_at)|date:'dd MMM yyyy'}}
+				</div>
+				<div class="sgtujuan">
+					<div class="title">
+						Group Name: <b>{{smallgrouprequest.smallgroup.name}}</b>
+					</div>
+
+					<div class="content">
+						Leader 1: 
+						{{smallgrouprequest.smallgroup?.smallgroupleader?.user?.fullname}} <a href="tel:{{smallgrouprequest.smallgroup?.smallgroupleader?.user?.phone}}">{{smallgrouprequest.smallgroup?.smallgroupleader?.user?.phone}}</a>
+						- 
+						<a class="whatsapp" href="https://wa.me/{{smallgrouprequest.smallgroup?.smallgroupleader?.user?.phone}}" target="_blank">
+							<fa-icon [icon]="fabWhatsapp"></fa-icon>
+						</a>
+
+						<ng-container *ngIf="smallgrouprequest.smallgroup?.smallgroupleader?.user2 != null">
+							<br>
+							Leader 2: {{smallgrouprequest.smallgroup?.smallgroupleader?.user2?.fullname}} <a href="tel:{{smallgrouprequest.smallgroup?.smallgroupleader?.user2?.phone}}">{{smallgrouprequest.smallgroup?.smallgroupleader?.user2?.phone}}</a>
+
+							- 
+							<a class="whatsapp" href="https://wa.me/{{smallgrouprequest.smallgroup?.smallgroupleader?.user2?.phone}}" target="_blank">
+								<fa-icon [icon]="fabWhatsapp"></fa-icon>
+							</a>
+						</ng-container>
+					</div>
+				</div>
+				<div class="requester">
+					<div class="title">
+						System: <b>{{smallgrouprequest.smallgroupmember_id?'TRANSFER':'REQUEST'}}</b>
+					</div>
+
+					<div class="content" *ngIf="smallgrouprequest.smallgroupmember!=null">
+						User 1: 
+						{{smallgrouprequest.smallgroupmember.user?.fullname}} <a href="tel:{{smallgrouprequest.smallgroupmember.user?.phone}}">{{smallgrouprequest.smallgroupmember.user?.phone}}</a>
+						- 
+						<a class="whatsapp" href="https://wa.me/{{smallgrouprequest.smallgroupmember.user?.phone}}" target="_blank">
+							<fa-icon [icon]="fabWhatsapp"></fa-icon>
+						</a>
+
+						<ng-container *ngIf="smallgrouprequest.smallgroupmember.user2 != null">
+							<br>
+							{{smallgrouprequest.smallgroupmember.user2?.fullname}} <a href="tel:{{smallgrouprequest.smallgroupmember.user2?.phone}}">{{smallgrouprequest.smallgroupmember.user2?.phone}}</a>
+							- 
+							<a class="whatsapp" href="https://wa.me/{{smallgrouprequest.smallgroupmember.user2?.phone}}" target="_blank">
+								<fa-icon [icon]="fabWhatsapp"></fa-icon>
+							</a>
+						</ng-container>
+					</div>
+					<div class="content" *ngIf="smallgrouprequest.smallgroupmember==null">
+						Applicant: 
+						{{smallgrouprequest.user?.fullname}} <a href="tel:{{smallgrouprequest.user?.phone}}">{{smallgrouprequest.user?.phone}}</a> 
+						- 
+						<a class="whatsapp" href="https://wa.me/{{smallgrouprequest.user?.phone}}" target="_blank">
+							<fa-icon [icon]="fabWhatsapp"></fa-icon>
+						</a>
+					</div>
+
+					<div class="content">
+						Valid to: {{helper.getDatetime(smallgrouprequest.pendingvalid_to) | date: 'dd MMM yy'}}
+					</div>
+				</div>
+				<div class="form-list">
+					<div class="content">
+						Length in this Church: 
+						<b>
+							{{smallgrouprequest.lengthinjpcc}}
+						</b>
+					</div>
+					<div class="content">
+						Previous Church: 
+						<b>
+							{{smallgrouprequest.previouschurch}}
+						</b>
+					</div>
+					<div class="content">
+						Is Serve in previous Church?
+						<b>
+							{{smallgrouprequest.serveinpreviouschurch?'Yes':'No'}}
+						</b>
+					</div>
+				</div>
+
+
+			</div>
+		</div>
+	</ng-container>
+
+	<ng-container *ngIf="smallgrouprequests?.length == 0">
+	</ng-container>
+</div>

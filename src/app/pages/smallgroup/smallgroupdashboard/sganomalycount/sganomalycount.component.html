@@ -1,0 +1,135 @@
+<div class="anomaly-count-wrapper">
+	<div class="description" [innerHTML]="description">
+	</div>
+	<div class="select-year">
+		<select class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="getData()">
+			<option *ngFor="let option of years; let i = index" value="{{option}}">
+				{{option}}
+			</option>
+		</select>
+	</div>
+	<div class="count-table">
+		<comp-percenttoggle
+			[status]="showpercent"
+			(whenToggled)="percentToggled($event)"
+		>
+		</comp-percenttoggle>
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<th rowspan="2">Generated Date</th>
+					<th colspan="3">Group No Member</th>
+					<th colspan="3">Group Member > 16</th>
+					<th colspan="3">Group No CoreTeam</th>
+					<th rowspan="2">Total Group</th>
+					<th rowspan="2">Growth Value</th>
+				</tr>
+				<tr>
+					<th><6m</th>
+					<th>>=6m</th>
+					<th>>=12m</th>
+					<th><6m</th>
+					<th>>=6m</th>
+					<th>>=12m</th>
+					<th><6m</th>
+					<th>>=6m</th>
+					<th>>=12m</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr *ngFor="let smallgroupcount of smallgroupreportbymembers; let i = index">
+					<td class="generateddate">{{smallgroupcount.generateddate|date:'d MMM Y'}}</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.nodmlower6}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.nodmlower6 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.nodmupper6}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.nodmupper6 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.nodmupper12}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.nodmupper12 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.dm16lower6}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.dm16lower6 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.dm16upper6}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.dm16upper6 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.dm16upper12}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.dm16upper12 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.noctlower6}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.noctlower6 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.noctupper6}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.noctupper6 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="value">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.noctupper12}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							{{(smallgroupcount.noctupper12 / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+					<td class="min-width">
+						<ng-container *ngIf="!showpercent">
+							{{smallgroupcount.smallgroupscount|number}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+							100%
+						</ng-container>
+					</td>
+					<td class="min-width">
+						<ng-container *ngIf="!showpercent">
+							{{( i+1 < smallgroupreportbymembers.length ? (smallgroupcount.smallgroupscount - smallgroupreportbymembers[i+1]?.smallgroupscount) : 0 ) > 0 ? '+': ''}}{{( i+1 < smallgroupreportbymembers.length ? (smallgroupcount.smallgroupscount - smallgroupreportbymembers[i+1]?.smallgroupscount) : 0 )}}
+						</ng-container>
+						<ng-container *ngIf="showpercent">
+
+							{{( i+1 < smallgroupreportbymembers.length ? (smallgroupcount.smallgroupscount - smallgroupreportbymembers[i+1]?.smallgroupscount) : 0 ) > 0 ? '+': ''}}{{(( i+1 < smallgroupreportbymembers.length ? (smallgroupcount.smallgroupscount - smallgroupreportbymembers[i+1]?.smallgroupscount) : 0 ) / smallgroupcount.smallgroupscount)|percent:'1.0-1'}}
+						</ng-container>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+</div>

@@ -1,0 +1,19 @@
+<div class="demographic-charts-wrapper">
+	<div class="description" [innerHTML]="description">
+	</div>
+	<div class="construct" *ngIf="isLoading">
+		<i appLoadingSkyporter size="lg"></i>
+	</div>
+	<ng-container *ngFor="let data of datas; let idx = index">
+		<div class="divider">
+			<hr/>
+		</div>
+		<div class="chart-wrapper">
+			<comp-piechart
+				[title]="data.title"
+				[datasets]="data.dataset"
+				[labels]="data.labels"
+			></comp-piechart>
+		</div>
+	</ng-container>
+</div>

@@ -1,0 +1,99 @@
+<div class="listprogrambreakout-wrapper" *ngIf="program != null">
+	<div class="header" *ngIf="program.programbreakouts != null">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':currentViewIndex===i}" (click)="changeViewIndex(i)" *ngFor="let programbreakout of program.programbreakouts; let i = index">
+				{{programbreakout.name}}
+				<ng-container *ngIf="program.isEditable==1">
+					<button class="btn btn-sm" (click)="removeBreakout(i)">
+						<fa-icon [icon]="farTimes"></fa-icon>
+					</button>
+				</ng-container>
+			</div>
+			<ng-container *ngIf="program.isEditable==1">
+				<div class="navi-list" (click)="addBreakout()">
+					<fa-icon [icon]="farPlus"></fa-icon>
+				</div>
+			</ng-container>
+		</div>
+	</div>
+	<ng-container *ngIf="currentViewIndex != null">
+		<div class="detail" *ngIf="program.programbreakouts[currentViewIndex] != null">
+			<comp-inputform
+				type="text"
+				title="Breakout Name"
+				[(value)]="program.programbreakouts[currentViewIndex].name"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="text"
+				title="Speaker"
+				[(value)]="program.programbreakouts[currentViewIndex].speaker"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				perline='3'
+				title="Seating Quota"
+				[(value)]="program.programbreakouts[currentViewIndex].maxseating"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				perline='3'
+				title="Standing Quota"
+				[(value)]="program.programbreakouts[currentViewIndex].maxstanding"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				perline='3'
+				title="Baby Seat Quota"
+				[(value)]="program.programbreakouts[currentViewIndex].maxbaby"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="venuedropdown"
+				title="Select Venue"
+				[(value)]="program.programbreakouts[currentViewIndex].campusroom_id"
+				[options]="campusrooms"
+			>
+			</comp-inputform>
+			<ng-container *ngIf="program.programbreakouts[currentViewIndex].campusroom_id==0">
+				<comp-inputform
+					type="text"
+					title="Venue"
+					[(value)]="program.programbreakouts[currentViewIndex].location"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="textarea"
+					title="Venue Address"
+					[(value)]="program.programbreakouts[currentViewIndex].locationaddress"
+				>
+				</comp-inputform>
+			</ng-container>
+			<comp-inputform
+				type="checkbox"
+				title="Require Check In"
+				[(value)]="program.programbreakouts[currentViewIndex].isreqcheckin"
+			>
+			</comp-inputform>
+			<ng-container *ngIf="program.programbreakouts[currentViewIndex].isreqcheckin">
+				<comp-inputform
+					type="checkbox"
+					title="Check In for All"
+					[(value)]="program.programbreakouts[currentViewIndex].ischeckforall"
+				>
+				</comp-inputform>
+			</ng-container>
+			<programform-breakout-date
+				[(program)]="program"
+				(addBreakoutDate)="addBreakoutDate($event)"
+				(removeBreakoutDate)="removeBreakoutDate($event)"
+				(updateStartEnd)="updateStartEnd()"
+				[currentViewIndex]="currentViewIndex"
+			>
+			</programform-breakout-date>
+		</div>
+	</ng-container>
+</div>

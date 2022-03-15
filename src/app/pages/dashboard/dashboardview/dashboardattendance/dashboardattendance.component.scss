@@ -1,0 +1,80 @@
+@import "../../../../../variable.scss";
+
+@media screen and (max-width:450px){
+	.detail-attendance{
+		display: none;
+	}
+}
+
+@media screen and (min-width:451px) and (max-width:767px){
+	.detail-attendance{
+		display: none;
+	}
+}
+
+@media screen and (min-width:768px) and (max-width:991px){
+	.detail-attendance{
+		display: none;
+	}
+}
+
+@media screen and (min-width:992px) and (max-width:1200px){
+	.detail-attendance{
+	}
+}
+
+@media screen and (min-width:1201px){
+	.detail-attendance{
+	}
+}
+
+.title-divider{
+	margin: 0 10px;
+	font-size: 85%;
+	border-width: 1px;
+	border-color: #d8d8d8;
+	padding: 10px 15px 5px;
+	font-weight: bold;
+	color: rgba(0,0,0,.6);
+}
+.chart-wrapper{
+	border-width: 1px 0;
+	border-style: solid;
+	border-color: #d8d8d8;
+	border-radius: 0;
+	box-shadow: none;
+}
+
+.detail-attendance{
+	padding: 0 20px;
+	margin: 20px 10px;
+	> .title{
+		font-weight: bold;
+		font-size: 110%;
+		color: $primary-color;
+		padding: 10px 0;
+		margin: 0;
+	}
+	.table{
+		thead{
+			th,
+			td{
+				line-height: 1.1;
+				font-size: 70%;
+				min-width: 60px;
+				&:not(:first-child){
+					text-align: right;
+				}
+			}
+		}
+		tbody{
+			tr{
+				td{
+					&:not(:first-child){
+						text-align: right;
+					}
+				}
+			}
+		}
+	}
+}

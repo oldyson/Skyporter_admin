@@ -1,0 +1,115 @@
+@import "../../../../variable.scss";
+
+.ministryform-wrapper{	
+	padding: 20px 0;
+	.header{
+		margin: 0 10px;
+		.navi{
+			display: flex;
+			justify-content: flex-start;
+			border-bottom: 1px solid #d8d8d8;
+			.navi-list{
+				padding: 10px 20px;
+				border-width: 1px 1px 0 1px;
+				border-color: #d8d8d8;
+				border-style: solid;
+				background-color: #f4f4f4;
+				border-radius: 4px 4px 0 0;
+				margin-left: 5px;
+				&.active{
+					margin-bottom: -1px;
+					background-color: white;
+				}
+				&:not(.active){
+					padding: 8px 20px 3px;
+					margin-top: 9px;
+					color: #888;
+					transition: 0.12s all;
+					cursor: pointer;
+					box-shadow: inset 0 -5px 5px -5px rgba(0,0,0,.15);
+					border-color: #e5e5e5;
+					&:hover{
+						padding: 10px 20px;
+						margin-top: 0;
+						border-color: #d8d8d8;
+					}
+				}
+			}
+		}
+	}
+
+	.body{
+		background-color: white;
+		box-shadow: 0 0 5px 5px rgba(0,0,0,.04);
+		border-radius: 0;
+		margin: 0 10px;
+		padding: 15px 15px;
+		border-width: 0 1px;
+		border-style: solid;
+		border-color: #d8d8d8;
+		.input-wrapper{
+			display: inline-block;
+			width: 100%;
+			margin: 8px 0 4px;
+			padding: 0 2px;
+			.title{
+				text-transform: uppercase;
+				color: #777;
+				font-weight: bold;
+				padding: 0 4px;
+			}
+			.form-check{
+				padding-left: 1.7rem;
+			}
+		}
+
+		.uploadimage-result{
+			max-width:100%;
+			border: 1px solid #d8d8d8;
+			border-radius: 4px;
+			padding: 10px;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			color: rgba(0,0,0,.55);
+			background-color: #fafafa;
+		}
+		
+		.uploadfilecontainer {
+			border: 1px solid #d8d8d8;
+			border-radius: 4px;
+			padding: 10px;
+			display: flex;
+			justify-content: flex-start;
+			align-items: center;
+			color: rgba(0,0,0,.55);
+			background-color: #fafafa;
+			font-weight: bold;
+			font-size: 85%;
+		}
+		
+		.uploadfilecontainer:hover {
+			cursor: pointer;
+			border-color: lighten($primary-color, 10%) !important;
+			background-color: white;
+			color: rgba(0,0,0,.3);
+		}
+	}
+	
+	.footer{
+		display: flex;
+		justify-content: flex-end;
+		margin: 0 10px;
+		padding: 10px 15px 20px;
+		background-color: white;
+		border-style: solid;
+		border-width: 0 1px 1px;
+		border-color: #d8d8d8;
+		border-radius: 0 0 6px 6px;
+	}
+
+	.loading{
+		display: flex;
+		justify-content: center;
+	}
+}

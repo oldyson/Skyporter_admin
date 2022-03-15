@@ -1,0 +1,17 @@
+<div class="list-wrapper">
+	<div class="title">
+		{{title}}
+	</div>
+	<comp-listtable
+		[datas]="datas"
+		[keys]="keys"
+		[navigations]="navigations"
+		[isloading]="isloading"
+		(searchData)="searchData($event)"
+		(refreshData)="getData($event)"
+		(sortDataBy)="sortDataBy($event)"
+		(doAPI)="doAPI($event)"
+		[simpleError]=true
+		#listtable
+	></comp-listtable>
+</div>

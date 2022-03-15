@@ -1,0 +1,97 @@
+<div class="discipleship-journey-wrapper">
+	<div class="description" [innerHTML]="description">
+	</div>
+	<div class="select-year">
+		<select class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="getData()">
+			<option *ngFor="let option of years; let i = index" value="{{option}}">
+				{{option}}
+			</option>
+		</select>
+	</div>
+	<div class="construct" *ngIf="isLoading">
+		<i appLoadingSkyporter size="lg"></i>
+	</div>
+	<ng-container *ngIf="!isLoading">
+		<ng-container *ngIf="smallgroupreportbymembers != null && smallgroupreportbymembers.length > 0">
+			<div class="title-divider">
+				PSL SUMMARIES
+			</div>
+			<div class="report-single">
+				<div class="title">
+					Plant
+				</div>
+				<div class="number">
+					{{smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount']|number}}
+				</div>
+				<div class="info-wrapper" [ngClass]="{'up':smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount']-(smallgroupreportbymembers[min]['smallgroupmemberscount']+smallgroupreportbymembers[min]['coreteamscount'])>=0, 'down':smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount']-(smallgroupreportbymembers[min]['smallgroupmemberscount']+smallgroupreportbymembers[min]['coreteamscount'])<0}">
+					<div class="diff">
+						<fa-icon [icon]="fasArrowDown" *ngIf="(smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount']-(smallgroupreportbymembers[min]['smallgroupmemberscount']+smallgroupreportbymembers[min]['coreteamscount']))<0"></fa-icon>
+						<fa-icon [icon]="fasArrowUp" *ngIf="(smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount']-(smallgroupreportbymembers[min]['smallgroupmemberscount']+smallgroupreportbymembers[min]['coreteamscount']))>=0"></fa-icon>
+						{{smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount']-(smallgroupreportbymembers[min]['smallgroupmemberscount']+smallgroupreportbymembers[min]['coreteamscount'])|number}}
+					</div>
+					<div class="info">
+						from {{dates[min]}} to {{dates[max]}}
+					</div>
+				</div>
+			</div>
+			<div class="report-single">
+				<div class="title">
+					Serve
+				</div>
+				<div class="number">
+					{{smallgroupreportbymembers[max]['servecount']|number}}
+				</div>
+				<div class="info-wrapper" [ngClass]="{'up':smallgroupreportbymembers[max]['servecount']-smallgroupreportbymembers[min]['servecount']>=0, 'down':smallgroupreportbymembers[max]['servecount']-smallgroupreportbymembers[min]['servecount']<0}">
+					<div class="diff">
+						<fa-icon [icon]="fasArrowDown" *ngIf="(smallgroupreportbymembers[max]['servecount']-smallgroupreportbymembers[min]['servecount'])<0"></fa-icon>
+						<fa-icon [icon]="fasArrowUp" *ngIf="(smallgroupreportbymembers[max]['servecount']-smallgroupreportbymembers[min]['servecount'])>=0"></fa-icon>
+						{{smallgroupreportbymembers[max]['servecount']-smallgroupreportbymembers[min]['servecount']|number}}
+					</div>
+					<div class="info">
+						from {{dates[min]}} to {{dates[max]}}
+					</div>
+				</div>
+			</div>
+			<div class="report-single">
+				<div class="title">
+					Lead
+				</div>
+				<div class="number">
+					{{smallgroupreportbymembers[max]['leadcount']|number}}
+				</div>
+				<div class="info-wrapper" [ngClass]="{'up':smallgroupreportbymembers[max]['leadcount']-smallgroupreportbymembers[min]['leadcount']>=0, 'down':smallgroupreportbymembers[max]['leadcount']-smallgroupreportbymembers[min]['leadcount']<0}">
+					<div class="diff">
+						<fa-icon [icon]="fasArrowDown" *ngIf="(smallgroupreportbymembers[max]['leadcount']-smallgroupreportbymembers[min]['leadcount'])<0"></fa-icon>
+						<fa-icon [icon]="fasArrowUp" *ngIf="(smallgroupreportbymembers[max]['leadcount']-smallgroupreportbymembers[min]['leadcount'])>=0"></fa-icon>
+						{{smallgroupreportbymembers[max]['leadcount']-smallgroupreportbymembers[min]['leadcount']|number}}
+					</div>
+					<div class="info">
+						from {{dates[min]}} to {{dates[max]}}
+					</div>
+				</div>
+			</div>
+			<div class="report-single" *ngIf="latestTotal > 0">
+				<div class="title">
+					Composition PSL / Attendance %
+				</div>
+				<div class="number">
+					{{(smallgroupreportbymembers[max]['smallgroupmemberscount']+smallgroupreportbymembers[max]['coreteamscount'])*100/latestTotal|number:'1.0-0'}} - {{smallgroupreportbymembers[max]['servecount']*100/latestTotal|number:'1.0-0'}} - {{smallgroupreportbymembers[max]['leadcount']*100/latestTotal|number:'1.0-0'}}
+				</div>
+				<div class="info-wrapper">
+					<div class="info">
+						Attendance data from week {{latestWeek}}
+					</div>
+				</div>
+			</div>
+		</ng-container>
+		<div class="chart-wrapper">
+			<comp-barchart
+				#discipleshipLine
+				[minX]="min"
+				[maxX]="max"
+				[options]="options"
+				(rangeChange)="refreshData($event)"
+			></comp-barchart>
+		</div>
+	</ng-container>
+</div>

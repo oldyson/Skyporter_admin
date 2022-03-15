@@ -1,0 +1,33 @@
+<ng-template #mymodal let-modal let-c="close">
+	<div class="modal-body">
+		<div class="input-group">
+		<input type="text" class="form-control" placeholder="Find by User's Name" [(ngModel)]="searchKeyword">
+			<div class="input-group-append">
+				<button class="btn btn-outline-secondary" (click)="getUserList(searchKeyword)">
+					Search
+				</button>
+			</div>
+		</div>
+		<table class="table table-sm">
+			<tbody>
+				<tr *ngFor="let user of users; let i = index;">
+					<td>{{user.id}}</td>
+					<td>{{user.fullname}}</td>
+					<td>{{user.phone}}</td>
+					<td class="email">{{user.email}}</td>
+					<td>{{user.deleted_at ? 'Inactive': 'Active'}}</td>
+					<td>
+						<button class="btn btn-sm btn-skyporter" (click)="addUserrolelist(user.id, user.fullname)">
+							Use
+						</button>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<div class="modal-footer">
+		<button type="button" id="btn-ok" class="btn btn-outline-skyporter" (click)="modal.close('')">
+			Okay
+		</button>
+	</div>
+</ng-template>

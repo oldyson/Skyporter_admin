@@ -1,0 +1,119 @@
+@import "../../../../variable.scss";
+
+.construct{
+	width: 100%;
+	min-height: 500px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	img{
+		width: 50px;
+	}
+}
+
+
+.item-wrapper{
+	.content {
+		height: 45px;
+		margin: 2px 0px;
+		display: inline-flex;
+		width: 100%;
+		max-width: 100%;
+		border-radius: 1000px;
+		cursor: pointer;
+		&:hover{
+			.item-container{
+				background-color: #fff;
+			}
+			.shortname{
+				opacity: .8;
+			}
+		}
+		.shortname{
+			border: 1px solid;
+			padding: 5px 5px 5px 10px;
+			margin: 0px;
+			font-weight: bold;
+			font-size: 100%;
+			vertical-align: middle;
+			display: inline-flex;
+			color: white;
+			justify-content: center;
+			align-items: center;
+			border-radius: 100px 0 0 100px;
+			width: 50px !important;
+		}
+		.item-container {
+			padding: 5px 10px;	
+			box-shadow: inset 0 10px 10px -10px rgba(0,0,0,.05), inset 0 -10px 10px -10px rgba(0,0,0,.05);
+			border-width: 1px 0;
+			border-style: solid;
+			border-color: rgba(0,0,0,.1);
+			display: inline-flex;
+			margin: 0px 0px;
+			color: rgba(0,0,0,.55);
+			background-color: #f8f8f8;
+			font-weight: bold;
+			font-size: 100%;
+			vertical-align: middle;
+			justify-content: flex-start;
+			align-items: center;
+			width: 100%;
+			.name{
+				display: inline-flex;
+				user-select: none;
+				-moz-user-select: none;
+				flex-direction: column;
+				line-height: 1.15;
+				a{
+					padding: 0 4px;
+					color: #666;
+					margin: 0 3px;
+					&:hover{
+						background-color: #666;
+						color: white;
+						text-decoration: none;
+					}
+				}
+				.sg-name{
+					padding-left: 4px;
+					margin-left: 3px;
+					font-size: 80%;
+				}
+			}
+		}
+		.item-action {
+			display: inline-flex;
+			button {
+				border-radius: 0px 1000px 1000px 0px;
+				padding: 5px 10px 5px 5px ;
+				&:disabled{
+					cursor: no-drop;
+					font-weight: bold;
+				}
+			}
+		}
+
+		&:hover{
+			box-shadow: 1px 1px 5px 5px rgba(0,0,0,.1);
+		}
+	}
+}
+
+.wrapperLoadingItem {
+	display: block;
+	text-align: center;
+}
+
+.btn-promote{
+	border-radius: 0 100px 100px 0 !important;
+	padding: 5px 10px;
+	margin: 0px;
+	font-weight: bold;
+	font-size: 100%;
+	vertical-align: middle;
+	display: inline-flex;
+	color: white;
+	justify-content: center;
+	align-items: center;
+}

@@ -1,0 +1,87 @@
+
+<div class="input-wrapper">
+	<div class="title">
+		Recipients Method
+	</div>
+	<div class="input">
+		<div class="form-check">
+			<input class="form-check-input" type="radio" name="recipient_method" id="recipient_basic" [(ngModel)]="campaign.recipient_method" value=
+			"basic"> 
+			<label class="form-check-label" for="recipient_basic">Basic</label>
+		</div>
+		<div class="form-check" *ngIf="campaign != null">
+			<input class="form-check-input" type="radio" name="recipient_method" id="recipient_query" [(ngModel)]="campaign.recipient_method" value=
+			"query"> 
+			<label class="form-check-label" for="recipient_query">Query</label>
+		</div>
+	</div>
+	<div class="recipient-wrapper basic" *ngIf="campaign.recipient_method=='basic'">
+		<div class="form-check">
+			<input class="form-check-input" type="checkbox" id="norole" [(ngModel)]="recipients.isnorole"> 
+			<label class="form-check-label" for="norole">Partner / No-Role</label>
+		</div>
+		<ng-container *ngIf="!recipients.roleloading">
+			<ng-container *ngIf="recipients.smallgroupmemberroles != null">
+				<hr *ngIf="recipients.smallgroupmemberroles.length > 0" />
+				<div class="form-check" *ngFor="let srole of recipients.smallgroupmemberroles; let i = index">
+					<input class="form-check-input" type="checkbox" id="sgmr{{i}}" [(ngModel)]="srole.checked"> 
+					<label class="form-check-label" for="sgmr{{i}}">{{srole.name}}</label>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="recipients.ministrymemberroles != null">
+				<hr *ngIf="recipients.ministrymemberroles.length > 0" />
+				<div class="form-check" *ngFor="let mrole of recipients.ministrymemberroles; let i = index">
+					<input class="form-check-input" type="checkbox" id="mmr{{i}}" [(ngModel)]="mrole.checked"> 
+					<label class="form-check-label" for="mmr{{i}}">{{mrole.name}}</label>
+				</div>
+			</ng-container>
+			<ng-container *ngIf="recipients.roles != null">
+				<hr *ngIf="recipients.roles.length > 0" />
+				<div class="form-check" *ngFor="let role of recipients.roles; let i = index">
+					<input class="form-check-input" type="checkbox" id="r{{i}}" [(ngModel)]="role.checked"> 
+					<label class="form-check-label" for="r{{i}}">{{role.showname}}</label>
+				</div>
+			</ng-container>
+		</ng-container>
+		<div class="recipient-loading" *ngIf="recipients.roleloading">
+			<i appLoadingSkyporter size="md"></i>
+		</div>
+	</div>
+	<div class="recipient-wrapper query" *ngIf="campaign.recipient_method=='query'">
+		<div class="sub-title">
+			Insert "SQL Query" to get recipients.
+		</div>
+		<textarea class="form-control" [(ngModel)]="recipients.query" rows="10" (keydown)="setTab($event)" placeholder="SQL Query">
+		</textarea>
+		<ol class="legends">
+			<li>Must be start with "SELECT".</li>
+			<li>Semicolon is prohibited.</li>
+			<li>Must have <b>user_id</b>, <b>name</b>, and <b>email</b>.</li>
+		</ol>
+	</div>
+</div>
+<div class="input-wrapper">
+	<div class="title">
+		Recipients Gender
+	</div>
+	<div class="input" *ngIf="recipients != null">
+		<select class="form-control" [(ngModel)]="recipients.gender">
+			<option value="">All Gender</option>
+			<option value="Male">Male Only</option>
+			<option value="Female">Female Only</option>
+		</select>
+	</div>
+</div>
+<div class="input-wrapper">
+	<div class="title">
+		Recipients Mariage Status
+	</div>
+	<div class="input">
+		<div class="recipient-wrapper basic">
+			<div class="form-check" *ngFor="let maritalstatus of recipients.maritalstatuses; let i = index">
+				<input class="form-check-input" type="checkbox" id="r{{i}}" [(ngModel)]="maritalstatus.checked"> 
+				<label class="form-check-label" for="r{{i}}">{{maritalstatus.name}}</label>
+			</div>
+		</div>
+	</div>
+</div>

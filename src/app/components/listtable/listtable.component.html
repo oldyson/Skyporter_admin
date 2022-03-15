@@ -1,0 +1,274 @@
+<ng-container *ngIf="keys==null||datas==null">
+	<div class="listtable-wrapper">
+		<!-- FIRST LOADING -->
+		<div class="construct">
+			<i appLoadingSkyporter size="md"></i>
+		</div>
+	</div>
+</ng-container>
+
+<ng-container *ngIf="keys!=null&&datas!=null">
+	<div class="listtable-wrapper">
+		<ng-container *ngIf="navigations!=null">
+			<div class="pretable-wrapper">
+				<div class="pretable-left">
+					<button *ngIf="filterOptions.isFilter" class="btn btn-outline-skyporter btn-filter" (click)="showPopup('filter')">
+						FILTER
+					</button>
+					<button *ngIf="filterOptions.isExport" class="btn btn-outline-skyporter btn-export" (click)="filterOptions.dropdownExportMenu && filterOptions.dropdownExportMenu.length ? '' : showPopup('export')">
+						EXPORT
+						<div *ngIf="filterOptions.dropdownExportMenu && filterOptions.dropdownExportMenu.length" class="dropdown-content">
+							<div *ngFor="let item of filterOptions.dropdownExportMenu" class="btn-export-item" (click)="showPopup('export', item)">
+								<small>
+									{{ item }}
+								</small>
+							</div>
+						</div>
+					</button>
+				</div>
+				<div class="pretable-right" *ngIf="navigations.search_by!=null">
+					<div class="input-group search">
+						<input type="text" id="list-search" class="form-control" placeholder="{{navigations.search_by}}" aria-label="Search to table" [(ngModel)]="keyword" (keydown)="onSearchKeydown($event)">
+						<div class="input-group-append">
+							<button class="btn" type="button" (click)="searchKeyword()">
+								<fa-icon [icon]="fasSearch"></fa-icon>
+							</button>
+						</div>
+					</div>
+				</div>
+			</div>
+		</ng-container>
+
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<th [ngClass]="{'text-right':key.showtype==='number'||key.align==='right', 'text-center':key.align==='center', 'xs-down-hide':key.priority==1, 'md-down-hide':key.priority==2, 'lg-down-hide':key.priority==3}" *ngFor="let key of keys">
+						<button class="btn opacity-1" [disabled]="!key.opensort" type="button" (click)="sortColumn(key.sortcolumn)">
+							{{key.label}}
+							<ng-container *ngIf="key.value !== 'id' && key.opensort">
+								<fa-icon [icon]="fadSortUp" *ngIf="key.sortorder=='ASC'"></fa-icon>
+								<fa-icon [icon]="fadSortDown" *ngIf="key.sortorder=='DESC'"></fa-icon>
+								<fa-icon [icon]="fadSort" *ngIf="key.sortorder==''"></fa-icon>
+							</ng-container>
+						</button>
+					</th>
+					<ng-container *ngIf="datas.length > 0">
+						<th *ngIf="datas[0] && datas[0].actions!=null">
+						</th>
+					</ng-container>
+				</tr>
+			</thead>
+			<tbody *ngIf="isloading">
+				<tr>
+					<td [attr.colspan]="keys.length+1">
+						<div class="no-data loading-bar">
+							<i appLoadingSkyporter size="md"></i>
+						</div>
+					</td>
+				</tr>
+			</tbody>
+			<tbody *ngIf="datas.length===0 && isloading===false">
+				<tr>
+					<td [attr.colspan]="keys.length+1">
+						<ng-container *ngIf="!simpleError">
+							<div class="no-data">
+								<img src="./assets/icon/clouds.svg">
+								<div class="pgf">
+									Oh no! We have to catch some clouds that float away. There is no data on your request.
+								</div>
+							</div>
+						</ng-container>
+						<ng-container *ngIf="simpleError">
+							<div class="simple-no-data">
+								<div class="pgf">
+									No Data
+								</div>
+							</div>
+						</ng-container>
+					</td>
+				</tr>
+			</tbody>
+			<tbody *ngIf="datas.length>0 && isloading===false">
+				<!-- DATA KALO ADA DATANYA -->
+				<tr *ngFor="let data of datas; let i = index">
+					<td [ngClass]="{'min-width':key.value=='id', 'text-right':key.showtype==='number'||key.align==='right', 'text-center':key.align==='center', 'xs-down-hide':key.priority==1, 'md-down-hide':key.priority==2, 'lg-down-hide':key.priority==3}" *ngFor="let key of keys">
+						<!-- NULL VALUE -->
+						<span *ngIf="data[key.value]==null">
+							{{key.nullvalue}}
+						</span>
+						<!-- TEXT -->
+						<ng-container *ngIf="key.showtype === 'text' && data[key.value]!=null">
+							<div class="value1">
+								<span *ngIf="key.maxlength!=null" [innerHTML]="helper.truncateString(data[key.value], key.maxlength)">
+								</span>
+								<span *ngIf="key.maxlength==null" [innerHTML]="data[key.value]">
+								</span>
+							</div>
+							<ng-container *ngIf="data[key.value2]!=null">
+								<div class="value2">
+									<span *ngIf="key.maxlength!=null" [innerHTML]="data[key.value2]"></span>
+								</div>
+							</ng-container>
+						</ng-container>
+						<!-- NUMBER -->
+						<span *ngIf="key.showtype === 'number' && data[key.value]!=null">
+							{{data[key.value]|number}}
+						</span>
+						<!-- GENDER -->
+						<span *ngIf="key.showtype === 'gender' && data[key.value]!=null">
+							<ng-container *ngIf="data[key.value]=='Male'">
+								<fa-icon [icon]="fasMale" class="gender-male"></fa-icon>
+							</ng-container>
+							<ng-container *ngIf="data[key.value]=='Female'">
+								<fa-icon [icon]="fasFemale" class="gender-female"></fa-icon>
+							</ng-container>
+						</span>
+						<!-- DATE TIME -->
+						<span [ngClass]="{'datetime':data[key.value]!=null}" *ngIf="key.showtype === 'datetime'">
+							<ng-container *ngIf="data[key.value]!=null">
+								{{data[key.value]|date:'dd MMM yy'}}<br>
+								<fa-icon class="clock" [icon]="falClock"></fa-icon>
+								{{data[key.value]|date:'HH:mm:ss'}}
+							</ng-container>
+						</span>
+						<!-- INTERVAL -->
+						<span [ngClass]="{'datetime':data[key.value]!=null}" *ngIf="key.showtype === 'interval'">
+							<ng-container *ngIf="data[key.value]!=null">
+								{{data[key.value].start|date:'dd/MM/yy HH:mm'}}<br>
+								{{data[key.value].end|date:'dd/MM/yy HH:mm'}}
+							</ng-container>
+						</span>
+						<!-- BUTTON -->
+						<span *ngIf="key.showtype === 'button' && data[key.value]!=null">
+							<ng-container *ngFor="let item of data[key.value]; let idx = index">
+								<button *ngIf="item.type" class="btn btn-sm btn-action" [ngClass]="getClassButton(item.type)" [disabled]="item.disabled" (click)="generateListAction(item, data, i)">
+									<ng-container *ngIf="!item.loading">
+										{{item.name}}
+									</ng-container>
+									<ng-container *ngIf="item.loading">
+										<fa-icon [icon]="fadSpinner" [spin]="true" [fixedWidth]="true"></fa-icon>
+									</ng-container>
+								</button>
+								<ng-container *ngIf="item.type == null">
+									{{item.name}}
+								</ng-container>
+							</ng-container>
+						</span>
+						<!-- END -->
+					</td>
+					<!-- ACTION -->
+					<td class="min-width action" *ngIf="data.actions!=null && data.actions.length">
+						<button class="btn btn-sm" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true"
+							aria-expanded="false">
+							<fa-icon [icon]="falEllipsisV"></fa-icon>
+						</button>
+						<div class="dropdown-menu dropdown-menu-right" aria-labelledby="dropdownMenuButton">
+							<ng-container *ngFor="let action of data.actions">
+								<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}" href="{{action.url}}"
+									*ngIf="action.apiurl==null && action.url">
+									{{action.label}}
+								</a>
+								<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}" *ngIf="action.apiurl!=null"
+									(click)="doActionAPI(action.apiurl, action.apimethod, action.apiparams, action.type, action.message, action.messageInput, action.messageInputValidation, action.confirmButtonText, action.confirmButtonColor)">
+									{{action.label}}
+								</a>
+								<a class="dropdown-item cursor-pointer" [ngClass]="{'danger':action.type=='danger'}" *ngIf="action.apifunction!=null"
+									(click)="doActionFunction(action, data)">
+									{{action.label}}
+								</a>
+							</ng-container>
+						</div>
+					</td>
+					<td class="min-width action" *ngIf="data.actions==null || !data.actions.length">
+						<div class="no-action"></div>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+
+		<ng-container *ngIf="navigations!=null">
+			<div *ngIf="navigations.total" class="navi-info">
+				Showing [&nbsp;<span class="text-bold clr-primary">{{navigations.from|number}}..{{navigations.to|number}}</span>&nbsp;] {{navigations.per_page|number}} of&nbsp;<span class="text-bold clr-primary">{{navigations.total|number}}</span>&nbsp;rows.
+			</div>
+			<div class="navi-wrapper" *ngIf="navigationLists.length > 0">
+				<div class="navi-left">
+					<ul>
+						<ng-container *ngIf="!ispageone">
+							<li>
+								<button (click)="gotoPage(1)">
+									1
+								</button>
+							</li>
+							<ng-container *ngIf="!ispageoneafter">
+								<li class="nobutton">
+									<button disabled>
+										...
+									</button>
+								</li>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngFor="let list of navigationLists">
+							<ng-container *ngIf="list != null">
+								<li *ngIf="list.isshow">
+									<ng-container *ngIf="list.iscurrent">
+										<button class="current">
+											{{list.label}}
+										</button>
+									</ng-container>
+									<ng-container *ngIf="!list.iscurrent">
+										<button (click)="gotoPage(list.label)">
+											{{list.label}}
+										</button>
+									</ng-container>
+								</li>
+							</ng-container>
+						</ng-container>
+						<ng-container *ngIf="!islastpage">
+							<ng-container *ngIf="!islastpagebefore">
+								<li class="nobutton">
+									<button disabled>
+										...
+									</button>
+								</li>
+							</ng-container>
+							<li>
+								<button (click)="gotoPage(navigations.last_page)">
+									{{navigations.last_page}}
+								</button>
+							</li>
+						</ng-container>
+					</ul>
+				</div>
+				<div class="navi-right">
+					<ng-container *ngIf="navigations.current_page > 1">
+						<button class="btn" (click)="prevPage()">
+							Prev.
+						</button>
+					</ng-container>
+					<ng-container *ngIf="navigations.current_page < navigations.last_page">
+						<button class="btn" (click)="nextPage()" >
+							Next
+						</button>
+					</ng-container>
+				</div>
+			</div>
+		</ng-container>
+	</div>
+</ng-container>
+
+<comp-exportfilter
+	#filter
+	dialogName="Filter"
+	[filterOptions]="filterOptions"
+	[defaultStartDate]="defaultStartDate"
+	[defaultEndDate]="defaultEndDate"
+	(applyData)="generateFilter($event)"
+></comp-exportfilter>
+<comp-exportfilter
+	#export
+	dialogName="Export"
+	[filterOptions]="filterOptions"
+	[defaultStartDate]="defaultStartDate"
+	[defaultEndDate]="defaultEndDate"
+	(applyData)="generateExport($event)"
+></comp-exportfilter>

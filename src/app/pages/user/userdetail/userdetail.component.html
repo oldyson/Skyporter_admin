@@ -1,0 +1,78 @@
+<div class="userdetail-wrapper">
+	<div class="userdetail" *ngIf="user != null">
+
+		<div class="top-block">
+			<div class="picture" [ngClass]="{'female':user.gender==='Female', 'male':user.gender==='Male'}" [ngStyle]="{'background-image': 'url(' + (user.document ? user.document.url : '') + ')'}">
+			</div>
+			<div class="text">
+				<table class="table table-clear table-sm">
+					<tbody>
+						<tr>
+							<td>Name</td>
+							<td class="min-width">:</td>
+							<td>{{user.fullname}}</td>
+						</tr>
+						<tr>
+							<td>Email</td>
+							<td class="min-width">:</td>
+							<td>{{user.email}}</td>
+						</tr>
+						<tr>
+							<td>Phone Number</td>
+							<td class="min-width">:</td>
+							<td>{{user.phone}}</td>
+						</tr>
+						<tr>
+							<td>Gender</td>
+							<td class="min-width">:</td>
+							<td>{{user.gender}}</td>
+						</tr>
+						<tr>
+							<td>Birthdate</td>
+							<td class="min-width">:</td>
+							<td>{{user.birthplace}}<ng-container *ngIf="user.birthplace.length > 0">, </ng-container>{{user.birthdate|date:'dd MMMM yyyy'}}</td>
+						</tr>
+						<tr>
+							<td>Age</td>
+							<td class="min-width">:</td>
+							<td>{{user.age}}</td>
+						</tr>
+						<tr>
+							<td>Blood Type</td>
+							<td class="min-width">:</td>
+							<td>{{user.bloodtype}}</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':activeTab==='information'}" (click)="setActiveTab('information')">
+				Information Detail
+			</div>
+			<div class="navi-list" [ngClass]="{'active':activeTab==='program'}" (click)="setActiveTab('program')">
+				Class & Event Detail
+			</div>
+			<div class="navi-list" [ngClass]="{'active':activeTab==='journey'}" (click)="setActiveTab('journey')">
+				Life Journey
+			</div>
+		</div>
+		<div class="detail-container information" *ngIf="activeTab==='information'">
+			<userdetail-userdetailinfo
+				[user]="user"
+			></userdetail-userdetailinfo>
+		</div>
+		<div class="detail-container program" *ngIf="activeTab==='program'">
+			<userdetail-userdetailprogram
+				[user]="user"
+				#tabprogram
+			></userdetail-userdetailprogram>
+		</div>
+		<div class="detail-container journey" *ngIf="activeTab==='journey'">
+			<userdetail-userdetailjourney
+				[user]="user"
+			></userdetail-userdetailjourney>
+		</div>
+	</div>
+</div>

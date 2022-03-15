@@ -1,0 +1,55 @@
+<div class="programqrdetail-wrapper" *ngIf="programId != null">
+	<div class="panel info">
+		<div class="title" *ngIf="program != null">
+			<div class="code">
+				{{program.programtype.type}}/{{program.programcode.name}}/{{programId.padStart(6, "0")}}
+			</div>
+			<div class="head">
+				{{program.name}}
+			</div>
+		</div>
+		<div class="detail" *ngIf="program != null">
+			<div class="breakout-session">
+				<comp-inputform
+					type="dropdown"
+					[(value)]="programbreakout_id"
+					[options]="programbreakouts"
+					(valueChange)="breakoutChange($event)"
+				></comp-inputform>
+				<ng-container *ngIf="programbreakout_idx != null">
+					<comp-inputform
+						type="dropdown"
+						[(value)]="programbreakoutdate_id"
+						[options]="programbreakouts[programbreakout_idx].programbreakoutdates"
+						(valueChange)="breakoutdateChange($event)"
+						*ngIf="programbreakouts[programbreakout_idx] != null"
+					></comp-inputform>
+				</ng-container>
+			</div>
+			<div class="info">
+				<div class="symb">
+					<fa-icon [icon]="fasExclamationCircle"></fa-icon>
+				</div>
+				<div class="text">
+					<ng-container *ngIf="programbreakouts[programbreakout_idx].ischeckforall">
+						Absensi 1 ticket <b>hanya dibutuhkan scan dari salah satu</b> peserta saja.
+					</ng-container>
+					<ng-container *ngIf="!programbreakouts[programbreakout_idx].ischeckforall">
+						Absensi harus dilakukan untuk seluruh peserta yang hadir.
+					</ng-container>
+				</div>
+			</div>
+			<div class="content" *ngIf="programbreakouts[programbreakout_idx]?.programbreakoutdates[programbreakoutdate_idx] != null">
+				<div class="inner-content">
+					<img [src]="(programbreakouts[programbreakout_idx]?.programbreakoutdates[programbreakoutdate_idx]?.programbreakoutdate_qrcode | safebase64)" height="100%">
+				</div>
+			</div>
+			<div class="scanhere">
+				Scan QR Code dari aplikasi!
+			</div>
+		</div>
+	</div>
+	<div class="panel tutorial">
+		<img src="assets/info/programcheckin.jpg">
+	</div>
+</div>

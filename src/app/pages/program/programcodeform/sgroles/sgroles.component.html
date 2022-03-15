@@ -1,0 +1,39 @@
+<div class="role-wrapper">
+	<div class="title">
+		Required Smallgroup Member Roles
+	</div>
+	<div class="content">
+		<ng-container *ngIf="smallgroupRoleList.length > 0">
+			<div class="list" *ngFor="let smallgrouprole of smallgroupRoleList; let i = index">
+				<ng-container>
+					<comp-inputform
+						type="dropdown"
+						title=""
+						[(value)]="smallgrouprole.id"
+						[options]="smallgroupRoleAll.smallgroupmemberroles"
+						perline='3'
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="Core Team"
+						[(value)]="smallgrouprole.iscoreteam"
+						perline='3'
+					>
+					</comp-inputform>
+					<button class="btn btn-danger btn-sm remove-button" (click)="removeProgramCodeReqSGRole(i)">
+						Remove
+					</button>
+				</ng-container>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="smallgroupRoleList.length == 0">
+			No Role Data
+		</ng-container>
+	</div>
+			<div>
+				<button class="btn btn-skyporter right" (click)="addProgramCodeReqSGRole()">
+					Add Role
+				</button>
+			</div>
+</div>

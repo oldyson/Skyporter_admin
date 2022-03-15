@@ -1,0 +1,30 @@
+<comp-listfiletable
+	[datas]="datas"
+	[keys]="keys"
+	[navigations]="navigations"
+	[isloading]="isloading"
+	[inputOptions]="inputOptions"
+	[filterOptions]="filterOptions"
+	[multipleSelectOptions]="multipleSelectOptions"
+	[smallgroupmemberroles]="smallgroupmemberroles"
+	[ministrymemberroles]="ministrymemberroles"
+	[documentgroups]="documentgroups"
+	[hasDetails]="true"
+	(refreshData)="getData($event)"
+	(searchData)="searchData($event)"
+	(sortDataBy)="sortDataBy($event)"
+	(doAPI)="doAPI($event)"
+	(rowOpened)="rowOpened($event)"
+	(saveEditableInput)="rename($event)"
+	(submitInputModalData)="submit($event)"
+	(updateRoles)="updateRoles($event)"
+	(moveFolder)="moveFolder($event)"
+	(deleteSelectedItems)="deleteSelectedItems()"
+	(submitMultipleSelection)="submitMultipleUpdate($event)"
+	(submitFilter)="submitFilter($event)"
+	#listtable
+></comp-listfiletable>
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

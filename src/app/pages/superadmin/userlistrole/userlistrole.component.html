@@ -1,0 +1,31 @@
+
+
+<div class="userlistrole-wrapper" *ngIf="datas != null || !isloading">
+	<ng-container *ngIf="datas.length > 0">
+		<comp-userlistroletable
+			[datas]="datas"
+			[keys]="keys"
+			[navigations]="navigations"
+			(refreshData)="getData($event)" 
+			(searchData)="searchData($event)" 
+			(sortDataBy)="sortDataBy($event)"
+			(userroleChecklist)="userroleChecklist($event)"
+			#userlistrole
+		></comp-userlistroletable>
+
+		<userlistrole-listroleaddmodal
+			(addNewUser)="addNewUser($event)"
+			#addmodal
+		>
+		</userlistrole-listroleaddmodal>
+
+		<div class="action-wrapper">
+			<button class="btn btn-skyporter" (click)="openAddModal()">
+				Add New User's Role List
+			</button>
+		</div>
+	</ng-container>
+</div>
+<div class="loading-wrapper" *ngIf="isloading">
+	<span appLoadingSkyporter size="lg"></span>
+</div>

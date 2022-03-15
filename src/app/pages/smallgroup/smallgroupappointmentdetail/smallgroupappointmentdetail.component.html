@@ -1,0 +1,143 @@
+<ng-container *ngIf="isloading">
+    <div class="listtable-wrapper">
+        <!-- FIRST LOADING -->
+        <div class="construct text-center">
+            <i appLoadingSkyporter size="md"></i>
+        </div>
+    </div>
+</ng-container>
+
+<ng-container *ngIf="!isloading">
+    <div class="wrapper-detail">
+        <div class="info">
+            <!-- <div class="section-wrapper"> -->
+			<div class="content-wrapper">
+				<h5 class="text-bold">
+					{{smallgroupappointment.name}}
+				</h5>
+			</div>
+			<ng-container *ngFor="let item of dataInfo">
+				<div class="content-wrapper">
+					<div class="text-bold small">
+						{{item.type}}
+					</div>
+					<div class="content-info small">
+						{{item.value}}
+					</div>
+				</div>
+			</ng-container>
+            <!-- </div> -->
+		</div>
+
+        <div class="content">
+			<!-- <div class="section-wrapper"> -->
+				<comp-listattendancetable
+				#listtableattendance
+				[datas]="datas"
+				[keys]="keys"
+				[navigations]="navigations"
+				[isloading]="isloading"
+				(refreshData)="getData()"
+				(sortDataBy)="sortDataBy($event)"
+				(doAPI)="getData()"
+				(attendanceChecklist)="appointmentAction($event)"
+				
+			></comp-listattendancetable>
+
+			<comp-popup-modal
+				#mymodal
+			></comp-popup-modal>
+            <!-- </div> -->
+        </div>
+    </div>
+</ng-container>
+
+<!-- <div class="smallgroupappointmentdetail-wrapper" *ngIf="smallgroupappointmentId != null">
+	<div class="d-flex justify-content-center" *ngIf="isloadingInfo">
+		<i appLoadingSkyporter size="md"></i>
+	</div>
+
+	<div class="row">
+		<div class="col-12 col-sm-12 col-md-12 col-xl-4 mb-3">
+			<div class="row h-100">
+				<div class="col-12 mb-3">
+					<div class="card rounded-xl border-0 shadow-sm h-100">
+						<div class="card-body ml-4">
+							<div class="mb-3">
+								<div class="text-bold large">
+									{{smallgroupappointment.name}}
+								</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> Category:</div>
+								<div>{{smallgroupappointment.smallgroupappointmenttype.name}}</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> Date:</div>
+								<div>{{smallgroupappointment.appointmentdatetime}}</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> Time:</div>
+								<div>{{smallgroupappointment.appointmentdatetime}}</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> Created By:</div>
+								<div>{{smallgroupappointment.created_by}}</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> Attendee:</div>
+								<div>0/0</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> RSVP:</div>
+								<div>Yes</div>
+							</div>
+							<div class="mb-3">
+								<div class="text-bold small"> Additional Info:</div>
+								<div>{{smallgroupappointment.notes}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-12 col-sm-12 col-md-12 col-xl-4 mb-3">
+			<div class="row h-100">
+				<div class="col-12 mb-3">
+					<div class="card rounded-xl border-0 shadow-sm h-100">
+						<div class="card-left bg-grey-dark"></div>
+						<div class="card-body ml-4">
+							<div class="mb-3">
+								<div class="text-bold large">
+									{{smallgroupappointment.name}}
+								</div>
+							</div>
+							<div class="mb-3">
+								<div>{{smallgroupappointment.description}}</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<comp-listtable
+	[datas]="datas"
+	[keys]="keys"
+	[navigations]="navigations"
+	[isloading]="isloading"
+	(refreshData)="getData()"
+	(sortDataBy)="sortDataBy($event)"
+	(doAPI)="getData()"
+	#listtable
+></comp-listtable>
+
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal> -->

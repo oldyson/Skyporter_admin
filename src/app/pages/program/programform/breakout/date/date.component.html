@@ -1,0 +1,65 @@
+<div class="date-wrapper" *ngIf="program != null">
+	<div class="title">
+		Sessions
+	</div>
+	<div class="detail">
+		<ng-container *ngFor="let programbreakoutdate of program.programbreakouts[currentViewIndex].programbreakoutdates; let i = index">
+			<ng-container *ngIf="program.isEditable==1">
+				<div class="remove-price2">
+					<button class="btn btn-sm" (click)="removeDate(i)">
+						<fa-icon class=" remove-button" [icon]="farTimes">
+						</fa-icon>
+					</button>
+				</div>
+			</ng-container>
+			<comp-inputform
+				type="date"
+				title="Date"
+				[(value)]="program.programbreakouts[currentViewIndex].programbreakoutdates[i].date"
+				perline="5"
+				(change)="updateProgramStartEnd()"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="All Day"
+				[(value)]="program.programbreakouts[currentViewIndex].programbreakoutdates[i].isallday"
+				perline="5"
+				(change)="updateProgramStartEnd()"
+			>
+			</comp-inputform>
+			<ng-container *ngIf="!program.programbreakouts[currentViewIndex].programbreakoutdates[i].isallday">
+				<comp-inputform
+					type="time"
+					title="Start Time"
+					perline="5"
+					[(value)]="program.programbreakouts[currentViewIndex].programbreakoutdates[i].starttime"
+					(change)="updateProgramStartEnd()"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="time"
+					title="End Time"
+					perline="5"
+					[(value)]="program.programbreakouts[currentViewIndex].programbreakoutdates[i].endtime"
+					(change)="updateProgramStartEnd()"
+				>
+				</comp-inputform>
+		 	</ng-container>
+		 	<ng-container *ngIf="program.isEditable==1">
+			 	<div class="remove-price">
+					<button class="btn btn-sm" (click)="removeDate(i)">
+						<fa-icon class=" remove-button" [icon]="farTimes">
+						</fa-icon>
+					</button>
+				</div>
+			</ng-container>
+			<hr/>
+		</ng-container>
+	</div>
+	<ng-container *ngIf="program.isEditable==1">
+		<div class="right">
+			<button class="btn btn-skyporter btn-sm" (click)="addDate(currentViewIndex)">Add Session</button>
+		</div>
+	</ng-container>
+</div>

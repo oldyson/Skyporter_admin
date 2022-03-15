@@ -1,0 +1,9 @@
+<ng-container *ngFor="let data of dataList">
+	<comp-useractiontable
+		[userId]="user.id"
+		[section]="data.section"
+		[title]="data.title"
+		[withName]="data.withName"
+	>
+	</comp-useractiontable>
+</ng-container>

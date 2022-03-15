@@ -1,0 +1,191 @@
+<ng-template #filelistmodal let-modal>
+	<div class="modal-wrapper">
+		<ng-container *ngIf="statusData.error">
+				<div class="error-message">
+						<h3>Sorry</h3>
+						<p>{{statusData.message}}</p>
+				</div>
+		</ng-container>
+		<div *ngIf="isLoading" class="loading">
+			<i appLoadingSkyporter size="lg"></i>
+		</div>
+		<ng-container *ngIf="!isLoading && pageType == 'search'">
+			<div class="main-title">
+				Select {{programType}}
+			</div>
+			<div class="content-wrapper">
+				<comp-inputform
+					type="searchsingle"
+					title="{{programType}} Code"
+					[(value)]="data.programcode_id"
+					[(options)]="programCodes"
+					(valueChange)="getAllProgram()"
+					[disabled] = "isProgramCodeDisabled"
+					[dropdownLoading]="isProgramCodeLoading"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="searchsingle"
+					title="{{programType}} Name"
+					[(value)]="data.program_id"
+					[(options)]="programs"
+					(valueChange)="triggerNextButton()"
+					[disabled]="programDisabled"
+					[dropdownLoading]="isProgramLoading"
+				>
+				</comp-inputform>
+			</div>
+			<div class="close-button">
+					<button class="btn btn-skyporter" aria-label="Close" (click)="getProgramDetail()">
+							Next
+					</button>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="!isLoading && pageType == 'attendance detail'">
+			<!-- di define di html karna kalau di ts gabisa kalo pke ng templat, dan kalau kehalang ngif juga gabisa -->
+			<div class="main-title">
+				Choose Attendance
+			</div>
+			<div class="content-wrapper">
+				<div class="row-wrapper">
+					<div class="program program-information">
+						<div class="second-title">
+							{{programType}} Information:
+						</div>
+						<div>
+							<div class="title">
+								{{programDetail.programcode.type}} Code
+							</div>
+							<div class="content">
+								{{programDetail.programcode.name}}
+							</div>
+						</div>
+						<div>
+							<div class="title">
+								{{programDetail.programcode.type}} Title
+							</div>
+							<div class="content">
+								{{programDetail.name}}
+							</div>
+						</div>
+						<div>
+							<div class="title">
+								{{programDetail.programcode.type}} Minimal Attendance
+							</div>
+							<div class="content">
+								{{programDetail.minattenddays}}
+							</div>
+						</div>
+						<div>
+							<div class="title">
+								{{programDetail.programcode.type}} Start
+							</div>
+							<div class="content">
+								{{programDetail.programstart_at}}
+							</div>
+						</div>
+						<div>
+							<div class="title">
+								{{programDetail.programcode.type}} End
+							</div>
+							<div class="content">
+								{{programDetail.programend_at}}
+							</div>
+						</div>
+					</div>
+					<div class="program program-requirement">
+						<div class="second-title">
+							{{programType}} Requirement:
+						</div>
+						<div>
+							<fa-icon [icon]="fadCheckSquare" [fixedWidth]="true" *ngIf="programDetail.isreqfamily"></fa-icon>
+							<fa-icon [icon]="farSquare" [fixedWidth]="true" *ngIf="!programDetail.isreqfamily"></fa-icon>
+							{{programDetail.programcode.type}} Required Family
+						</div>
+						<div>
+							<fa-icon [icon]="fadCheckSquare" [fixedWidth]="true" *ngIf="programDetail.reqchildren"></fa-icon>
+							<fa-icon [icon]="farSquare" [fixedWidth]="true" *ngIf="!programDetail.reqchildren"></fa-icon>
+							{{programDetail.programcode.type}} Required Child
+						</div>
+						<div>
+							<fa-icon [icon]="fadCheckSquare" [fixedWidth]="true" *ngIf="programDetail.leaderapproval"></fa-icon>
+							<fa-icon [icon]="farSquare" [fixedWidth]="true" *ngIf="!programDetail.leaderapproval"></fa-icon>
+							{{programDetail.programcode.type}} Required Leader Approval
+						</div>
+						<div>
+							<fa-icon [icon]="fadCheckSquare" [fixedWidth]="true" *ngIf="programDetail.adminapproval"></fa-icon>
+							<fa-icon [icon]="farSquare" [fixedWidth]="true" *ngIf="!programDetail.adminapproval"></fa-icon>
+							{{programDetail.programcode.type}} Required Admin Approval
+						</div>
+						<div>
+							<fa-icon [icon]="fadCheckSquare" [fixedWidth]="true" *ngIf="programDetail.isreqfiles"></fa-icon>
+							<fa-icon [icon]="farSquare" [fixedWidth]="true" *ngIf="!programDetail.isreqfiles"></fa-icon>
+							{{programDetail.programcode.type}} Required File
+						</div>
+					</div>
+				</div>
+				<div class="row-wrapper">
+					<div class="program program-attendance">
+						<div class="second-title">
+							User Attendance:
+						</div>
+						<ng-container *ngIf="attendanceTable == null">
+							{{defineAttendance(listtableattendance)}}
+						</ng-container>
+						<comp-listattendancetable
+							#listtableattendance
+							[datas]="attendanceData"
+							[filterOptions]="attendanceOption"
+							[keys]="keys"
+							(attendanceChecklist)="attendanceToggle($event)"
+						></comp-listattendancetable>
+					</div>
+				</div>
+			</div>
+			<div class="double-button">
+				<button class="btn btn-secondary" aria-label="Close" (click)="cancelCreateTicket()">
+						Cancel
+				</button>
+				<button class="btn btn-skyporter" aria-label="Close" (click)="submitProgramTicket()">
+						<ng-container *ngIf="!isSubmitLoading">
+							Submit
+						</ng-container>
+						<fa-icon [icon]="fadSpinner" *ngIf="isSubmitLoading" [spin]="true" [fixedWidth]="true"></fa-icon>
+				</button>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="!isLoading && pageType == 'success submit'">
+			<div class="notif-wrapper">
+				<div class="notif-title">
+					Success Add {{programDetail.programcode.type}} History!
+				</div>
+			</div>
+			<div class="close-button">
+				<button class="btn btn-skyporter" aria-label="Close" (click)="modal.close('success submit')">
+						Close
+				</button>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="!isLoading && pageType == 'wrong program'">
+			<div class="notif-wrapper">
+				<div class="notif-title">
+					Cannot Add {{programDetail.programcode.type}} History
+				</div>
+				<div class="notif-content">
+					<p>cannot add history in this page, please follow this step:</p>
+					<p> 1. go to class list page</p>
+					<p> 2. choose class</p>
+					<p> 3. click "Add Registrant" button</p>
+				</div>
+			</div>
+			<div class="double-button">
+				<button class="btn btn-secondary" aria-label="Close" (click)="modal.close('Close')">
+						Close
+				</button>
+				<button class="btn btn-skyporter" aria-label="Close" (click)="redirectToProgram()">
+						Go to Class
+				</button>
+			</div>
+		</ng-container>
+	</div>
+</ng-template>

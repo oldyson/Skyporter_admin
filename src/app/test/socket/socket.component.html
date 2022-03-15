@@ -1,0 +1,22 @@
+
+<div class="chat-wrapper">
+	<div class="dialog" id="dialog">
+		<div class="dialog-item" *ngFor="let chat of chats">
+			<div class="author">
+				{{chat.user.fullname}} - {{chat.createdAt}}
+			</div>
+			<div class="content">
+				{{chat.body}}
+			</div>
+		</div>
+	</div>
+
+	<div class="input-wrapper">
+		<div class="input">
+			<input type="text" [(ngModel)]="inputchat">
+			<button class="btn btn-sm btn-skyporter" (click)="doChat()">
+				Send
+			</button>
+		</div>
+	</div>
+</div>

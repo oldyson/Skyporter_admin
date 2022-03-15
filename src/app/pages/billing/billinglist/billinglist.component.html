@@ -1,0 +1,120 @@
+<div class="billinglist-wrapper">
+	<div class="billinglist-header">
+		<div class="header-list">
+			<div class="title">
+				This Month's Estimation
+			</div>
+			<div class="detail">
+				<table class="table table-sm" *ngIf="churchbillprice != null">
+					<tbody>
+						<tr>
+							<td class="subtitle">Total Registered User</td>
+							<td class="content">-</td>
+						</tr>
+						<tr>
+							<td class="subtitle">
+								Total User Logged-in<br>
+								<small>(Active User)</small>
+							</td>
+							<td class="content">{{nowbill.totaluser|number:'1.0-0'}}</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td class="subtitle">Minimum Price</td>
+							<td class="content">
+								{{churchbillprice.currency.isoname}} 
+								{{nowbill.minimumprice|number:'1.0-0'}}
+							</td>
+						</tr>
+						<tr>
+							<td class="subtitle">Extra Price</td>
+							<td class="content">
+								{{churchbillprice.currency.isoname}} 
+								{{nowbill.extraprice|number:'1.0-0'}}
+							</td>
+						</tr>
+						<tr>
+							<td class="subtitle">Estimated Price</td>
+							<td class="content">
+								{{churchbillprice.currency.isoname}} 
+								<b>{{nowbill.totalprice|number:'1.0-0'}}</b>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="header-list">
+			<div class="title">
+				Current Billing Price Detail
+			</div>
+			<div class="detail">
+				<table class="table table-sm" *ngIf="churchbillprice != null">
+					<tbody>
+						<tr>
+							<td class="subtitle">Minimum Billed User</td>
+							<td class="content">{{churchbillprice.minuser|number:'1.0-0'}}</td>
+						</tr>
+						<tr>
+							<td class="subtitle">
+								Minimum Price<br>
+								<small>(each User)</small>
+							</td>
+							<td class="content">
+								{{churchbillprice.currency.isoname}} {{(churchbillprice.minprice)|number:'1.0-0'}}<br>
+								<small>(each User)</small>
+							</td>
+						</tr>
+						<tr>
+							<td class="subtitle">
+								User x Price<br>
+								<small>(each Month)</small>
+							</td>
+							<td class="content">
+								{{churchbillprice.currency.isoname}} {{(churchbillprice.minprice * churchbillprice.minuser)|number:'1.0-0'}}
+							</td>
+						</tr>
+						<tr>
+							<td colspan="2">
+								<hr>
+							</td>
+						</tr>
+						<tr>
+							<td class="subtitle">
+								Extra Price<br>
+								<small>(each User)</small>
+							</td>
+							<td class="content">
+								{{churchbillprice.currency.isoname}} {{churchbillprice.extraprice|number:'1.0-0'}} <br>
+								<small>(each User)</small>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+	<div class="billinglist-detail">
+		<div class="detail-list">
+			<div class="title">
+				All Bill And Status
+			</div>
+			<div class="detail">
+				<comp-listtable
+					[datas]="datas"
+					[keys]="keys"
+					[navigations]="navigations"
+					[isloading]="isloadingdetail"
+					(refreshData)="getData($event)"
+					(sortDataBy)="sortDataBy($event)"
+					(doAPI)="doAPI($event)"
+					#listtable
+				></comp-listtable>
+			</div>
+		</div>
+	</div>
+</div>

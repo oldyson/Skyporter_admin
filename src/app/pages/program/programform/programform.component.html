@@ -1,0 +1,411 @@
+<div class="construct" *ngIf="isLoading">
+	<i appLoadingSkyporter size="lg"></i>
+</div>
+<div *ngIf='!isLoading'>
+	<div class="programform-wrapper" *ngIf="programType==='class'||programType==='event'">
+
+		<div class="programform">
+			<comp-inputform
+				type="text"
+				title="{{programType}} Title"
+				[(value)]="program.name"
+			>
+			</comp-inputform>
+			<div class="error-message" *ngIf="program.name != null && program.name.length > 50">
+				{{helper.toTitleCase(programType)}} title cannot exceed 50 characters.
+			</div>
+			<comp-inputform
+				type="simplemde"
+				title="{{programType}} Description"
+				[(value)]="program.description"
+			>
+		</comp-inputform>
+		<div class="code-wrapper">
+			<div *ngIf="isCodeLoading">
+				<i appLoadingSkyporter size="md"></i>
+			</div>
+			<div *ngIf="!isCodeLoading">
+				<comp-inputform
+					type="searchsingle"
+					title="{{programType}} Code"
+					(valueChange)="onChangeProgramCode($event)"
+					[(value)]="program.programcode_id"
+					[options]="programcodes"
+				>
+				</comp-inputform>
+			</div>
+			<ng-container
+				*ngIf="program.programcode_id != null"
+			>
+				<ng-container
+				*ngIf="isCodeDataLoading"
+				>
+					<i appLoadingSkyporter size="md"></i>
+				</ng-container>
+				<ng-container
+					*ngIf="!isCodeDataLoading"
+				>
+					<ng-container
+						*ngIf="maritalStatusAll.isloading"
+					>
+						<i appLoadingSkyporter size="md"></i>
+					</ng-container>
+					<ng-container
+						class="list"
+						*ngIf="!maritalStatusAll.isloading"
+					>
+						<comp-inputform
+							type="searchmultiple"
+							title="{{programTypeTitleCase}} Required Marital Status"
+							[(value)]="maritalStatusList"
+							[options]="maritalStatusAll.maritalstatuses"
+						>
+						</comp-inputform>
+						<br>
+					</ng-container>
+					<ng-container
+						*ngIf="isCodeLoading"
+					>
+						<i appLoadingSkyporter size="md"></i>
+					</ng-container>
+					<ng-container
+						*ngIf="!isCodeLoading"
+					>
+						<comp-inputform
+							type="searchmultiple"
+							title="Required {{programTypeTitleCase}} Code"
+							[(value)]="programCodeList"
+							[options]="programcodes"
+						>
+						</comp-inputform>
+					</ng-container>
+					<comp-inputform
+					type="dropdown"
+					title="{{programTypeTitleCase}} Gender Requirement"
+					[(value)]="program.reqgender"
+					[(options)]="gender"
+					>
+					</comp-inputform>
+					<comp-inputform
+					type="checkbox"
+					title="{{programTypeTitleCase}} Required Family"
+					[(value)]="program.reqfamily"
+					[tooltipMessage]="tooltipMessage.requiredFamily"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programTypeTitleCase}} Required Children"
+						[(value)]="program.reqchildren"
+						[tooltipMessage]="tooltipMessage.requiredChild"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programTypeTitleCase}} Required Leader Approval"
+						[(value)]="program.leaderapproval"
+						[tooltipMessage]="tooltipMessage.requiredLeader"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programTypeTitleCase}} Required Admin Approval"
+						[(value)]="program.adminapproval"
+						[tooltipMessage]="tooltipMessage.requiredAdmin"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programTypeTitleCase}} Required User"
+						[(value)]="program.isuser"
+						[tooltipMessage]="tooltipMessage.requiredUser"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programTypeTitleCase}} Register with Spouse"
+						[(value)]="program.withspouse"
+						[tooltipMessage]="tooltipMessage.withSpouse"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programCodeType}} Required Pre Wedding Couple"
+						[(value)]="program.iscouple"
+						[tooltipMessage]="tooltipMessage.requiredCouple"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programCodeType}} Required New Couple"
+						[(value)]="program.isnewcouple"
+						[tooltipMessage]="tooltipMessage.requiredNewCouple"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programCodeType}} Required Select Child"
+						[(value)]="program.isselectchild"
+						[tooltipMessage]="tooltipMessage.requiredSelectChild"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="checkbox"
+						title="{{programCodeType}} Required Upload File"
+						[(value)]="program.isreqfiles"
+						[tooltipMessage]="tooltipMessage.requiredFiles"
+					>
+					</comp-inputform>
+					<ng-container *ngIf="program.iscouple == true">
+						<comp-inputform
+						type="number"
+						title="{{programCodeType}} Marital Date Minimum (optional)"
+						[(value)]="program.maritaldatemin"
+						[perline]=2
+						>
+						</comp-inputform>
+						<comp-inputform
+						type="number"
+						title="{{programCodeType}} Marital Date Maximum (optional)"
+						[(value)]="program.maritaldatemax"
+						[perline]=2
+						>
+						</comp-inputform>
+					</ng-container>
+					<ng-container *ngIf="program.leaderapproval">
+						<div class="input-wrapper">
+							<div class="title">
+								Leader Approval Files
+							</div>
+							<div class="input">
+								<div class="uploadfilecontainer" (click)="attachmentInput.click()" appDragDrop (onFileDropped)="uploadApprovalFile($event.target.files)">
+									Click here &nbsp;<small>-or-</small>&nbsp; Drag your file
+									<input hidden type="file" #attachmentInput (change)="uploadApprovalFile($event.target.files)" accept="application/msword, application/vnd.openxmlformats-officedocument.wordprocessingml.document, application/pdf, image/*">
+								</div>
+							</div>
+							<div class="result-wrapper" *ngIf="approvalDocuments.length > 0">
+								<div class="uploadimage-result">
+									<button class="file" [ngClass]="{'selected':doc.checked}" *ngFor="let doc of approvalDocuments" (click)="toggleFile(doc)" [ngStyle]="{'background-image': 'url(' + doc.url + ')'}">
+										<div class="file-name">
+											{{doc.name}}
+										</div>
+									</button>
+								</div>
+							</div>
+						</div>
+					</ng-container>
+					<comp-inputform
+						type="number"
+						perline="2"
+						title="Age Min"
+						[(value)]="program.agemin"
+					>
+					</comp-inputform>
+					<comp-inputform
+						type="number"
+						perline="2"
+						title="Age Max"
+						[(value)]="program.agemax"
+					>
+					</comp-inputform>
+				</ng-container>
+			</ng-container>
+		</div>
+			<div *ngIf="isTypeLoading">
+				<i appLoadingSkyporter size="md"></i>
+			</div>
+			<div *ngIf="!isTypeLoading">
+				<comp-inputform
+					type="dropdown"
+					title="{{programType}} Type"
+					[(value)]="program.programtype_id"
+					[options]="programtypes"
+				>
+				</comp-inputform>
+			</div>
+			<comp-inputform
+				type="datetime"
+				perline="2"
+				title="{{programType}} Start From"
+				[(value)]="program.programstart_at"
+				disabled="true"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="datetime"
+				perline="2"
+				title="{{programType}} End Until"
+				[(value)]="program.programend_at"
+				disabled="true"
+			>
+			</comp-inputform>
+			<programform-breakout
+				#programbreakoutlist
+				[(program)]="program"
+				(addProgramBreakout)="addProgramBreakout()"
+				[campusrooms]="campusrooms"
+				(removeProgramBreakout)="removeProgramBreakout($event)"
+				(addProgramBreakoutDate)="addProgramBreakoutDate($event)"
+				(removeProgramBreakoutDate)="removeProgramBreakoutDate($event)"
+				(updateProgramStartEnd)="updateProgramStartEnd()"
+			>
+			</programform-breakout>
+			<comp-inputform
+				type="checkbox"
+				title="Open for Registration"
+				[(value)]="program.isopenregist"
+			>
+			</comp-inputform>
+			<ng-container *ngIf="program.isopenregist">
+				<comp-inputform
+					type="datetime"
+					perline="2"
+					title="Start of Register"
+					[(value)]="program.registerstart_at"
+				>
+				</comp-inputform>
+				<comp-inputform
+					type="datetime"
+					perline="2"
+					title="End of Register"
+					[(value)]="program.registerend_at"
+				>
+				</comp-inputform>
+			</ng-container>
+			<comp-inputform
+				type="datetime"
+				perline="2"
+				title="Start Sharing"
+				[(value)]="program.publishstart_at"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="datetime"
+				perline="2"
+				title="End Sharing"
+				[(value)]="program.publishend_at"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				perline="2"
+				title="Total Sessions"
+				disabled="true"
+				[(value)]="program.totalsessions"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="number"
+				perline="2"
+				title="Minimum Session Completion"
+				[(value)]="program.minattenddays"
+			>
+			</comp-inputform>
+			<div class="input-wrapper" *ngIf="programType.toLowerCase().indexOf('event') !== -1">
+				<div class="title">
+					{{programType}} Banner
+				</div>
+				<div class="input">
+					<div class="uploadfilecontainer" (click)="imageInput.click()" appDragDrop>
+						<ng-container *ngIf="!banner">
+							Click here &nbsp;<small>-or-</small>&nbsp; Drag your file
+						</ng-container>
+						<ng-container *ngIf="banner">
+							{{filename}}
+						</ng-container>
+						<input hidden type="file" #imageInput (change)="onFileChange($event)" accept="image/*">
+					</div>
+				</div>
+			</div>
+			<div class="input-wrapper" *ngIf="banner">
+				<div class="title">Image Preview</div>
+				<img src="{{imageSrc}}" class="uploadimage-result">
+			</div>
+			<ng-container *ngIf="program.document_id != null">
+				<div class="result-wrapper" *ngIf="!banner">
+					<div class="title">Image Preview</div>
+					<img src="{{program.document.url}}" class="uploadimage-result">
+				</div>
+			</ng-container>
+			<div *ngIf="isVolunteerLoading">
+				<i appLoadingSkyporter size="md"></i>
+			</div>
+			<div *ngIf="!isVolunteerLoading">
+				<comp-inputform
+					type="searchmultipleforuser"
+					title="{{programType}} Volunteers"
+					[(value)]="volunteerList"
+					[options]="users"
+				>
+				</comp-inputform>
+			</div>
+			<programform-price
+				#programpricelist
+				[(program)]="program"
+				[roles]="roles"
+				[type]="programType"
+				(addProgramPrice)="addProgramPrice()"
+				(removeProgramPrice)="removeProgramPrice($event)"
+				(updateIsReqPayment)="updateIsReqPayment()"
+			>
+			</programform-price>
+			<comp-inputform
+				type="simplemde"
+				title="Terms & Conditions"
+				[(value)]="program.terms"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="simplemde"
+				title="Additional Information"
+				[(value)]="program.description2"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="Show in Carousell (Mark as Highlight)"
+				[(value)]="program.ishighlight"
+			 	*ngIf="programType.toLowerCase().indexOf('event') !== -1 && (banner || program.document_id != null)"
+			>
+			</comp-inputform>
+			<comp-inputform
+				type="checkbox"
+				title="Require Payment"
+				[(value)]="program.isreqpayment"
+				disabled="true"
+			>
+			</comp-inputform>
+		</div>
+		<!-- <div class="programform-preview">
+			asdf
+		</div> -->
+	</div>
+	<div class="footer-container">
+		<div class="right" *ngIf="program.saveLoading">
+			<i appLoadingSkyporter size="md"></i>
+		</div>
+		<div class="right" *ngIf="!program.saveLoading">
+			<ng-container *ngIf="program.status != null">
+				<!-- WAKTU EDIT YG STATUSNYA DRAFT -->
+				<button class="btn btn-outline-skyporter" (click)="saveProgram('Draft')" *ngIf="program.status === 'Draft'">
+					Save as Draft
+				</button>
+				<button class="btn btn-skyporter" (click)="saveProgram('Published')" *ngIf="program.status === 'Draft'">
+					Publish
+				</button>
+				<button class="btn btn-skyporter" (click)="saveProgram('Published')" *ngIf="program.status === 'Published'">
+					Save
+				</button>
+			</ng-container>
+			<ng-container *ngIf="program.status == null">
+				<!-- WAKTU CREATE  -->
+				<button class="btn btn-outline-skyporter" (click)="saveProgram('Draft')">
+					Save as Draft
+				</button>
+				<button class="btn btn-skyporter" (click)="saveProgram('Published')">
+					Publish
+				</button>
+			</ng-container>
+		</div>
+	</div>
+</div>

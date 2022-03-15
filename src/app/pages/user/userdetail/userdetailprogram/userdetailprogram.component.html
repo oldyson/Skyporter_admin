@@ -1,0 +1,241 @@
+
+<comp-programdiagrampopup
+	#programdiagram
+></comp-programdiagrampopup>
+
+<div class="completed-class-block">
+	<div class="alert-skyporter">
+		Show more information about Class / Event system<br>
+		<button class="btn btn-sm btn-outline-skyporter" (click)="programdiagram.show()">
+			Show Information Flow
+		</button>
+	</div>
+	<div class="completed-class">
+		<div class="title">
+			Completed Class&nbsp;
+			<button class="btn btn-sm" (click)="subtitleToggle()" *ngIf="!showSubtitle">
+				<fa-icon [icon]="falChevronDown"></fa-icon>
+			</button>
+		</div>
+		<ng-container *ngIf="isUpcLoading">
+			<div class="loading-wrapper">
+				<i appLoadingSkyporter size="md"></i>
+			</div>
+		</ng-container>
+		<ng-container *ngIf="!isUpcLoading">
+			<div class="subtitle" *ngIf="showSubtitle">
+				<fa-icon [icon]="falInfoCircle"></fa-icon>
+				Only classes that were completed, will appear below.
+			</div>
+			<div class="table-wrapper">
+				<table class="table table-sm table-clear">
+					<tbody>
+						<tr *ngFor="let userprogramcode of userprogramcodes; let i = index">
+							<td class="min-width text-right">{{i+1}}.</td>
+							<td>{{userprogramcode.programcode.name}}</td>
+							<td>
+								Completed at
+								<ng-container *ngIf="userprogramcode.updated_at == null">
+									<b class="clr-primary">{{userprogramcode.created_at|date:'dd MMMM yyyy'}}</b>
+								</ng-container>
+								<ng-container *ngIf="userprogramcode.updated_at != null">
+									<b class="clr-primary">{{userprogramcode.updated_at|date:'dd MMMM yyyy'}}</b>
+								</ng-container>
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			<button class='btn btn-skyporter float-right' (click)="refreshProgramCode()">
+				<ng-container *ngIf="!isRefreshLoading">
+					Refresh
+				</ng-container>
+				<ng-container *ngIf="isRefreshLoading">
+					<i appLoadingSkyporter size="sm"></i>
+				</ng-container>
+			</button>
+		</ng-container>
+	</div>
+	<div class="completed-class">
+		<userdetailprogram-userprogramhistory
+			historyType="Class"
+			[programs]="classes"
+			[isloading]="isloading"
+		></userdetailprogram-userprogramhistory>
+		<button class='btn btn-skyporter float-right' (click)="showAddProgramHistory('Class')">
+			Add Class
+		</button>
+	</div>
+	<div class="completed-event">
+		<userdetailprogram-userprogramhistory
+			historyType="Event"
+			[programs]="events"
+			[isloading]="isloading"
+		></userdetailprogram-userprogramhistory>
+		<button class='btn btn-skyporter float-right' (click)="showAddProgramHistory('Event')">
+			Add Event
+		</button>
+	</div>
+	<comp-addprogramhistory
+		#addprogramhistorymodal
+		(refreshData)="getProgramHistory(userId)"
+	>
+	</comp-addprogramhistory>
+	<!-- <div class="completed-class">
+		<div class="title">
+			Class History
+		</div>
+		<div class="loading-wrapper" *ngIf="isloading">
+			<i appLoadingSkyporter size="lg"></i>
+		</div>
+		<table class="table table-sm table-clear" *ngIf="classes != null">
+			<tbody>
+				<ng-container *ngFor="let class of classes; let i = index">
+					<tr>
+						<td class="min-width text-right">{{i+1}}.</td>
+						<td>
+							<div class="program-name" placement="right" [ngbPopover]="popProgram" popoverTitle="Class Information Detail" (click)="popProgramSelected=class">
+								{{class.name}}
+							</div>
+						</td>
+						<td>
+							<ng-container *ngIf="class.ispassed">
+								Completed at
+								<b class="clr-primary">{{class.programend_at|date:'dd MMMM yyyy'}}</b>
+							</ng-container>
+							<ng-container *ngIf="!class.ispassed">
+								Not Passed
+							</ng-container>
+						</td>
+						<td class="min-width">
+							<div class="present" *ngFor="let ticket of class.programtickets; let j = index">
+								<ng-container *ngFor="let attend of ticket.programticketattendances">
+									<ng-container *ngIf="attend.ispresent">
+										<fa-icon class="attend" [icon]="fasUser"></fa-icon>
+									</ng-container>
+									<ng-container *ngIf="!attend.ispresent">
+										<fa-icon class="not-attend" [icon]="farUser"></fa-icon>
+									</ng-container>
+								</ng-container>
+							</div>
+						</td>
+						<td class="min-width action">
+							<button class="btn btn-sm" (click)="showProgramDetail(i, 'class')" [ngClass]="{'rotate180':class.isshowed}">
+								<span class="">
+									<fa-icon [icon]="fasChevronDown"></fa-icon>
+								</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="programdetail-container" *ngIf="class.isshowed">
+						<td colspan="5">
+							<div class="programdetail">
+								<div class="title">
+									{{class.name}} Edit Section
+								</div>
+								<ng-container *ngFor="let ticket of class.programtickets; let j = index">
+									<div class="programticket">
+										Ticket #{{j+1}} resgitered at {{ticket.created_at}}<br>
+										Ticket registered by {{ticket.user.fullname}}
+									</div>
+									<ng-container *ngFor="let attend of ticket.programticketattendances; let k = index">
+										<div class="attend-status" (click)="toggleAttendance(attend)">
+											Session #{{k+1}} :
+											<div class="attendance-checkbox">
+												<button class="btn btn-sm checked" *ngIf="attend.ispresent">
+													<fa-icon [icon]="fadCheckSquare" *ngIf="!attend.loading" [fixedWidth]="true"></fa-icon>
+													<fa-icon [icon]="fadSpinner" *ngIf="attend.loading" [spin]="true" [fixedWidth]="true"></fa-icon>
+												</button>
+												<button class="btn btn-sm unchecked" *ngIf="!attend.ispresent">
+													<fa-icon [icon]="farSquare" *ngIf="!attend.loading" [fixedWidth]="true"></fa-icon>
+													<fa-icon [icon]="fadSpinner" *ngIf="attend.loading" [spin]="true" [fixedWidth]="true"></fa-icon>
+												</button>
+											</div>
+										</div>
+									</ng-container>
+								</ng-container>
+							</div>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+	</div> -->
+	<!-- <div class="completed-event">
+		<div class="title">
+			Event History
+		</div>
+		<table class="table table-sm table-clear" *ngIf="events != null">
+			<tbody>
+				<ng-container *ngFor="let event of events; let i = index">
+					<tr>
+						<td class="min-width text-right">{{i+1}}.</td>
+						<td>
+							<div class="program-name" placement="right" [ngbPopover]="popProgram" popoverTitle="Class Information Detail" (click)="popProgramSelected=event">
+								{{event.name}}
+							</div>
+						</td>
+						<td>
+							<ng-container *ngIf="event.ispassed">
+								Presented at
+								<b class="clr-primary">{{event.programend_at|date:'dd MMMM yyyy'}}</b>
+							</ng-container>
+							<ng-container *ngIf="!event.ispassed">
+								Not counted as Present
+							</ng-container>
+						</td>
+						<td class="min-width">
+							<div class="present" *ngFor="let ticket of event.programtickets; let j = index">
+								<ng-container *ngFor="let attend of ticket.programticketattendances">
+									<ng-container *ngIf="attend.ispresent">
+										<fa-icon class="attend" [icon]="fasUser"></fa-icon>
+									</ng-container>
+									<ng-container *ngIf="!attend.ispresent">
+										<fa-icon class="not-attend" [icon]="farUser"></fa-icon>
+									</ng-container>
+								</ng-container>
+							</div>
+						</td>
+						<td class="min-width action">
+							<button class="btn btn-sm" (click)="showProgramDetail(i, 'event')" [ngClass]="{'rotate180':event.isshowed}">
+								<span class="">
+									<fa-icon [icon]="fasChevronDown"></fa-icon>
+								</span>
+							</button>
+						</td>
+					</tr>
+					<tr class="programdetail-container" *ngIf="event.isshowed">
+						<td colspan="5">
+							<div class="programdetail">
+								<div class="title">
+									{{event.name}} Edit Section
+								</div>
+								<ng-container *ngFor="let ticket of event.programtickets; let j = index">
+									<div class="programticket">
+										Ticket #{{j+1}} resgitered at {{ticket.created_at}}<br>
+										Ticket registered by {{ticket.user.fullname}}
+									</div>
+									<ng-container *ngFor="let attend of ticket.programticketattendances; let k = index">
+										<div class="attend-status" (click)="toggleAttendance(attend)">
+											Session #{{k+1}} :
+											<div class="attendance-checkbox">
+												<button class="btn btn-sm checked" *ngIf="attend.ispresent">
+													<fa-icon [icon]="fadCheckSquare" *ngIf="!attend.loading" [fixedWidth]="true"></fa-icon>
+													<fa-icon [icon]="fadSpinner" *ngIf="attend.loading" [spin]="true" [fixedWidth]="true"></fa-icon>
+												</button>
+												<button class="btn btn-sm unchecked" *ngIf="!attend.ispresent">
+													<fa-icon [icon]="farSquare" *ngIf="!attend.loading" [fixedWidth]="true"></fa-icon>
+													<fa-icon [icon]="fadSpinner" *ngIf="attend.loading" [spin]="true" [fixedWidth]="true"></fa-icon>
+												</button>
+											</div>
+										</div>
+									</ng-container>
+								</ng-container>
+							</div>
+						</td>
+					</tr>
+				</ng-container>
+			</tbody>
+		</table>
+	</div> -->
+</div>

@@ -1,0 +1,178 @@
+
+
+
+<div class="loading-wrapper" *ngIf="isloading===true">
+	<i appLoadingSkyporter size="lg"></i>
+</div>
+
+<div class="userrolesummary-wrapper" *ngIf="isloading===false">
+
+	<div class="title">
+		SMALL GROUP MEMBER ROLES
+		<div class="percenttoggle-wrapper">
+			<comp-percenttoggle
+				[status]="smallgroupmemberroles.showpercent"
+				(whenToggled)="smallgroupToggled($event)"
+			>
+			</comp-percenttoggle>
+		</div>
+	</div>
+	<div class="detail" *ngIf="smallgroupmemberroles != null">
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<td class='text-center'>#</td>
+					<td>Role Name</td>
+					<td class="text-right">Core Team</td>
+					<td class="text-right">Member</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="list" *ngFor="let role of smallgroupmemberroles; let i = index">
+					<td class="number">
+						{{(i+1)|number}}.&nbsp;
+					</td>
+					<td>
+						{{role.name}}
+					</td>
+					<td class="number role-value">
+						<span placement="left" ngbTooltip="Core Team {{role.name}}">
+							<ng-container *ngIf="!smallgroupmemberroles.showpercent">
+								{{role.userscoreteam_count|number}}
+							</ng-container>
+							<ng-container *ngIf="smallgroupmemberroles.showpercent">
+								{{(role.userscoreteam_count/smallgroupmemberroles.allcount*100)|number}}%
+							</ng-container>
+						</span>
+					</td>
+					<td class="number role-value">
+						<span placement="left" ngbTooltip="Member {{role.name}}">
+							<ng-container *ngIf="!smallgroupmemberroles.showpercent">
+								{{role.users_count|number}}
+							</ng-container>
+							<ng-container *ngIf="smallgroupmemberroles.showpercent">
+								{{(role.users_count/smallgroupmemberroles.allcount*100)|number}}%
+							</ng-container>
+						</span>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="title">
+		MINISTRY MEMBER ROLES
+		<div class="percenttoggle-wrapper">
+			<comp-percenttoggle
+				[status]="ministrymemberroles.showpercent"
+				(whenToggled)="ministryToggled($event)"
+			>
+			</comp-percenttoggle>
+		</div>
+	</div>
+	<div class="detail" *ngIf="ministrymemberroles != null">
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<td class='text-center'>#</td>
+					<td>Role Name</td>
+					<td class="text-right">Member</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="list" *ngFor="let role of ministrymemberroles; let i = index">
+					<td class="number">
+						{{(i+1)|number}}.&nbsp;
+					</td>
+					<td>
+						{{role.name}}
+					</td>
+					<td class="number role-value">
+						<ng-container *ngIf="!ministrymemberroles.showpercent">
+							{{role.users_count|number}}
+						</ng-container>
+						<ng-container *ngIf="ministrymemberroles.showpercent">
+							{{(role.users_count/ministrymemberroles.allcount*100)|number}}%
+						</ng-container>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="title">
+		ADMIN ROLES
+	</div>
+	<div class="detail" *ngIf="roles != null">
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<td class='text-center'>#</td>
+					<td>Role Name</td>
+					<td class="text-right">User</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="list" *ngFor="let role of roles; let i = index">
+					<td class="number">
+						{{(i+1)|number}}.&nbsp;
+					</td>
+					<td>
+						{{role.showname}}
+					</td>
+					<td class="number role-value">
+						{{role.userroles_count|number}}
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="title">
+		OTHERS
+		<div class="percenttoggle-wrapper">
+			<comp-percenttoggle
+				[status]="othershowpercent"
+				(whenToggled)="otherToggled($event)"
+			>
+			</comp-percenttoggle>
+		</div>
+	</div>
+	<div class="detail" *ngIf="roles != null">
+		<table class="table table-sm">
+			<thead>
+				<tr>
+					<td class='text-center'>#</td>
+					<td>Role Name</td>
+					<td class="text-right">User</td>
+				</tr>
+			</thead>
+			<tbody>
+				<tr class="list" *ngFor="let other of others; let i = index">
+					<td class="number">
+						{{(i+1)|number}}.&nbsp;
+					</td>
+					<td>
+						{{other.label}}
+					</td>
+					<td class="number role-value">
+						<ng-container *ngIf="!othershowpercent">
+							{{other.value|number}}
+						</ng-container>
+						<ng-container *ngIf="othershowpercent && alluserCount>0">
+							{{(other.value/alluserCount*100)|number:'1.0-1'}}%
+						</ng-container>
+					</td>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+
+	<div class="chart-wrapper">
+			<canvas baseChart 
+			[data]="otherChartData"
+			[labels]="otherChartLabels"
+			[chartType]="otherChartType">
+		</canvas>
+	</div>
+</div>

@@ -1,0 +1,67 @@
+<div class="growth-charts-wrapper">
+	<div class="description" [innerHTML]="description">
+	</div>
+	<div class="select-year">
+		<select class="form-control" [(ngModel)]="selectedYear" (ngModelChange)="getData()">
+			<option *ngFor="let option of years; let i = index" value="{{option}}">
+				{{option}}
+			</option>
+		</select>
+	</div>
+	<div class="construct" *ngIf="isLoading">
+		<i appLoadingSkyporter size="lg"></i>
+	</div>
+	<ng-container *ngIf="!isLoading">
+		<ng-container *ngFor="let chart of columns; let i = index">
+			<div class="title-divider">
+				{{chart.label}}
+			</div>
+			<div class="type-choose">
+				<div class="title">
+					Show Type
+				</div>
+				<select class="form-control" [(ngModel)]="selectedType[chart.name]" (ngModelChange)="initChart(chart)">
+					<option *ngFor="let option of types; let i = index" value="{{option.value}}">
+						{{option.name}}
+					</option>
+				</select>
+			</div>
+			<ng-container *ngIf="smallgroupreportbymembers != null && smallgroupreportbymembers.length>0">
+				<div class="report-single">
+					<div class="title">
+						Average New {{chart.label}} / Day
+					</div>
+					<ng-container *ngIf="selectedType[chart.name] == 'increment'">
+						<div class="number">
+							{{(sumDiffs(min[chart.name], max[chart.name], chart.name))/((max[chart.name]-min[chart.name])*7)|number:'1.0-1'}}
+						</div>
+						<div class="info-wrapper" [ngClass]="{'up':(sumDiffs(min[chart.name], max[chart.name], chart.name))/((max[chart.name]-min[chart.name])*7)>=0, 'down':(sumDiffs(min[chart.name], max[chart.name], chart.name))/((max[chart.name]-min[chart.name])*7)<0}">
+							<div class="info">
+								from {{dates[selectedType[chart.name]][min[chart.name]]}} to {{dates[selectedType[chart.name]][max[chart.name]]}}
+							</div>
+						</div>
+					</ng-container>
+					<ng-container *ngIf="selectedType[chart.name] == 'count'">
+						<div class="number">
+							{{(smallgroupreportbymembers[max[chart.name]][chart.name]-smallgroupreportbymembers[min[chart.name]][chart.name])/((max[chart.name]-min[chart.name])*7)|number:'1.0-1'}}
+						</div>
+						<div class="info-wrapper" [ngClass]="{'up':(smallgroupreportbymembers[max[chart.name]][chart.name]-smallgroupreportbymembers[min[chart.name]][chart.name])/((max[chart.name]-min[chart.name])*7)>=0, 'down':(smallgroupreportbymembers[max[chart.name]][chart.name]-smallgroupreportbymembers[min[chart.name]][chart.name])/((max[chart.name]-min[chart.name])*7)<0}">
+							<div class="info">
+								from {{dates[selectedType[chart.name]][min[chart.name]]}} to {{dates[selectedType[chart.name]][max[chart.name]]}}
+							</div>
+						</div>
+					</ng-container>				
+				</div>
+			</ng-container>
+			<div class="chart-wrapper">
+				<comp-linechart
+					[identifier]="chart.name"
+					[minX]="min[chart.name]"
+					[maxX]="max[chart.name]"
+					[options]="options[chart.name]"
+					(rangeChange)="refreshData($event, chart)"
+				></comp-linechart>
+			</div>
+		</ng-container>
+	</ng-container>
+</div>

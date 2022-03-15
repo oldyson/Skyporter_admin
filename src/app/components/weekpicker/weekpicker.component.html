@@ -1,0 +1,21 @@
+<div class="weekpicker-container">
+	<ngb-datepicker
+		[firstDayOfWeek]="0"
+		(dateSelect)="onDateSelection($event)"
+		[showWeekNumbers]="true"
+		[outsideDays]="outsideDays"
+		[maxDate]="maxDate"
+		[dayTemplate]="t"
+		[displayMonths]="3"
+	>
+	</ngb-datepicker>
+</div>
+<ng-template #t let-date let-focused="focused">
+	<span
+		class="custom-day"
+		[class.focused]="focused"
+		[class.range]="isRange(date)"
+	>
+		{{ date.day }}
+	</span>
+</ng-template>

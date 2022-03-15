@@ -1,0 +1,232 @@
+
+
+
+<div class="campaignform-wrapper" *ngIf="campaign!=null">
+	<div class="header">
+		<div class="navi">
+			<div class="navi-list" [ngClass]="{'active':currentViewtype=='Email'}" (click)="changeviewtype('Email')">
+				Email
+			</div>
+			<div class="navi-list" [ngClass]="{'active':currentViewtype=='Notif'}" (click)="changeviewtype('Notif')">
+				Notification
+			</div>
+		</div>
+	</div>
+	<div class="detail-container" *ngIf="currentViewtype=='Email'">
+		<!-- EMAIL -->
+		<div class="detail-form">
+			<div class="input-wrapper">
+				<div class="title">
+					Subject
+				</div>
+				<div class="input">
+					<input class="form-control" type="text" [(ngModel)]="campaign.title" placeholder="Email Subject">
+				</div>
+			</div>
+			<div class="input-wrapper">
+				<div class="preview-toggle">
+					<button class="btn btn-sm btn-skyporter" (click)="togglePreview()">
+						<span *ngIf="showPreview">
+							<fa-icon [icon]="farEye"></fa-icon>
+							Hide
+						</span> 
+						<span *ngIf="!showPreview">
+							<fa-icon [icon]="farEyeSlash"></fa-icon>
+							Show
+						</span> 
+						Preview
+					</button>
+				</div>
+			</div>
+			<div class="input-wrapper">
+				<div class="title">
+					Description
+				</div>
+				<div class="input">
+					<simplemde 
+						#simplemde 
+						[(ngModel)]="descriptionmde"
+						(ngModelChange)="descriptionChanged()"
+					></simplemde>
+					{{pos}}
+					Inquiries to inline youtube : <br>
+					<a class="link-skyporter" href="http://embedyoutube.org/" target="_blank">Generate Youtube Inline here</a>
+				</div>
+			</div>
+			<div class="input-wrapper">
+				<div class="title">
+					Image
+				</div>
+				<div class="input">
+					<div class="uploadfilecontainer" (click)="imageInput.click()" appDragDrop (onFileDropped)="uploadImage($event)">
+						Click here &nbsp;<small>-or-</small>&nbsp; Drag your file
+						<input hidden type="file" #imageInput (change)="uploadImage($event.target.files)">
+					</div>
+				</div>
+				<div class="result-wrapper" *ngIf="uploadedFiles.length > 0">
+					<div class="uploadimage-result">
+						<button class="file" *ngFor="let file of uploadedFiles" (click)="copyClipboard(file)">
+							<img src="{{file}}">
+						</button>
+					</div>
+					<div class="info">
+						Click one file to <b>copy</b> URL to clipboard.<br>
+						Use <kbd>Ctrl/Command</kbd> + <kbd>V</kbd> to <b>paste</b>.
+					</div>
+				</div>
+			</div>
+			<div class="input-wrapper">
+				<div class="title">
+					Attachments
+				</div>
+				<div class="input">
+					<div class="uploadfilecontainer" (click)="attachmentInput.click()" appDragDrop (onFileDropped)="uploadAttachment($event)">
+						Click here &nbsp;<small>-or-</small>&nbsp; Drag your file
+						<input hidden type="file" #attachmentInput (change)="uploadAttachment($event.target.files)">
+					</div>
+				</div>
+				<div class="result-wrapper" *ngIf="documentsAttachment.length > 0">
+					<div class="uploadimage-result">
+						<button class="file" [ngClass]="{'selected':doc.checked}" *ngFor="let doc of documentsAttachment" (click)="toggleAttachment(doc)" [ngStyle]="{'background-image': 'url(' + doc.url + ')'}">
+							<div class="file-name">
+								{{doc.name}}
+							</div>
+						</button>
+					</div>
+					{{documentsAttachment.length}}
+				</div>
+			</div>
+			<campaignform-recipients
+				[campaign]="campaign"
+				[recipients]="recipients"
+			></campaignform-recipients>
+			<div class="input-wrapper">
+				<div class="title">
+					Schedule 
+				</div>
+				<div class="input">
+					<input type="datetime-local" [(ngModel)]="campaign.schedule" class="form-control">
+				</div>
+			</div>
+		</div>
+		<campaignform-preview
+			[campaign]="campaign"
+			[recipients]="recipients"
+			(checkTotal)="countRecipient()" 
+			*ngIf="showPreview"
+		>
+		</campaignform-preview>
+	</div>
+	<div class="detail-container" *ngIf="currentViewtype=='Notif'">
+		<!-- NOTIFICATION -->
+		<div class="detail-form">
+			<div class="input-wrapper">
+				<div class="title">
+					Title
+				</div>
+				<div class="input">
+					<input class="form-control" type="text" [(ngModel)]="campaign.title" placeholder="Notification Title">
+				</div>
+			</div>
+			<div class="input-wrapper">
+				<div class="preview-toggle">
+					<button class="btn btn-sm btn-skyporter" (click)="togglePreview()">
+						<span *ngIf="showPreview">
+							<fa-icon [icon]="farEye"></fa-icon>
+							Hide
+						</span> 
+						<span *ngIf="!showPreview">
+							<fa-icon [icon]="farEyeSlash"></fa-icon>
+							Show
+						</span> 
+						Preview
+					</button>
+				</div>
+			</div>
+			<div class="input-wrapper">
+				<div class="title">
+					Description
+				</div>
+				<div class="input">
+					<simplemde 
+						#simplemde 
+						[(ngModel)]="descriptionmde" 
+						[options]="options"
+						(ngModelChange)="descriptionChanged()"
+					></simplemde>
+					<button
+						class="btn btn-sm btn-skyporter"
+						(click)="toggled = !toggled"
+						[(emojiPickerIf)]="toggled"
+						[emojiPickerDirection]="'bottom' || 'top' || 'left' || 'right'"
+						(emojiPickerSelect)="handleSelection($event)"
+						*ngIf="isShowEmoPicker"
+					>Select Emoji</button>
+					<button class="btn btn-sm btn-outline-skyporter" *ngIf="!isShowEmoPicker" (click)="showEmoji()">
+						Show Emoji Picker
+					</button>
+				</div>
+			</div>
+			<campaignform-recipients
+				[campaign]="campaign"
+				[recipients]="recipients"
+				[showPreview]="showPreview"
+			></campaignform-recipients>
+			<div class="input-wrapper">
+				<div class="title">
+					Schedule 
+				</div>
+				<div class="input">
+					<input type="datetime-local" [(ngModel)]="campaign.schedule" class="form-control">
+				</div>
+			</div>
+		</div>
+		<campaignform-preview
+			[campaign]="campaign"
+			[recipients]="recipients"
+			[showPreview]="showPreview"
+			(checkTotal)="countRecipient()"
+			*ngIf="showPreview"
+		>
+		</campaignform-preview>
+	</div>
+	<div class="footer-container">
+		<div class="right" *ngIf="campaign.saveloading">
+			<i appLoadingSkyporter size="md"></i>
+		</div>
+		<div class="right" *ngIf="!campaign.saveloading">
+			<ng-container *ngIf="campaign.status != null">
+				<!-- WAKTU EDIT YG STATUSNYA DRAFT -->
+				<button class="btn btn-outline-skyporter" (click)="saveCampaign('Draft')" *ngIf="campaign.status == 'Draft'">
+					Save as Draft
+				</button>
+				<ng-container *ngIf="campaign.status != 'Draft'">
+				<!-- WAKTU EDIT YG STATUSNYA PUBLISHED / SENT -->
+					<div class="save-info">
+						Cannot edit when campaign was already published.
+					</div><br>
+					<button class="btn btn-outline-skyporter" (click)="saveCampaign('Draft', true)">
+						Copy as Draft
+					</button>
+					<button class="btn btn-skyporter" (click)="saveCampaign('Published', true)">
+						Copy as Published
+					</button>
+				</ng-container>
+			</ng-container>
+			<ng-container *ngIf="campaign.status == null">
+				<!-- WAKTU CREATE  -->
+				<button class="btn btn-outline-skyporter" (click)="saveCampaign('Draft')">
+					Save as Draft
+				</button>
+				<button class="btn btn-skyporter" (click)="saveCampaign('Published')">
+					Publish
+				</button>
+			</ng-container>
+		</div>
+	</div>
+</div>
+
+
+<comp-popup-modal
+	#mymodal
+></comp-popup-modal>

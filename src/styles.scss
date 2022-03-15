@@ -1,0 +1,197 @@
+/* You can add global styles to this file, and also import other style files */
+@import "variable.scss";
+@import "~@ng-select/ng-select/themes/default.theme.css";
+@media screen and (max-width:450px){
+	body{
+		font-size: 11px;
+	}
+}
+
+@media screen and (min-width:451px) and (max-width:767px){
+	body{
+		font-size: 12px;
+	}
+}
+
+@media screen and (min-width:768px) and (max-width:991px){
+	body{
+		font-size: 13px;
+	}
+}
+
+@media screen and (min-width:992px) and (max-width:1200px){
+	body{
+		font-size: 14px;
+	}
+}
+
+@media screen and (min-width:1201px){
+	body{
+		font-size: 16px;
+	}
+}
+
+.ql-font-karla{
+	font-family: "Karla";
+}
+.ql-font-arial{
+	font-family: "Arial";
+}
+
+body{
+	background-color: lighten($primary-color, 44%);
+	background-image: repeating-linear-gradient(-45deg, lighten($primary-color, 44%), rgba(240,240,240) 1.5px, lighten($primary-color, 44%) 2px, rgba(240,240,240) 4px);
+	font-family: "Karla";
+	padding: 0;
+	margin: 0;
+
+	*:focus {
+		outline: 0;
+	}
+	.form-control,
+	.btn{
+		&:focus{
+			box-shadow: none;
+			border-color: lighten($primary-color, 15%);
+		}
+	}
+
+	.text-bold{
+		font-weight: bold;
+	}
+
+	.loading-skyporter{
+		width: 50px;
+		&.small{
+			width: 32px;
+		}
+		&.large{
+			width: 68px;
+		}
+	}
+
+	.clr-primary{
+		color: $primary-color;
+	}
+	.bgc-primary{
+		background-color: $primary-color;
+		color: white;
+		&.btn{
+			&:hover{
+				background-color: darken($primary-color, 10%);
+				color: white;
+			}
+		}
+	}
+
+	.btn-skyporter{
+		font-weight: bold;
+		background-color: $primary-color;
+		color: white;
+		&:hover{
+			background-color: darken($primary-color, 10%);
+			color: white;
+		}
+	}
+
+	.btn-outline-skyporter{
+		font-weight: bold;
+		background-color: white;
+		align-items: center;
+		color: $primary-color;
+		border-color: $primary-color;
+		&:hover{
+			background-color: darken($primary-color, 10%);
+			color: white;
+		}
+	}
+
+	.link-skyporter{
+		color: $primary-color;
+		font-weight: bold;
+		&:hover{
+			color: lighten($primary-color, 15%);
+			text-decoration: none;
+		}
+	}
+}
+
+.ng-select-multiple{
+	.ng-value{
+		.ng-value-label{
+			background-color: lighten($primary-color, 15%) !important;
+			padding: 2px 7px;
+			border-radius: 0px 2px 2px 0px;
+		}
+		.ng-value-icon{
+			background-color: lighten($primary-color, 15%) !important;
+			padding: 0px;
+			border-right: solid 1px lighten($primary-color, 25%) !important;
+			border-radius: 2px 0px 0px 2px;
+			&:hover{
+				background-color: lighten($primary-color, 25%) !important;
+			}
+		}
+	}
+}
+
+
+.ng-option.ng-option-marked{
+	background-color: lighten($primary-color, 15%) !important;
+}
+
+.ng-select-focused {
+	&:not(.ng-select-opened) > .ng-select-container {
+		border-color:lighten($primary-color, 15%) !important;
+		box-shadow: none !important;
+	}
+}
+
+.ng-option-selected{
+	background-color: lighten($primary-color, 25%) !important;
+}
+
+.table-clear{
+	margin: 0;
+	tbody{
+		tr{
+			&:not(:first-child){
+				border-top: 1px solid rgba(0,0,0,.02);
+				box-shadow: inset 0 10px 10px -10px rgba(0,0,0,.02);
+			}
+			td,
+			th{
+				vertical-align: middle;
+				border: 0;
+				&.child-title{
+					color: rgba(100,150,170,.8);
+					font-size: 80%;
+					font-weight: bold;
+					text-transform: uppercase;
+					padding-top: 20px;
+				}
+				&:last-child{
+					width: 60%;
+				}
+				&.min-width{
+					width: 1%;
+				}
+				&.action{
+					.btn{
+						color: darken($primary-color, 5%);
+						border: 0;
+						border-radius: 1000px;
+						transition: 0.2s all;
+						&:hover{
+							color: white;
+							background-color: $primary-color;
+						}
+						&.rotate180{
+							transform: rotate(180deg);
+						}
+					}
+				}
+			}
+		}
+	}
+}
